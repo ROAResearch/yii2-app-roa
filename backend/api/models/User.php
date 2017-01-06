@@ -47,6 +47,14 @@ class User extends \common\models\User
     public function getAccessTokens()
     {
         return $this->hasMany(AccessToken::class, ['user_id' => 'id'])
-            ->andOnCondition([]);
+            ->andOnCondition(['client_id' => 'testclient']);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function fields()
+    {
+        return ['id', 'username', 'email', 'created_at', 'updated_at'];
     }
 }
