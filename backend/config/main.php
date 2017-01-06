@@ -43,7 +43,7 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'backend\api\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
@@ -68,6 +68,14 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'POST api/oauth2/<action:\w+>' => 'oauth2/rest/<action>',
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'pluralize' => false,
+                    'prefix' => 'api/v1/',
+                    'controller' => [
+                        'user' => 'api/v1/user',
+                    ],
+                ],
             ],
         ],
     ],
