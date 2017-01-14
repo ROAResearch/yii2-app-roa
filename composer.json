@@ -43,7 +43,11 @@
             "bower-asset-library": "vendor/bower"
         }
     },
+    "autoload": {
+        "classmap": ["console/ComposerListener.php"]
+    },
     "scripts": {
+        "delete-cache": "rm -rf backend/runtime/cache/* frontend/runtime/cache/* console/runtime/cache/*",
         "build-yii": [
             "@php init --env=Development --overwrite=n"
         ],
@@ -56,7 +60,8 @@
         ],
         "build-db": [
             "@php yii migrate/up --interactive=0",
-            "@php yii migrate/up -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0"
+            "@php yii migrate/up -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0",
+            "@delete-cache"
         ],
         "rebuild-db": [
             "@php yii migrate/down 1 -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0",
@@ -71,6 +76,12 @@
         ],
         "run-coverage": [
             "@composer exec -vv -- codecept run --coverage --coverage-xml"
+        ],
+        "pre-install-cmd": [
+            "console\\ComposerListener::init"
+        ],
+        "pre-update-cmd": [
+            "console\\ComposerListener::init"
         ],
         "post-create-project-cmd": [
             "@build-yii",
