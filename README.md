@@ -1,11 +1,14 @@
-Yii 2 Advanced Project Template
+Yii 2 ROA Project Template
 ===============================
 
-Yii 2 Advanced Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
-developing complex Web applications with multiple tiers.
+Yii 2 ROA Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
+developing services using a ROA architecture.
 
 The template includes three tiers: front end, back end, and console, each of which
 is a separate Yii application.
+
+The back end and front end application include an `api` module with the basic structure
+to create ROA services.
 
 The template is designed to work in a team development environment. It supports
 deploying the application in different environments.
@@ -24,7 +27,7 @@ common
     config/              contains shared configurations
     mail/                contains view files for e-mails
     models/              contains model classes used in both backend and frontend
-    tests/               contains tests for common classes    
+    tests/               contains tests for common classes
 console
     config/              contains console configurations
     controllers/         contains console controllers (commands)
@@ -33,15 +36,17 @@ console
     runtime/             contains files generated during runtime
 backend
     assets/              contains application assets such as JavaScript and CSS
+    api/                 contains the api versions and services
     config/              contains backend configurations
     controllers/         contains Web controller classes
     models/              contains backend-specific model classes
     runtime/             contains files generated during runtime
-    tests/               contains tests for backend application    
+    tests/               contains tests for backend application
     views/               contains view files for the Web application
     web/                 contains the entry script and Web resources
 frontend
     assets/              contains application assets such as JavaScript and CSS
+    api/                 contains the api versions and services
     config/              contains frontend configurations
     controllers/         contains Web controller classes
     models/              contains frontend-specific model classes
