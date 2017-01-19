@@ -13,12 +13,15 @@ return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'api'],
     'modules' => [
         'api' => ArrayHelper::merge(
+            [
+                'class' => 'tecnocen\roa\modules\ApiContainer',
+                'baseNamespace' => 'backend\\api',
+            ],
             require(dirname(__DIR__) . '/api/config.php'),
-            require(dirname(__DIR__) . '/api/config-local.php'),
-            ['class' => 'yii\base\Module']
+            require(dirname(__DIR__) . '/api/config-local.php')
         ),
         'oauth2' => [
             'class' => 'filsh\yii2\oauth2server\Module',
@@ -68,14 +71,6 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'POST api/oauth2/<action:\w+>' => 'oauth2/rest/<action>',
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'pluralize' => false,
-                    'prefix' => 'api/v1/',
-                    'controller' => [
-                        'user' => 'api/v1/user',
-                    ],
-                ],
             ],
         ],
     ],

@@ -24,6 +24,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.5.9",
+        "tecnocen/yii2-roa": "*",
         "yiisoft/yii2": "~2.0.10",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
@@ -41,6 +42,10 @@
         {
             "type": "vcs",
             "url":  "git@github.com:Faryshta/yii2-oauth2-server.git"
+        },
+        {
+            "type": "vcs",
+             "url": "git@bitbucket.org:tecnocen/yii2-roa.git"
         }
     ],
     "config": {

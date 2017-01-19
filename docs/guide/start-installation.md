@@ -12,12 +12,14 @@ If you do not have [Composer](http://getcomposer.org/), follow the instructions 
 
 With Composer installed, you can then install the application using the following commands:
 
+    composer self-update
     composer global require "fxp/composer-asset-plugin:^1.2.0"
-    composer create-project --prefer-dist yiisoft/yii2-app-advanced yii-application
+    composer create-project --prefer-dist yiisoft/yii2-app-roa yii-roa
 
-The first command installs the [composer asset plugin](https://github.com/francoispluchino/composer-asset-plugin/)
+The first command updates `composer` itself, version `>=1.3` is required. The
+second command installs the [composer asset plugin](https://github.com/francoispluchino/composer-asset-plugin/)
 which allows managing bower and npm package dependencies through Composer. You only need to run this command
-once for all. The second command installs the advanced application in a directory named `yii-application`.
+once for all. The thirdd command installs the roa application in a directory named `yii-roa`.
 You can choose a different directory name if you want.
 
 ## Install from an Archive File
