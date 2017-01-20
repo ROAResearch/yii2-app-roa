@@ -1,4 +1,7 @@
 <?php
+
+include __DIR__ . '/db.php';
+
 return yii\helpers\ArrayHelper::merge(
     require(__DIR__ . '/main.php'),
     require(__DIR__ . '/main-local.php'),
@@ -6,7 +9,7 @@ return yii\helpers\ArrayHelper::merge(
     [
         'components' => [
             'db' => [
-                'dsn' => 'mysql:host=localhost;dbname=yii2advanced_test',
+                'dsn' => "mysql:host=127.0.0.1;dbname={$dbname}_test",
             ]
         ],
     ]

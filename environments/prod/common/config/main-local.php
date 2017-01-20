@@ -1,11 +1,14 @@
 <?php
+
+include __DIR__ . '/db.php';
+
 return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=yii2advanced',
-            'username' => 'root',
-            'password' => '',
+            'dsn' => "mysql:host=127.0.0.1;dbname=$dbname",
+            'username' => $user,
+            'password' => $pass,
             'charset' => 'utf8',
         ],
         'mailer' => [
