@@ -24,6 +24,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.5.9",
+        "lib-openssl": ">=1.0",
         "tecnocen/yii2-roa": "*",
         "yiisoft/yii2": "~2.0.10",
         "yiisoft/yii2-bootstrap": "~2.0.0",
