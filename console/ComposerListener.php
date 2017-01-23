@@ -18,6 +18,20 @@ class ComposerListener
         }
     }
 
+    public static function parseArguments(Array $args)
+    {
+        $parsed = [];
+        foreach ($args as $arg) {
+            $parse = explode('=', $arg);
+            if (!isset($parse[1])) {
+                $parsed[$parse[0]] = true;
+            } else {
+                $parsed[$parse[0]] = $parse[1];
+            }
+        }
+        return $parsed;
+    }
+
     protected static function createPDO($user, $pass)
     {
         try {
