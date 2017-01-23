@@ -59,45 +59,15 @@
         }
     },
     "autoload": {
-        "classmap": ["console/ComposerListener.php"]
+        "classmap": [
+            "console/ComposerListener.php",
+            "console/DatabaseListener.php",
+            "console/FrameworkListener.php",
+        ]
     },
     "scripts": {
-        "delete-cache": "rm -rf backend/runtime/cache/* frontend/runtime/cache/* console/runtime/cache/*",
-        "build-yii": [
-            "@php init --env=Development --overwrite=n"
-        ],
-        "rebuild-yii": [
-            "@php init --env=Development --overwrite=y"
-        ],
-        "build-prod": [
-            "@php init --env=Production --overwrite=y",
-            "@build-db"
-        ],
-        "config-db": [
-            "console\\ComposerListener::configDb"
-        ],
-        "drop-db": [
-            "console\\ComposerListener::dropDB",
-            "console\\ComposerListener::configDb"
-        ],
-        "build-db": [
-            "@php yii migrate/up --interactive=0",
-            "@php yii migrate/up -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0",
-            "@delete-cache"
-        ],
-        "rebuild-db": [
-            "@php yii migrate/down 1 -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0",
-            "@php yii migrate/down all --interactive=0",
-            "@build-db"
-        ],
-        "fixtures": [
-            "@php yii fixture '*' --interactive=0"
-        ],
-        "run-tests": [
-            "@composer exec -vv -- codecept run"
-        ],
-        "run-coverage": [
-            "@composer exec -vv -- codecept run --coverage --coverage-xml"
+        "command": [
+            "console\\ComposerListener::init"
         ],
         "pre-install-cmd": [
             "console\\ComposerListener::init"
@@ -106,11 +76,44 @@
             "console\\ComposerListener::init"
         ],
         "post-create-project-cmd": [
-            "@build-yii",
-            "@config-db",
-            "@build-db",
-            "@fixtures",
+            "@deploy",
+        ],
+        "deploy": [
+            "@deploy-framework",
+            "@deploy-database",
             "@run-tests"
+        ],
+        "deploy-framework": [
+            "console\\FrameworkListener::deploy"
+        ],
+        "deploy-database": [
+            "@config-database",
+            "@run-migrations",
+            "@run-fixtures",
+            "@clear-cache"
+        ],
+        "truncate-database": [
+            "console\\DatabaseListener::truncate",
+            "@run-migrations",
+            "@run-fixtures",
+            "@clear-cache"
+        ],
+        "config-database": [
+            "console\\DatabaseListener::config"
+        ],
+        "run-migrations": [
+            "@php yii migrate/down 1 -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0",
+            "@php yii migrate/down all --interactive=0",
+        ],
+        "run-fixtures": [
+            "@php yii fixture '*' --interactive=0"
+        ],
+        "delete-cache": "rm -rf backend/runtime/cache/* frontend/runtime/cache/* console/runtime/cache/*",
+        "run-tests": [
+            "@composer exec -vv -- codecept run"
+        ],
+        "run-coverage": [
+            "@composer exec -vv -- codecept run --coverage --coverage-xml"
         ]
     }
 }
