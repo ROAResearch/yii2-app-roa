@@ -3,7 +3,7 @@ Installation
 
 ## Requirements
 
-The minimum requirement by this project template is that your Web server supports PHP 5.4.0.
+The minimum requirement by this project template is that your Web server supports PHP 5.5.0.
 
 ## Installing using Composer
 
@@ -14,7 +14,7 @@ With Composer installed, you can then install the application using the followin
 
     composer self-update
     composer global require "fxp/composer-asset-plugin:^1.2.0"
-    composer create-project --prefer-dist yiisoft/yii2-app-roa yii-roa
+    composer create-project --prefer-dist tecnocen/yii2-app-roa yii-roa
 
 The first command updates `composer` itself, version `>=1.3` is required. The
 second command installs the [composer asset plugin](https://github.com/francoispluchino/composer-asset-plugin/)
