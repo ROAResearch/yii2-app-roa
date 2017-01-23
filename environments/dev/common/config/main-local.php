@@ -1,14 +1,17 @@
 <?php
+
+include __DIR__ . '/db.php';
+
 return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=yii2advanced',
-            'username' => 'root',
-            'password' => '',
+            'dsn' => "mysql:host=127.0.0.1;dbname=$dbname",
+            'username' => $user,
+            'password' => $pass,
             'charset' => 'utf8',
         ],
-        'mailer' => [
+       'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail',
             // send all mails to a file by default. You have to set
