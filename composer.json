@@ -62,7 +62,7 @@
         "classmap": [
             "console/ComposerListener.php",
             "console/DatabaseListener.php",
-            "console/FrameworkListener.php",
+            "console/FrameworkListener.php"
         ]
     },
     "scripts": {
@@ -76,7 +76,7 @@
             "console\\ComposerListener::init"
         ],
         "post-create-project-cmd": [
-            "@deploy",
+            "@deploy"
         ],
         "deploy": [
             "@deploy-framework",
@@ -103,7 +103,7 @@
         ],
         "run-migrations": [
             "@php yii migrate/down 1 -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0",
-            "@php yii migrate/down all --interactive=0",
+            "@php yii migrate/down all --interactive=0"
         ],
         "run-fixtures": [
             "@php yii fixture '*' --interactive=0"
