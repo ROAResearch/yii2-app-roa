@@ -45,7 +45,7 @@ List of commands created for this application.
 
 ### deploy
 
-`composer deploy [arguments]`
+`composer deploy -- [arguments]`
 
 Runs all the necessary operations to have a functional application
 
@@ -60,14 +60,14 @@ Runs all the necessary operations to have a functional application
 Parameter |	Type   | Description                  | Default
 --------- | ------ | ---------------------------- | -------
 env       | string | Application work environment | dev
-overwrite | bool   | Overwrite local files        |	n
+overwrite | bool   | Overwrite local files        |	Prompt question
 db-user   | string | Database username            | Prompt question
 db-pass   | string | Database password            | Prompt question
 db-name   | string | Database name                | Prompt question
 
 ### deploy-framework
 
-`composer deploy-framework [arguments]`
+`composer deploy-framework -- [arguments]`
 
 Creates all the local files, assign permissions to folders and creates symlinks.
 This command replaced the `init` script from the [yii2-app-avanced] repository.
@@ -83,7 +83,7 @@ overwrite | bool   | Overwrite local files        |	n
 
 ### deploy-database
 
-`composer deploy-database [arguments]`
+`composer deploy-database -- [arguments]`
 
 Ensures the database and loads the structure using migrations and fixtures.
 
@@ -118,7 +118,7 @@ Drops the configured database and create it again using migrations and fixtures.
 
 ### config-database
 
-`composer config-database [arguments]`
+`composer config-database -- [arguments]`
 
 Ensures the database permissions and save them for framework usage.
 
