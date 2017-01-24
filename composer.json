@@ -89,13 +89,13 @@
             "@config-database",
             "@run-migrations",
             "@run-fixtures",
-            "@clear-cache"
+            "@clear-framework-cache"
         ],
         "truncate-database": [
             "console\\DatabaseListener::truncate",
             "@run-migrations",
             "@run-fixtures",
-            "@clear-cache"
+            "@clear-framework-cache"
         ],
         "config-database": [
             "console\\DatabaseListener::config"
@@ -106,6 +106,12 @@
         ],
         "run-fixtures": [
             "@php yii fixture '*' --interactive=0"
+        ],
+        "truncate-migrations": [
+            "@php yii migrate/down 1 -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0",
+            "@php yii migrate/down all --interactive=0",
+            "@run-migrations",
+            "@clear-framework-cache"
         ],
         "clear-framework-cache": [
             "rm -rf backend/runtime/cache/*",
