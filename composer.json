@@ -102,13 +102,13 @@
             "console\\DatabaseListener::config"
         ],
         "run-migrations": [
-            "@php yii migrate/down 1 -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0",
-            "@php yii migrate/down all --interactive=0"
+            "@php yii migrate/up 1 -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0",
+            "@php yii migrate/up all --interactive=0"
         ],
         "run-fixtures": [
             "@php yii fixture '*' --interactive=0"
         ],
-        "delete-cache": "rm -rf backend/runtime/cache/* frontend/runtime/cache/* console/runtime/cache/*",
+        "clear-cache": "rm -rf backend/runtime/cache/* frontend/runtime/cache/* console/runtime/cache/*",
         "run-tests": [
             "@composer exec -vv -- codecept run"
         ],
