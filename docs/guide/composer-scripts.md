@@ -22,22 +22,6 @@ Checks that the composer version is `1.3` or higher.
 
 Checks that the composer version is `1.3` or higher.
 
-### post-create-project-cmd
-
-Executes the `deploy` script.
-
-> Note: Requires to have yii2 framework installed
-
-> Uses commands
->
-> * `deploy`
-
-Parameter |	Type   | Description                  | Default
---------- | ------ | ---------------------------- | -------
-env       | string | Application work environment | dev
-overwrite | bool   | Overwrite local files        |	n
-
-
 Custom Commands
 ---------------
 
@@ -53,6 +37,7 @@ Runs all the necessary operations to have a functional application
 
 > Uses commands
 >
+> * `create-project --prefer-dist`
 > * `deploy-framework`
 > * `deploy-database`
 > * `run-tests`
@@ -61,9 +46,9 @@ Parameter |	Type   | Description                  | Default
 --------- | ------ | ---------------------------- | -------
 env       | string | Application work environment | dev
 overwrite | bool   | Overwrite local files        |	Prompt question
-db-user   | string | Database username            | Prompt question
-db-pass   | string | Database password            | Prompt question
-db-name   | string | Database name                | Prompt question
+dbuser   | string | Database username            | Prompt question
+dbpass   | string | Database password            | Prompt question
+dbname   | string | Database name                | Prompt question
 
 ### deploy-framework
 
@@ -130,9 +115,9 @@ Can be customized by editing the `console\DatabaseListener` class.
 
 Parameter |	Type   | Description       | Default
 --------- | ------ | ----------------- | ---------------
-db-user   | string | Database username | Prompt question
-db-pass   | string | Database password | Prompt question
-db-name   | string | Database name     | Prompt question
+dbuser   | string | Database username | Prompt question
+dbpass   | string | Database password | Prompt question
+dbname   | string | Database name     | Prompt question
 
 ### run-migrations
 

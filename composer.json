@@ -75,10 +75,9 @@
         "pre-update-cmd": [
             "console\\ComposerListener::init"
         ],
-        "post-create-project-cmd": [
-            "@deploy"
-        ],
         "deploy": [
+            "@composer create-project --prefer-dist",
+            "console\\ComposerListener::autoload" ,
             "@deploy-framework",
             "@deploy-database",
             "@run-tests"

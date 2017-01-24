@@ -16,6 +16,11 @@ class ComposerListener
         }
     }
 
+    public static function autoload(Event $event)
+    {
+        require dirname(__DIR__) . '/vendor/autoload.php';
+    }
+
     public static function parseArguments(Array $args)
     {
         $parsed = [];

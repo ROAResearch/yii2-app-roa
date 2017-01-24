@@ -14,44 +14,28 @@ With Composer installed, you can then install the application using the followin
 
     composer self-update
     composer global require "fxp/composer-asset-plugin:^1.2.0"
-    composer create-project --prefer-dist tecnocen/yii2-app-roa yii-roa
+    git clone <git path to your project> yii-roa
+    cd yii-roa
+    composer deploy
 
 The first command updates `composer` itself, version `>=1.3` is required. The
-second command installs the [composer asset plugin](https://github.com/francoispluchino/composer-asset-plugin/)
-which allows managing bower and npm package dependencies through Composer. You only need to run this command
-once for all. The thirdd command installs the roa application in a directory named `yii-roa`.
-You can choose a different directory name if you want.
+second command installs the
+[composer asset plugin](https://github.com/francoispluchino/composer-asset-plugin/)
+which allows managing bower and npm package dependencies through Composer. You
+only need to run this command once for all. The third command installs the roa
+application in a directory named `yii-roa`. You can choose a different directory
+name if you want.
 
-## Install from an Archive File
+The final command runs a [custom composer script](composer-scripts.md) to deploy
+the framework and database.
 
-Extract the archive file downloaded from [yiiframework.com](http://www.yiiframework.com/download/) to
-a directory named `advanced` that is directly under the Web root.
+The `deploy` command can also admit parameters.
 
-Then follow the instructions given in the next subsection.
+`composer deploy -- overwrite=0 env=Production dbuser=root dbpass=s3cr3t dbname=roa_demo`
 
+## Server configuration
 
-## Preparing application
-
-After you install the application, you have to conduct the following steps to initialize
-the installed application. You only need to do these once for all.
-
-1. Open a console terminal, execute the `init` command and select `dev` as environment.
-
-   ```
-   /path/to/php-bin/php /path/to/yii-application/init
-   ```
-
-   If you automate it with a script you can execute `init` in non-interactive mode.
-
-   ```
-   /path/to/php-bin/php /path/to/yii-application/init --env=Production --overwrite=All
-   ```
-
-2. Create a new database and adjust the `components['db']` configuration in `common/config/main-local.php` accordingly.
-
-3. Open a console terminal, apply migrations with command `/path/to/php-bin/php /path/to/yii-application/yii migrate`.
-
-4. Set document roots of your web server:
+### Set document roots of your web server:
 
    - for frontend `/path/to/yii-application/frontend/web/` and using the URL `http://frontend.dev/`
    - for backend `/path/to/yii-application/backend/web/` and using the URL `http://backend.dev/`
@@ -190,7 +174,7 @@ the installed application. You only need to do these once for all.
        }
    ```
 
-5. Change the hosts file to point the domain to your server.
+### Change the hosts file to point the domain to your server.
 
    - Windows: `c:\Windows\System32\Drivers\etc\hosts`
    - Linux: `/etc/hosts`
