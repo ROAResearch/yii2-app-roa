@@ -7,8 +7,8 @@ return [
         'db' => [
             'class' => 'yii\db\Connection',
             'dsn' => "mysql:host=127.0.0.1;dbname=$dbname",
-            'username' => $user,
-            'password' => $pass,
+            'username' => $dbuser,
+            'password' => $dbpass,
             'charset' => 'utf8',
         ],
        'mailer' => [
