@@ -107,7 +107,11 @@
         "run-fixtures": [
             "@php yii fixture '*' --interactive=0"
         ],
-        "clear-cache": "rm -rf backend/runtime/cache/* frontend/runtime/cache/* console/runtime/cache/*",
+        "clear-framework-cache": [
+            "rm -rf backend/runtime/cache/*",
+            "rm -rf console/runtime/cache/*",
+            "rm -rf frontend/runtime/cache/*"
+        ],
         "run-tests": [
             "@composer exec -vv -- codecept run"
         ],
