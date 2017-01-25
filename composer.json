@@ -102,7 +102,9 @@
         ],
         "run-migrations": [
             "@php yii migrate/up 1 -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0",
-            "@php yii migrate/up all --interactive=0"
+            "@php yii migrate/up all --interactive=0",
+            "@php yii_test migrate/up 1 -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0",
+            "@php yii_test migrate/up all --interactive=0"
         ],
         "run-fixtures": [
             "@php yii fixture '*' --interactive=0"
@@ -110,6 +112,8 @@
         "truncate-migrations": [
             "@php yii migrate/down 1 -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0",
             "@php yii migrate/down all --interactive=0",
+            "@php yii_test migrate/down 1 -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0",
+            "@php yii_test migrate/down all --interactive=0",
             "@run-migrations",
             "@clear-framework-cache"
         ],
