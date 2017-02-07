@@ -51,7 +51,6 @@ class UserController extends ActiveController
     {
         return array_merge(parent::actions(), [
             'create' => null,
-            'update' => null,
             'delete' => null,
         ]);
     }

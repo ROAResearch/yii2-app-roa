@@ -34,5 +34,9 @@ class AccessTokenCest
             'access_token' =>  'string:regex(/[0-9a-f]{40}/)',
             'refresh_token' =>  'string:regex(/[0-9a-f]{40}/)',
         ]);
+        $I->storeToken(
+            'erau',
+            $I->grabDataFromResponseByJsonPath('access_token')[0]
+        );
     }
 }

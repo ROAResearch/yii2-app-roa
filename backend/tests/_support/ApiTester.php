@@ -20,7 +20,24 @@ class ApiTester extends \Codeception\Actor
 {
     use _generated\ApiTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    protected static $tokens = [];
+
+    public function storeToken($name, $token)
+    {
+        static::$tokens[$name] = $token;
+    }
+
+    /**
+     * Define custom actions here
+     */
+
+    public function amLoggedInAsUser()
+    {
+        $this->amLoggedInAs(['username' => 'erau']);
+    }
+
+    public function amAuthAsUser()
+    {
+        $this->amBearerAuthenticated(static::$tokens['erau']);
+    }
 }

@@ -18,5 +18,5 @@ class UserCest
     public function fixtures(ApiTester $I)
     {
         $I->haveFixtures(['user' => ['class' => UserFixture::class]]);
-    } 
+    }
 }
