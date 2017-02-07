@@ -29,5 +29,10 @@ class AccessTokenCest
             'password' => 'password_0',
         ]);
         $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'access_token' =>  'string:regex(/[0-9a-f]{40}/)',
+            'refresh_token' =>  'string:regex(/[0-9a-f]{40}/)',
+        ]);
     }
 }
