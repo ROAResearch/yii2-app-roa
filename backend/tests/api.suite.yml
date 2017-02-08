@@ -4,10 +4,9 @@ modules:
         - REST:
             url: http://localhost:8000/api/
             depends: Yii2
-        - \backend\tests\Helper\Api
         - Yii2:
             cleanup: false
     config:
         - Yii2:
-            configFile: 'config/test.php'
+            configFile: 'config/test-local.php'
             cleanup: false
