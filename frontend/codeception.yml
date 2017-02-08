@@ -13,3 +13,16 @@ modules:
     config:
         Yii2:
             configFile: 'config/test-local.php'
+coverage:
+    enabled: true
+    remote: false
+    include:
+        - models/*
+        - controllers/*
+        - views/*
+        - assets/*
+        - api/*
+    exclude:
+        - api/*/config.php
+        - api/*/config-local.php
+
