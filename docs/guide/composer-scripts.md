@@ -1,7 +1,7 @@
 Composer Scripts
 ================
 
-Yii2 ROA Application uses composer scripts to ease  the instalation process and
+Yii2 ROA Application uses composer scripts to ease the instalation process and
 handle recurring operations.
 
 Composer Events
@@ -9,18 +9,9 @@ Composer Events
 
 List of composer events used by this application.
 [Read more](https://getcomposer.org/doc/articles/scripts.md#event-names)
+List of composer events used by this application.
+[Read more](https://getcomposer.org/doc/articles/scripts.md#event-names)
 
-### pre-install-cmd
-
-Checks that the composer version is `1.3` or higher.
-
-### pre-update-cmd
-
-Checks that the composer version is `1.3` or higher.
-
-### command
-
-Checks that the composer version is `1.3` or higher.
 
 Custom Commands
 ---------------
@@ -33,7 +24,7 @@ List of commands created for this application.
 
 Runs all the necessary operations to have a functional application
 
-*Requires to have yii2 framework installed*
+* Note: Requires to have yii2 framework installed*
 
 > Uses commands
 >
@@ -46,9 +37,9 @@ Parameter |	Type   | Description                  | Default
 --------- | ------ | ---------------------------- | -------
 env       | string | Application work environment | dev
 overwrite | bool   | Overwrite local files        |	Prompt question
-dbuser   | string | Database username            | Prompt question
-dbpass   | string | Database password            | Prompt question
-dbname   | string | Database name                | Prompt question
+dbuser    | string | Database username            | Prompt question
+dbpass    | string | Database password            | Prompt question
+dbname    | string | Database name                | Prompt question
 
 ### deploy-framework
 
@@ -115,9 +106,9 @@ Can be customized by editing the `console\DatabaseListener` class.
 
 Parameter |	Type   | Description       | Default
 --------- | ------ | ----------------- | ---------------
-dbuser   | string | Database username | Prompt question
-dbpass   | string | Database password | Prompt question
-dbname   | string | Database name     | Prompt question
+dbuser    | string | Database username | Prompt question
+dbpass    | string | Database password | Prompt question
+dbname    | string | Database name     | Prompt question
 
 ### run-migrations
 
@@ -143,9 +134,9 @@ Can be customized by editing the `composer.json` file.
 
 > Note: Requires to have yii2 framework installed*
 
-### clear-cache
+### clear-framework-cache
 
-`composer clear-cache`
+`composer clear-framework-cache`
 
 Clears all the cache used by the framework.
 
@@ -166,4 +157,3 @@ Can be customized by editing the `composer.json` file.
 Short cut to run the codeception tests with code coverage.
 
 Can be customized by editing the `composer.json` file.
-

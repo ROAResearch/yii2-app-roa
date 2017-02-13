@@ -75,9 +75,9 @@ Aasegura la existencia de la base de datos y carga la estructura usando migracio
 
 > Nota: De momento sólo `mysql` esta soportado.
 
-> Note: Requires to have yii2 framework installed
+* Nota: Requiere tener instalado el framework de Yii2.
 
-> Uses commands
+> Usa los commandos
 >
 > * `config-database`
 > * `run-migrations`
@@ -86,4 +86,83 @@ Aasegura la existencia de la base de datos y carga la estructura usando migracio
 
 ### truncate-database
 
+`composer truncate-database`
 
+Elimina la base de datos configurada y la crea de nuevo usando migrations y
+fixtures.
+
+> Nota: De momento sólo `mysql` esta soportado.
+
+> Nota: requiere tener una base de datos configurada.
+
+> Usa los commandos
+>
+> * `run-migrations`
+> * `run-fixtures`
+> * `clear-cache`
+
+### config-database
+
+`composer config-database -- [arguments]`
+
+Asegura los permisos de la base de datos y los guarda para uso del framework.
+
+Puede personalizarse editando la clase `console\DatabaseListener`.
+
+* Note: Currently only mysql driver is supported.
+
+* Nota: Requiere tener instalado el framework de Yii2.
+
+Parameter |	Type   | Description      | Default
+--------- | ------ | ---------------- | ---------
+dbuser    | string | Usuario de BD    | Preguntar
+dbpass    | string | Contraseña de BD | Preguntar
+dbname    | string | Nombre de BD     | Preguntar
+
+### run-migrations
+
+`composer run-migrations`
+
+Corre las migraciones necesarias para la aplicación.
+
+Se personaliza editando el archivo `composer.json`.
+
+* Nota: Soporta todos los drivers de Yii2 luego de configuración.
+
+* Nota: Requiere tener instalado el framework de Yii2.
+
+### run-fixtures
+
+`composer run-fixtures`
+
+Corre todos los fixtures que cargan la información básica de la BD.
+
+Se personaliza editando el archivo `composer.json`.
+
+* Nota: Soporta todos los drivers de Yii2 luego de configuración.
+
+* Nota: Requiere tener instalado el framework de Yii2.
+
+### clear-framework-cache
+
+`composer clear-framework-cache`
+
+Limpia toda la cache del framework.
+
+Se personaliza editando el archivo `composer.json`.
+
+### run-tests
+
+`composer run-tests`
+
+Atajo para correr las pruebas de Codeception.
+
+Se personaliza editando el archivo `composer.json`.
+
+### run-coverage
+
+`composer run-coverage`
+
+Atajo para correr las pruebas de Codeception con cobertura de código.
+
+Se personaliza editando el archivo `composer.json`.
