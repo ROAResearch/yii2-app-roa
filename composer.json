@@ -29,7 +29,8 @@
         "yiisoft/yii2": "~2.0.10",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "filsh/yii2-oauth2-server": "2.0.3"
+        "filsh/yii2-oauth2-server": "2.0.3",
+        "guzzlehttp/guzzle": ">=4.1.4 <7.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
