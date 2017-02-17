@@ -175,3 +175,73 @@ versión de deprecada a no soportada.
 
 Este proceso es automatico en cuanto el contenedor detecta una versión con una
 fecha `$endOfLifeDate` menor a la fecha actual.
+
+## Terminos y Equivalencias
+
+Para la utilización de ROA se usan terminos que extienden funcionalidades de
+Yii2.
+
+ROA      | Yii2        | Diferencias
+-------- | ----------- | -----------
+Recurso  | Controlador | Se eliminan sesiones en favor de tokens, se definen verbos en lugar de acciones.
+Verbo    | Acción      | Sólo se acceden mediante el metodo empleado por HTTP y se definen por recurso.
+Interfaz | Modelo      | Se definen la estructura de información
+
+### Recurso
+
+### Verbo
+
+### Interfaz
+
+La interfaz también conocida como contrato define la estructura de la
+información que recibe y devuelven los verbos de cada recurso.
+
+#### Estructura de Cuerpo de la Respuesta.
+
+Se utilizan modelos de yii2 utilizando [AttributeTypeCastBehavior] o algún otro
+metodo para exponer el tipo de variabl de cada atributo que recibe y devuelve
+cada modelo.
+
+#### Links
+
+Representan enlaces a recursos relacionados para facilitar la navegación del cliente.
+
+```php
+use yii\db\ActiveRecord;
+use yii\web\Link;
+use yii\web\Linkable;
+
+class Order extends ActiveRecord implements Linkable
+{
+    public function getLinks()
+    {
+        return [
+            Link::REL_SELF => Url::to(""),
+            // html version
+            'html' => [
+                new Link([
+                    'rel' => 'alternate',
+                    Url::toRoute(['//order', 'id' => $this->id]),
+                ])
+            ],
+            'docs' => [
+                new Link([
+                    'rel' => 'help',
+                    'href' => Url::toRoute('swager.io/project/order', true),
+                ])
+            ],
+            'customer' => Url::to("customer/{$this->customer_id}"),
+            'store' => Url::to("store/{$this->store_id}"),
+            'items' => Url::to("order/{$this->id}/items"
+        ];
+    }
+}
+```  
+
+### Control de Mensajes
+
+En ROA se utiliza el control de mensajes mediante los códigos de [estado HTTP].
+De forma que
+
+[estado HTTP]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+[AttributeTypeCastBehavior]: http://www.yiiframework.com/doc-2.0/yii-behaviors-attributetypecastbehavior.html
