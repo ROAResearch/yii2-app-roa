@@ -170,7 +170,7 @@ Para deprecar un modulo de versión es necesario definir los atributos
 
 ### Fin de Ciclo de Vida
 
-Se le llama 'fin de ciclo de viad' al proceso de cambiar la estabilidad de una
+Se le llama 'fin de ciclo de vida' al proceso de cambiar la estabilidad de una
 versión de deprecada a no soportada.
 
 Este proceso es automatico en cuanto el contenedor detecta una versión con una
@@ -186,10 +186,6 @@ ROA      | Yii2        | Diferencias
 Recurso  | Controlador | Se eliminan sesiones en favor de tokens, se definen verbos en lugar de acciones.
 Verbo    | Acción      | Sólo se acceden mediante el metodo empleado por HTTP y se definen por recurso.
 Interfaz | Modelo      | Se definen la estructura de información
-
-### Recurso
-
-### Verbo
 
 ### Interfaz
 
@@ -212,16 +208,16 @@ use yii\web\Link;
 use yii\web\Linkable;
 
 class Order extends ActiveRecord implements Linkable
-{
+{//}
     public function getLinks()
-    {
+    {//}
         return [
             Link::REL_SELF => Url::to(""),
             // html version
             'html' => [
                 new Link([
                     'rel' => 'alternate',
-                    Url::toRoute(['//order', 'id' => $this->id]),
+                    'href' => Url::toRoute(['//order', 'id' => $this->id]),
                 ])
             ],
             'docs' => [
@@ -232,7 +228,7 @@ class Order extends ActiveRecord implements Linkable
             ],
             'customer' => Url::to("customer/{$this->customer_id}"),
             'store' => Url::to("store/{$this->store_id}"),
-            'items' => Url::to("order/{$this->id}/items"
+            'items' => Url::to("order/{$this->id}/items"),
         ];
     }
 }
@@ -240,8 +236,109 @@ class Order extends ActiveRecord implements Linkable
 
 ### Control de Mensajes
 
-En ROA se utiliza el control de mensajes mediante los códigos de [estado HTTP].
-De forma que
+#### Mensajes de Error y Exito.
+
+En ROA se utiliza el control de mensajes mediante los códigos de [estado HTTP]
+de forma que si la solicitud devuelve un estado 2xx significa que la solicitud
+fue exitosa, 4xx error de usuario y 5xx error de servidor.
+
+#### Cuerpo de la respuesta
+
+El cuerpo de la respuesta sigue el esquema de [JSON Hypermedia].
+
+
+```JSON
+[
+  {
+    "id": 1,
+    "nombre": "Angel Guevara",
+    "_links": [
+      "self": "/api/v1/user/1"
+    ]
+  }
+]
+```
+
+#### Auto documentación
+
+Mediante el metodo options se puede obtener una definifición de cada recurso al
+usar el parametro `defs=1` en la URI.
+
+Esta definición también funciona como documentación al seguir la especificacion
+[OpenApi] de [Swagger]
+
+#### Formatos
+
+Se admiten formatos JSON y XML para el cuerpo de la respuesta de una petición.
+Para controlar el formato de la respuesta se debe agregar el parametro `_format`
+a la URI o usar el header `accept` en el request. Si no se usa ninguna de las
+dos opciones se usará el formato `JSON` por defecto. Hay que notar que toda
+petición desde un navegador agregara una cabecera `accept:application/xml` por
+lo que de un navegador por defecto se mandara la respuesta en xml.
+
+### Recurso
+
+Los recursos son componentes de software discretos que pueden ser reusados para
+distintos propositos. Cada recurso debe ser independiente del estado y del
+consumo de otros recursos. Estan pensados para que cada ruta apunte a únicamente
+un recurso y distintas rutas deben apuntar a distintos recursos.
+
+De esta forma las rutas `orden` y `orden/productos` son distintos recursos y no
+distintas acciones de un mismo recurso.
+
+#### Clase PHP
+
+Los recursos se definen creando controladores que extienden la clase
+`tecnocen\roa\controllers\OAuth2Resource` la cual a su vez extiende
+`yii\rest\ActiveController`.
+
+Esta clase ya tiene soporte para las funcionalidades básicas de un recurso.
+
+#### Patrones de rutas
+
+Las rutas siguen los patrones y comportamientos de [UrlManager::$rules].
+
+Cada recurso puede tener su propia ruta hacia un controlador especifico.
+
+```php
+'resources' => [
+    'orden',
+    // accepts /orden/1/producto
+    'orden/<orden_id:[\d]+>/producto' => 'orden-producto',
+    'entidad-federativa',
+    // accepts /entidad-federativa/df/tienda
+    'entidad-federativa/<entidad:[\w]{2}>/tienda' => 'tienda',
+],
+```
+
+#### Paginación
+
+Siguiendo el estandard de [JSON Hypermedia] la paginación no se puede añadir al
+cuerpo de la respuesta si no que se usan las cabeceras `X-Pagination`.
+
+Estas cabeceras son serializadas automaticamente por yii2 al devolver un objeto
+que implemente `yii\data\DataProviderInterface`.
+
+#### Cross Origin
+
+Las peticiones de dominios cruzados se restringen y aprueban usando el metodo
+`OAuth2Resource::cors()` que es consumido por `yii\filters\Cors` para definir
+las cabeceras usadas por Cross-Origin Resource Sharing.
+
+Esto permite definir dinamicamente las cabeceras para cada recurso y petición.
+
+```php
+protected function cors()
+{
+    return [
+         // ...
+    ];
+}
+```
 
 [estado HTTP]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
 [AttributeTypeCastBehavior]: http://www.yiiframework.com/doc-2.0/yii-behaviors-attributetypecastbehavior.html
+[JSON Hypermedia]: http://json-schema.org/latest/json-schema-hypermedia.html
+[OpenApi]: http://www.swagger.io/specification/
+[Swagger]: http://www.swagger.io/
+[UrlManager::$rules]: http://www.yiiframework.com/doc-2.0/yii-web-urlmanager.html#$rules-detail
