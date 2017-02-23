@@ -336,6 +336,17 @@ protected function cors()
 }
 ```
 
+#### Cache
+
+La propiedad `Oauth2Resource::$enableCache` habilita cache de HTTP y la cache
+de respuesta y crea archivos en el servidor que guardan la respuesta.
+
+```php
+protected $enableCache = true;
+```
+
+La cache se puede configurar usando metodos.
+
 [estado HTTP]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
 [AttributeTypeCastBehavior]: http://www.yiiframework.com/doc-2.0/yii-behaviors-attributetypecastbehavior.html
 [JSON Hypermedia]: http://json-schema.org/latest/json-schema-hypermedia.html
