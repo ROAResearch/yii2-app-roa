@@ -68,9 +68,6 @@
         ]
     },
     "scripts": {
-        "command": [
-            "console\\ComposerListener::init"
-        ],
         "pre-install-cmd": [
             "console\\ComposerListener::init"
         ],
