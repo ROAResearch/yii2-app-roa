@@ -106,7 +106,7 @@ publicadas a partir de la fecha de liberación.
 #### Deprecado
 
 Ya no se soporta activamente, correcciones de ejecución se ignoran y sólo se da
-soporte a fallos de seguirdad para el cliente final y el servidor.
+soporte a fallos de seguridad para el cliente final y el servidor.
 
 ##### Politicas
 
