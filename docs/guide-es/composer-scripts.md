@@ -84,6 +84,12 @@ Aasegura la existencia de la base de datos y carga la estructura usando migracio
 > * `run-fixtures`
 > * `clear-cache`
 
+Parameter |	Type   | Description      | Default
+--------- | ------ | ---------------- | ---------
+dbuser    | string | Usuario de BD    | Preguntar
+dbpass    | string | Contraseña de BD | Preguntar
+dbname    | string | Nombre de BD     | Preguntar
+
 ### truncate-database
 
 `composer truncate-database`
