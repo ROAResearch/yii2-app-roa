@@ -107,6 +107,7 @@
         ],
         "run-fixtures": [
             "@php yii fixture '*' --interactive=0"
+            "@php yii_test fixture '*' --interactive=0"
         ],
         "truncate-migrations": [
             "@php yii migrate/down 1 -p=@vendor/filsh/yii2-oauth2-server/migrations --interactive=0",
@@ -124,7 +125,7 @@
         "run-tests": [
             "@composer exec -vv -- codecept run"
         ],
-        "debug-tests": [
+        "run-tests-debug": [
             "@php vendor/bin/codecept run -vv -f --no-rebuild"
         ],
         "run-coverage": [
