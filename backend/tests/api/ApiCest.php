@@ -17,8 +17,8 @@ class ApiCest
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson([
             // edit upon releases
-            'v1' =>  'dev',
-            'dev' =>  'dev',
+            'v1' =>  ['stability' => 'development'],
+            'dev' =>  ['stability' => 'development'],
         ]);
     }
 }
