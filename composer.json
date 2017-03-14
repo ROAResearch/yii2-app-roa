@@ -106,7 +106,7 @@
             "@php yii_test migrate/up all --interactive=0"
         ],
         "run-fixtures": [
-            "@php yii fixture '*' --interactive=0"
+            "@php yii fixture '*' --interactive=0",
             "@php yii_test fixture '*' --interactive=0"
         ],
         "truncate-migrations": [
