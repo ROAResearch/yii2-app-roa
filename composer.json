@@ -45,12 +45,8 @@
         {
             "type": "vcs",
             "url":  "git@github.com:Faryshta/yii2-oauth2-server.git"
-        },
-        {
-            "type": "vcs",
-             "url": "git@bitbucket.org:tecnocen/yii2-roa.git"
         }
-    ],
+   ],
     "config": {
         "process-timeout": 1800
     },
