@@ -16,7 +16,7 @@ return [
     'bootstrap' => ['log', 'api'],
     'modules' => [
         'api' => [
-            'class' => 'backend\\api\\ApiContainer',
+            'class' => 'backend\\api\\VersionContainer',
         ],
         'oauth2' => [
             'class' => 'filsh\yii2\oauth2server\Module',

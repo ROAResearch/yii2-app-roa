@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\api\v1\controllers;
+namespace backend\api\v1\resources;
 
 use backend\api\models\User;
 use tecnocen\roa\controllers\OAuth2ResourceController;

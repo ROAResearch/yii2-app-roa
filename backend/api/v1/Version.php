@@ -2,7 +2,7 @@
 
 namespace backend\api\v1;
 
-class ApiVersion extends \tecnocen\roa\modules\ApiVersion
+class Version extends \tecnocen\roa\modules\ApiVersion
 {
     /**
      * @inheritdoc
@@ -14,5 +14,5 @@ class ApiVersion extends \tecnocen\roa\modules\ApiVersion
     /**
      * @inheritdoc
      */
-    public $controllerNamespace = 'backend\\api\\v1\\Controllers';
+    public $controllerNamespace = 'backend\\api\\v1\\resources';
 }
