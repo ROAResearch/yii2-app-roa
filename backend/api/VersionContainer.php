@@ -7,12 +7,7 @@ class VersionContainer extends \tecnocen\roa\modules\ApiContainer
     /**
      * @inheritdoc
      */
-    public $identityClass = 'backend\\api\\models\\User';
-
-    /**
-     * @inheritdoc
-     */
-    public $baseNamespace = 'backend\\api';
+    public $identityClass = models\User::class;
 
     /**
      * @inheritdoc
