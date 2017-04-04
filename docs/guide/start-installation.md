@@ -60,6 +60,12 @@ The `deploy` command can also admit parameters.
                DirectoryIndex index.php
 
                # ...other settings...
+               # Apache 2.4
+               Require all granted
+               
+               ## Apache 2.2
+               # Order allow,deny
+               # Allow from all
            </Directory>
        </VirtualHost>
        
@@ -80,6 +86,12 @@ The `deploy` command can also admit parameters.
                DirectoryIndex index.php
 
                # ...other settings...
+               # Apache 2.4
+               Require all granted
+               
+               ## Apache 2.2
+               # Order allow,deny
+               # Allow from all
            </Directory>
        </VirtualHost>
    ```

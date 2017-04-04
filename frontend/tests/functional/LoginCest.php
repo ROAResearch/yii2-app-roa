@@ -7,7 +7,7 @@ use common\fixtures\UserFixture;
 
 class LoginCest
 {
-    function _before(FunctionalTester $I)
+    public function _before(FunctionalTester $I)
     {
         $I->haveFixtures([
             'user' => [
