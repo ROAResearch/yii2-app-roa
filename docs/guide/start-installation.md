@@ -13,7 +13,7 @@ If you do not have [Composer](http://getcomposer.org/), follow the instructions 
 With Composer installed, you can then install the application using the following commands:
 
     composer self-update
-    composer global require "fxp/composer-asset-plugin:^1.2.0"
+    composer global require "fxp/composer-asset-plugin:^1.3.1"
     git clone <git path to your project> yii-roa
     cd yii-roa
     composer deploy
