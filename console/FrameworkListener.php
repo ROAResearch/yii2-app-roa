@@ -119,7 +119,7 @@ class FrameworkListener
     public static function setWritable($path)
     {
         if (is_dir(self::$root . "/$path")) {
-            if (@chmod(self::$root, "/$path", 0777)) {
+            if (@chmod(self::$root . "/$path", 0777)) {
                 Console::output("      chmod 0777 $path.");
             } else {
                 Console::error(
