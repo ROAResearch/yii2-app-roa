@@ -15,14 +15,9 @@ return [
     'bootstrap' => ['log', 'api'],
     'controllerNamespace' => 'frontend\controllers',
     'modules' => [
-        'api' => ArrayHelper::merge(
-            [
-                'class' => 'tecnocen\roa\modules\ApiContainer',
-                'baseNamespace' => 'frontend\\api',
-            ],
-            require(dirname(__DIR__) . '/api/config.php'),
-            require(dirname(__DIR__) . '/api/config-local.php')
-        ),
+        'api' => [
+            'class' => 'frontend\\api\\VersionContainer',
+        ],
         'oauth2' => [
             'class' => 'filsh\yii2\oauth2server\Module',
             'tokenParamName' => 'accessToken',
