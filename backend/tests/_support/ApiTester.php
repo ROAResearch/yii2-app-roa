@@ -1,6 +1,8 @@
 <?php
 namespace backend\tests;
 
+use backend\api\models\User;
+
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -22,9 +24,14 @@ class ApiTester extends \Codeception\Actor
 
     protected static $tokens = [];
 
-    public function storeToken($name, $token)
+    protected static $authUsers = [];
+
+    protected $user;
+
+    public function storeToken($name, $token, User $user)
     {
         static::$tokens[$name] = $token;
+        static::$authUsers[$name] = $user;
     }
 
     /**
@@ -33,11 +40,28 @@ class ApiTester extends \Codeception\Actor
 
     public function amLoggedInAsUser()
     {
-        $this->amLoggedInAs(['username' => 'erau']);
+        $this->user = 'erau';
+        $this->logUser();
+    }
+
+    protected function logUser()
+    {
+        $this->amLoggedInAs(static::$authUsers[$this->user]);
     }
 
     public function amAuthAsUser()
     {
-        $this->amBearerAuthenticated(static::$tokens['erau']);
+        $this->user = 'erau';
+        $this->authUser();
+    }
+
+    protected function authUser()
+    {
+        $this->amBearerAuthenticated(static::$tokens[$this->user]);
+    }
+
+    public function grabAuthUser()
+    {
+        return static::$authUsers[$this->user];
     }
 }

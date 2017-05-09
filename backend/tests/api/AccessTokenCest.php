@@ -3,6 +3,7 @@
 namespace backend\tests\api;
 
 use backend\tests\ApiTester;
+use backend\api\models\User;
 use Codeception\Example;
 use Codeception\Util\HttpCode;
 
@@ -36,7 +37,8 @@ class AccessTokenCest
         ]);
         $I->storeToken(
             'erau',
-            $I->grabDataFromResponseByJsonPath('access_token')[0]
+            $I->grabDataFromResponseByJsonPath('access_token')[0],
+            $I->grabRecord(User::class, ['username' => 'erau'])
         );
     }
 }
