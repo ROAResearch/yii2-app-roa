@@ -22,46 +22,79 @@ class ApiTester extends \Codeception\Actor
 {
     use _generated\ApiTesterActions;
 
+    /**
+     * @var string[] pairs of user_name => oauth2_token for oauth2 auth.
+     */
     protected static $tokens = [];
 
+    /**
+     * @var User[] pairs of user_name => User to grab User models.
+     */
     protected static $authUsers = [];
 
-    protected $user;
+    /**
+     * @var string identificator for the auth/logged user.
+     */
+    protected $loggedUsername;
 
-    public function storeToken($name, $token, User $user)
+    /**
+     * Saves a token and user by an unique name.
+     *
+     * @param string $username unique name to index the tokens and models
+     * @param string $token oauth2 authorization token
+     * @param User $user
+     */
+    public function storeToken($username, $token, User $user)
     {
-        static::$tokens[$name] = $token;
-        static::$authUsers[$name] = $user;
+        static::$tokens[$username] = $token;
+        static::$authUsers[$username] = $user;
     }
 
     /**
-     * Define custom actions here
+     * Log as a regular user.
      */
-
     public function amLoggedInAsUser()
     {
-        $this->user = 'erau';
-        $this->logUser();
+        $this->logUser('erau');
     }
 
-    protected function logUser()
+    /**
+     * Login a user stored in `$authUsers`
+     *
+     * @param string $username
+     */
+    protected function logUser($username)
     {
-        $this->amLoggedInAs(static::$authUsers[$this->user]);
+        $this->username = $username;
+        $this->amLoggedInAs(static::$authUsers[$username]);
     }
 
+    /**
+     * Sends an oauth2 token authorization for a regular user.
+     */
     public function amAuthAsUser()
     {
-        $this->user = 'erau';
-        $this->authUser();
+        $this->authUser('erau');
     }
 
-    protected function authUser()
+    /**
+     * Authorizes a user stored in `$tokens`
+     *
+     * @param string $username
+     */
+    protected function authUser($username)
     {
-        $this->amBearerAuthenticated(static::$tokens[$this->user]);
+        $this->username = $username;
+        $this->amBearerAuthenticated(static::$tokens[$username]);
     }
 
+    /**
+     * Gets the instance of the user currently logged in.
+     *
+     * @return User
+     */
     public function grabAuthUser()
     {
-        return static::$authUsers[$this->user];
+        return static::$authUsers[$this->username];
     }
 }

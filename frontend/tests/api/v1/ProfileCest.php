@@ -1,9 +1,9 @@
 <?php
 
-namespace backend\tests\api\v1;
+namespace frontend\tests\api\v1;
 
 use Codeception\Util\HttpCode;
-use backend\tests\ApiTester;
+use frontend\tests\ApiTester;
 
 /**
  * @author Angel (Faryshta) Guevara <aguevara@alquimiadigitial.mx>
@@ -20,7 +20,7 @@ class ProfileCest
     }
 
     /**
-     * @depends backend\tests\api\AccessTokenCest:generateToken
+     * @depends frontend\tests\api\AccessTokenCest:generateToken
      */
     public function profile(ApiTester $I)
     {
@@ -31,7 +31,7 @@ class ProfileCest
     }
 
     /**
-     * @depends backend\tests\api\AccessTokenCest:generateToken
+     * @depends frontend\tests\api\AccessTokenCest:generateToken
      * @depends profile
      */
     public function patch(ApiTester $I)

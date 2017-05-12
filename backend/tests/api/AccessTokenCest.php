@@ -2,10 +2,9 @@
 
 namespace backend\tests\api;
 
-use backend\tests\ApiTester;
-use backend\api\models\User;
-use Codeception\Example;
 use Codeception\Util\HttpCode;
+use backend\api\models\User;
+use backend\tests\ApiTester;
 
 /**
  * Prueba funcional del api para la ruta `/oauth2/token`

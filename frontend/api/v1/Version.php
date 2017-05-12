@@ -3,6 +3,7 @@
 namespace frontend\api\v1;
 
 use tecnocen\roa\controllers\ProfileResource;
+use tecnocen\roa\urlRules\SingleRecord as SingleRecordUrlRule;
 
 class Version extends \tecnocen\roa\modules\ApiVersion
 {
@@ -10,7 +11,10 @@ class Version extends \tecnocen\roa\modules\ApiVersion
      * @inheritdoc
      */
     public $resources = [
-        'profile' => ['class' => ProfileResource::class],
+        'profile' => [
+            'class' => ProfileResource::class,
+            'urlRule' => ['class' => SingleRecordUrlRule::class]
+        ],
         'user'
     ];
 

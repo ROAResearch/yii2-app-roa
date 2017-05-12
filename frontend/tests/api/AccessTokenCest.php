@@ -2,9 +2,9 @@
 
 namespace frontend\tests\api;
 
-use frontend\tests\ApiTester;
-use Codeception\Example;
 use Codeception\Util\HttpCode;
+use frontend\api\models\User;
+use frontend\tests\ApiTester;
 
 /**
  * Prueba funcional del api para la ruta `/oauth2/token`
@@ -36,7 +36,8 @@ class AccessTokenCest
         ]);
         $I->storeToken(
             'erau',
-            $I->grabDataFromResponseByJsonPath('access_token')[0]
+            $I->grabDataFromResponseByJsonPath('access_token')[0],
+            $I->grabRecord(User::class, ['username' => 'erau'])
         );
     }
 }
