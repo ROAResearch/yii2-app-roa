@@ -22,7 +22,3 @@ coverage:
         - views/*
         - assets/*
         - api/*
-    exclude:
-        - api/*/config.php
-        - api/*/config-local.php
-

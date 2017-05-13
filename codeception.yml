@@ -7,3 +7,19 @@ paths:
     log: console/runtime/logs
 settings:
     colors: true
+coverage:
+    enabled: true
+    remote: false
+    include:
+        - common/models/*
+        - common/widgets/*
+        - backend/models/*
+        - backend/controllers/*
+        - backend/views/*
+        - backend/assets/*
+        - backend/api/*
+        - frontend/models/*
+        - frontend/controllers/*
+        - frontend/views/*
+        - frontend/assets/*
+        - frontend/api/*
