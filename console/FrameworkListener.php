@@ -74,7 +74,7 @@ class FrameworkListener
             self::$root,
             [
                 'except' => ArrayHelper::getValue($env, 'skipFiles', []),
-                'filter' =>  [self::class, 'fileOverwrite'],
+                'beforeCopy' =>  [self::class, 'fileOverwrite'],
                 'afterCopy' => function ($from, $to) {
                     if (is_file($to)) {
                         Console::output(
@@ -82,7 +82,8 @@ class FrameworkListener
                                 . Console::ansiFormat($to, [Console::FG_CYAN])
                         );
                     }
-                }
+                },
+                'copyEmptyDirectories' => false,
             ]
         );
 
@@ -92,9 +93,9 @@ class FrameworkListener
         }
     }
 
-    public static function fileOverwrite($path)
+    public static function fileOverwrite($from, $to)
     {
-        if (is_dir($path) || !file_exists($path)) {
+        if (is_dir($to) || !file_exists($to)) {
             return true;
         }
         if (null !== self::$overwrite) {
@@ -105,42 +106,44 @@ class FrameworkListener
                 . '? [yes, no, all, none]'
         );
         if ($answer === 'all') {
-            self::$overwrite = true;
-            return true;
+            return self::$overwrite = true;
         }
         if ($answer === 'none') {
-            self::$overwrite = false;
-            return false;
+            return self::$overwrite = false;
         }
         return in_array($answer, ['y', 'yes'], true);
     }
 
-
     public static function setWritable($path)
     {
-        if (is_dir(self::$root . "/$path")) {
-            if (@chmod(self::$root . "/$path", 0777)) {
-                Console::output("      chmod 0777 $path.");
-            } else {
-                Console::error(
-                    "Operation chmod not permitted for directory $path."
-               );
-            }
-        } else {
-            Console::error("Directory $path does not exist.");
-        }
+        static::chmod($path, 0777);
     }
 
     public static function setExecutable($path)
     {
-        if (file_exists(self::$root . "/$path")) {
-            if (@chmod(self::$root . "/$path", 0755)) {
-                Console::output("      chmod 0755 $path.");
+        static::chmod($path, 0755);
+    }
+
+    protected function chmod($path, $permission)
+    {
+        $fullPath = self::$root . "/$path";
+        if (is_dir($fullPath)) {
+            if (@chmod($fullPath, $permission)) {
+                Console::output("      chmod $permission "
+                    . Console::ansiFormat($path, [Console::FG_CYAN])
+                );
             } else {
-                Console::error("Operation chmod not permitted for $path.");
+                Console::error(
+                    'Operation chmod not permitted for directory'
+                        . Console::ansiFormat($path, [Console::FG_RED])
+
+               );
             }
         } else {
-            Console::error("$path does not exist.");
+            Console::error('Directory '
+                . Console::ansiFormat($path, [Console::FG_RED])
+                . ' does not exist.'
+            );
         }
     }
 
