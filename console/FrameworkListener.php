@@ -102,7 +102,7 @@ class FrameworkListener
             return self::$overwrite;
         }
         $answer = Console::prompt(
-            '  Override ' . Console::ansiFormat($path, [Console::FG_RED])
+            '  Override ' . Console::ansiFormat($to, [Console::FG_RED])
                 . '? [yes, no, all, none]'
         );
         if ($answer === 'all') {
