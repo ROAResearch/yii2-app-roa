@@ -124,7 +124,7 @@ class FrameworkListener
         static::chmod($path, 0755);
     }
 
-    protected function chmod($path, $permission)
+    protected static function chmod($path, $permission)
     {
         $fullPath = self::$root . "/$path";
         if (is_dir($fullPath)) {
