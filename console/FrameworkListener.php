@@ -102,7 +102,7 @@ class FrameworkListener
             return self::$overwrite;
         }
         $answer = Console::prompt(
-            '  Override ' . Console::ansiFormat($path, [Console::FG_RED])
+            '  Override ' . Console::ansiFormat($to, [Console::FG_RED])
                 . '? [yes, no, all, none]'
         );
         if ($answer === 'all') {
@@ -124,12 +124,13 @@ class FrameworkListener
         static::chmod($path, 0755);
     }
 
-    protected function chmod($path, $permission)
+    protected static function chmod($path, $permission)
     {
         $fullPath = self::$root . "/$path";
         if (is_dir($fullPath)) {
             if (@chmod($fullPath, $permission)) {
-                Console::output("      chmod $permission "
+                Console::output('      chmod '
+                    . base_convert($permission, 10, 8) . ' '
                     . Console::ansiFormat($path, [Console::FG_CYAN])
                 );
             } else {
