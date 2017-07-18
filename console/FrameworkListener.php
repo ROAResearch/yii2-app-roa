@@ -20,8 +20,15 @@ class FrameworkListener
      */
     protected static $overwrite = null;
 
+    /**
+     * @var string path to the folder containing this project.
+     */
     private static $root;
 
+    /**
+     * @var string[] list of possible callbacks which can be defined in file
+     * `@environments/index.php`
+     */
     private static $callbacks = [
         'setCookieValidationKey',
         'setWritable',
@@ -75,14 +82,7 @@ class FrameworkListener
             [
                 'except' => ArrayHelper::getValue($env, 'skipFiles', []),
                 'beforeCopy' =>  [self::class, 'fileOverwrite'],
-                'afterCopy' => function ($from, $to) {
-                    if (is_file($to)) {
-                        Console::output(
-                            '    generated '
-                                . Console::ansiFormat($to, [Console::FG_CYAN])
-                        );
-                    }
-                },
+                'afterCopy' => [self::class, 'copyFileConsoleOutput'],
                 'copyEmptyDirectories' => false,
             ]
         );
@@ -93,6 +93,28 @@ class FrameworkListener
         }
     }
 
+    /**
+     * Outputs in console when a file is successfully copied.
+     *
+     * @param string $from
+     * @param string $to
+     */
+    public static function copyFileConsoleOutput($from, $to)
+    {
+        if (is_file($to)) {
+            Console::output('    generated '
+                . Console::ansiFormat($to, [Console::FG_CYAN])
+            );
+        }
+    }
+
+    /**
+     * Determines if a file can be overwritten.
+     *
+     * @param string $from origin file to be copied.
+     * @param string $to path where file will be copied.
+     * @return bool whether to proceed copying the file.
+     */
     public static function fileOverwrite($from, $to)
     {
         if (is_dir($to) || !file_exists($to)) {
@@ -114,40 +136,58 @@ class FrameworkListener
         return in_array($answer, ['y', 'yes'], true);
     }
 
+    /**
+     * Assigns read/write permissions to a folder or file path.
+     *
+     * @param string $path file or folder path to assign permissions.
+     */
     public static function setWritable($path)
     {
         static::chmod($path, 0777);
     }
 
+    /**
+     * Assigns execute permissions to a folder or file path.
+     *
+     * @param string $path file or folder path to assign permissions.
+     */
     public static function setExecutable($path)
     {
         static::chmod($path, 0755);
     }
 
+    /**
+     * Assigns Permissions to a folder or file path.
+     *
+     * @param string $path file or folder path to assign permissions.
+     * @param int $permission octal permission to be assigned.
+     */
     protected static function chmod($path, $permission)
     {
         $fullPath = self::$root . "/$path";
-        if (is_dir($fullPath)) {
+        if (file_exists($fullPath)) {
             if (@chmod($fullPath, $permission)) {
                 Console::output('      chmod '
                     . base_convert($permission, 10, 8) . ' '
                     . Console::ansiFormat($path, [Console::FG_CYAN])
                 );
             } else {
-                Console::error(
-                    'Operation chmod not permitted for directory'
-                        . Console::ansiFormat($path, [Console::FG_RED])
-
+                Console::error('Operation chmod not permitted for '
+                    . Console::ansiFormat($path, [Console::FG_RED])
                );
             }
         } else {
-            Console::error('Directory '
-                . Console::ansiFormat($path, [Console::FG_RED])
+            Console::error(Console::ansiFormat($path, [Console::FG_RED])
                 . ' does not exist.'
             );
         }
     }
 
+    /**
+     * Generates a random cookie validation key and inject it into a file
+     *
+     * @param string $file path to the file.
+     */
     public static function setCookieValidationKey($file)
     {
         Console::output("   generate cookie validation key in $file.");
@@ -155,10 +195,20 @@ class FrameworkListener
         $length = 32;
         $bytes = openssl_random_pseudo_bytes($length);
         $key = strtr(substr(base64_encode($bytes), 0, $length), '+/=', '_-.');
-        $content = preg_replace('/(("|\')cookieValidationKey("|\')\s*=>\s*)(""|\'\')/', "\\1'$key'", file_get_contents($file));
+        $content = preg_replace(
+            '/(("|\')cookieValidationKey("|\')\s*=>\s*)(""|\'\')/',
+            "\\1'$key'",
+            file_get_contents($file)
+        );
         file_put_contents($file, $content);
     }
 
+    /**
+     * Creates a symbolic link
+     *
+     * @param string $link the path of the linked file or folder
+     * @param string $target the path of the link
+     */
     public static function createSymlink($link, $target)
     {
         $link = self::$root . "/$link";
