@@ -6,6 +6,10 @@ use Composer\Script\Event;
 
 class ComposerListener
 {
+
+    /**
+     * @param  Event  $event
+     */
     public static function init(Event $event)
     {
         $composer = $event->getComposer();
@@ -16,11 +20,40 @@ class ComposerListener
         }
     }
 
+    /**
+     * Load the composer autoload from: `vendor/autoload.php`.
+     * @param  Event  $event
+     */
     public static function autoload(Event $event)
     {
         require dirname(__DIR__) . '/vendor/autoload.php';
     }
 
+    /**
+     * Arguments in string are parsed to key-pair values.
+     *
+     * ```php
+     * $args = self::parseArguments([
+     *     'opt=value',
+     *     'foo=bar'
+     * ]);
+     *
+     * print_r($args);
+     * ```
+     *
+     * The output will be:
+     *
+     * <pre>
+     * Array
+     * (
+     *     [opt] => value
+     *     [foo] => bar
+     * )
+     * </pre>
+     * 
+     * @param  array[]  $args
+     * @return array[]
+     */
     public static function parseArguments(Array $args)
     {
         $parsed = [];
