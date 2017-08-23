@@ -2,8 +2,8 @@
 
 namespace frontend\tests\api;
 
-use frontend\tests\ApiTester;
 use common\fixtures\UserFixture;
+use frontend\tests\ApiTester;
 
 /**
  * Prueba funcional del api para el usuario

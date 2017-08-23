@@ -2,8 +2,8 @@
 
 namespace backend\tests\api;
 
-use Codeception\Util\HttpCode;
 use backend\tests\ApiTester;
+use Codeception\Util\HttpCode;
 
 class ApiCest
 {
@@ -17,8 +17,8 @@ class ApiCest
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson([
             // edit upon releases
-            'v1' =>  ['stability' => 'development'],
-            'dev' =>  ['stability' => 'development'],
+            'v1' => ['stability' => 'development'],
+            'dev' => ['stability' => 'development'],
         ]);
     }
 }

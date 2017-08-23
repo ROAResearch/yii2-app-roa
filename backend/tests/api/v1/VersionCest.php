@@ -2,10 +2,9 @@
 
 namespace backend\tests\api\v1;
 
-use Codeception\Example;
-use Codeception\Util\HttpCode;
 use backend\tests\ApiTester;
-            
+use Codeception\Util\HttpCode;
+
 class VersionCest
 {
     /**

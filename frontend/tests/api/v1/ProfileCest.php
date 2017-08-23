@@ -37,7 +37,7 @@ class ProfileCest
     public function patch(ApiTester $I)
     {
         $I->amAuthAsUser();
-        $I->sendPATCH("v1/profile", ['email' => 'asdf@qwerty.com']);
+        $I->sendPATCH('v1/profile', ['email' => 'asdf@qwerty.com']);
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->dontSeeResponseContainsJson(['email' => 'asdf@qwerty.com']);
     }

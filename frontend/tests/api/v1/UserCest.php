@@ -2,11 +2,9 @@
 
 namespace frontend\tests\api\v1;
 
-use Codeception\Example;
 use Codeception\Util\HttpCode;
-use frontend\tests\ApiTester;
-use frontend\tests\api\UserCest as BaseCest;
 use frontend\api\models\User;
+use frontend\tests\ApiTester;
 
 class UserCest
 {

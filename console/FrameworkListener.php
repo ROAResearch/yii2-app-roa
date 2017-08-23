@@ -60,18 +60,17 @@ class FrameworkListener
                     . '` not found in /environments/index.php'
             );
             exit(1);
-        } else {
-            Console::output(
-                'Deploying the `'
-                    . Console::ansiFormat(self::$env, [Console::FG_GREEN])
-                    . '` environment.'
-            );
-            $env = $envs[self::$env];
         }
+        Console::output(
+            'Deploying the `'
+                . Console::ansiFormat(self::$env, [Console::FG_GREEN])
+                . '` environment.'
+        );
+        $env = $envs[self::$env];
         if (null !== ($over = ArrayHelper::getValue($args, 'overwrite'))) {
             self::$overwrite = in_array(
                 $over,
-                [1, "1", true, 'y', 'yes'],
+                [1, '1', true, 'y', 'yes'],
                 true
             );
         }
@@ -81,7 +80,7 @@ class FrameworkListener
             self::$root,
             [
                 'except' => ArrayHelper::getValue($env, 'skipFiles', []),
-                'beforeCopy' =>  [self::class, 'fileOverwrite'],
+                'beforeCopy' => [self::class, 'fileOverwrite'],
                 'afterCopy' => [self::class, 'copyFileConsoleOutput'],
                 'copyEmptyDirectories' => false,
             ]
@@ -102,8 +101,9 @@ class FrameworkListener
     public static function copyFileConsoleOutput($from, $to)
     {
         if (is_file($to)) {
-            Console::output('    generated '
-                . Console::ansiFormat($to, [Console::FG_CYAN])
+            Console::output(
+                '    generated '
+                    . Console::ansiFormat($to, [Console::FG_CYAN])
             );
         }
     }
@@ -133,6 +133,7 @@ class FrameworkListener
         if ($answer === 'none') {
             return self::$overwrite = false;
         }
+
         return in_array($answer, ['y', 'yes'], true);
     }
 
@@ -167,18 +168,21 @@ class FrameworkListener
         $fullPath = self::$root . "/$path";
         if (file_exists($fullPath)) {
             if (@chmod($fullPath, $permission)) {
-                Console::output('      chmod '
-                    . base_convert($permission, 10, 8) . ' '
-                    . Console::ansiFormat($path, [Console::FG_CYAN])
+                Console::output(
+                    '      chmod '
+                        . base_convert($permission, 10, 8) . ' '
+                        . Console::ansiFormat($path, [Console::FG_CYAN])
                 );
             } else {
-                Console::error('Operation chmod not permitted for '
-                    . Console::ansiFormat($path, [Console::FG_RED])
+                Console::error(
+                    'Operation chmod not permitted for '
+                        . Console::ansiFormat($path, [Console::FG_RED])
                );
             }
         } else {
-            Console::error(Console::ansiFormat($path, [Console::FG_RED])
-                . ' does not exist.'
+            Console::error(
+                Console::ansiFormat($path, [Console::FG_RED])
+                    . ' does not exist.'
             );
         }
     }
@@ -209,21 +213,40 @@ class FrameworkListener
      * @param string $link the path of the linked file or folder
      * @param string $target the path of the link
      */
-    public static function createSymlink($link, $target)
+    public static function createSymlink($target, $link)
     {
         $link = self::$root . "/$link";
         $target = self::$root . "/$target";
 
-        //first removing folders to avoid errors if the folder already exists
-        @rmdir($link);
         //next removing existing symlink in order to update the target
         if (is_link($link)) {
-            @unlink($link);
+            unlink($link);
         }
-        if (@symlink($target, $link)) {
+        //first removing folders to avoid errors if the folder already exists
+        self::rmdir($link);
+        if (symlink($target, $link)) {
             Console::output("      symlink $target $link.");
         } else {
             Console::error("Cannot create symlink $target $link.");
+        }
+    }
+
+    public static function rmdir($dir)
+    {
+        if (is_dir($dir)) {
+            $objects = scandir($dir);
+            foreach ($objects as $object) {
+                if ($object == '.' || $object == '..') {
+                    continue;
+                }
+                if (is_dir($dir . '/' . $object)) {
+                    self::rmdir($dir . '/' . $object);
+                } else {
+                    unlink($dir . '/' . $object);
+                }
+            }
+            rmdir($dir);
+            reset($objects);
         }
     }
 }

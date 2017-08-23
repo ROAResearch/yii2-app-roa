@@ -13,9 +13,9 @@ class Version extends \tecnocen\roa\modules\ApiVersion
     public $resources = [
         'profile' => [
             'class' => ProfileResource::class,
-            'urlRule' => ['class' => SingleRecordUrlRule::class]
+            'urlRule' => ['class' => SingleRecordUrlRule::class],
         ],
-        'user'
+        'user',
     ];
 
     /**

@@ -6,7 +6,6 @@ use Composer\Script\Event;
 
 class ComposerListener
 {
-
     /**
      * @param  Event  $event
      */
@@ -43,18 +42,16 @@ class ComposerListener
      *
      * The output will be:
      *
-     * <pre>
-     * Array
-     * (
-     *     [opt] => value
-     *     [foo] => bar
-     * )
-     * </pre>
-     * 
+     * > Array
+     * > (
+     * >    [opt] => value
+     * >    [foo] => bar
+     * > )
+     *
      * @param  array[]  $args
      * @return array[]
      */
-    public static function parseArguments(Array $args)
+    public static function parseArguments(array $args)
     {
         $parsed = [];
         foreach ($args as $arg) {
@@ -65,6 +62,7 @@ class ComposerListener
                 $parsed[$parse[0]] = $parse[1];
             }
         }
+
         return $parsed;
     }
 }

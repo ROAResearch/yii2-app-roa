@@ -10,7 +10,6 @@ use yii\helpers\Console;
 
 class DatabaseListener
 {
-
     /**
      * It is used to write the user credentials in a PHP file.
      * @see self::dbFile()
@@ -49,7 +48,7 @@ class DatabaseListener
 \$dbpass = '$pass';
 \$dbname = '$name';
 PHP;
-	      file_put_contents(self::dbFile(), $fileContent);
+        file_put_contents(self::dbFile(), $fileContent);
     }
 
     /**
@@ -59,6 +58,7 @@ PHP;
     {
         $user = Console::prompt('Database username');
         $pass = Console::prompt('Database password');
+
         return [$user, $pass];
     }
 
@@ -80,6 +80,7 @@ PHP;
         try {
             $pdo = new PDO('mysql:host=127.0.0.1', $user, $pass);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
             return $pdo;
         } catch (PDOException $e) {
             return null;
@@ -97,9 +98,11 @@ PHP;
             $pdo->query("CREATE DATABASE IF NOT EXISTS $dbname");
             $pdo->query("CREATE DATABASE IF NOT EXISTS {$dbname}_test");
             $pdo->query("USE $dbname");
+
             return true;
         } catch (PDOException $e) {
             echo "You can't access `$dbname` error {$e->getMessage()}.\n";
+
             return false;
         }
     }
@@ -124,5 +127,4 @@ PHP;
         $pdo->query("CREATE DATABASE $dbname");
         $pdo->query("CREATE DATABASE {$dbname}_test");
     }
-
 }

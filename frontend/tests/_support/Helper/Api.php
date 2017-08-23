@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\tests\Helper;
 
 // here you can define custom actions
@@ -6,5 +7,4 @@ namespace backend\tests\Helper;
 
 class Api extends \Codeception\Module
 {
-
 }
