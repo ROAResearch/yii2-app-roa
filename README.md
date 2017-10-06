@@ -1,8 +1,8 @@
 Yii 2 ROA Project Template
-===============================
+==========================
 
-Yii 2 ROA Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
-developing services using a ROA architecture.
+Yii 2 ROA Project Template is a skeleton [Yii 2](http://www.yiiframework.com/)
+application meant for developing services using a ROA architecture.
 
 The template includes three tiers: front end, back end, and console, each of which
 is a separate Yii application.

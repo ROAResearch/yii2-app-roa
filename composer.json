@@ -28,7 +28,7 @@
         "tecnocen/yii2-roa": "*",
         "yiisoft/yii2": "~2.0.10",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0"
         "filsh/yii2-oauth2-server": "2.0.3",
         "guzzlehttp/guzzle": ">=4.1.4 <7.0"
     },
@@ -41,21 +41,19 @@
         "codeception/verify": "~0.3.1",
         "flow/jsonpath": ">0.2"
     },
+    "config": {
+        "process-timeout": 1800
+    },
     "repositories": [
         {
             "type": "vcs",
             "url":  "git@github.com:Faryshta/yii2-oauth2-server.git"
+        },
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
         }
-   ],
-    "config": {
-        "process-timeout": 1800,
-        "fxp-asset":{
-            "installer-paths": {
-                "npm-asset-library": "vendor/npm",
-                "bower-asset-library": "vendor/bower"
-            }
-        }
-    },
+    ],
     "autoload": {
         "classmap": [
             "console/ComposerListener.php",

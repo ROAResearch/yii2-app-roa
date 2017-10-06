@@ -20,6 +20,9 @@ class FrameworkListener
      */
     protected static $overwrite = null;
 
+    /**
+     * @var string folder containing the project
+     */
     private static $root;
 
     private static $callbacks = [
@@ -43,7 +46,7 @@ class FrameworkListener
             )
         );
         self::$root = dirname(__DIR__);
-        $envs = require(self::$root . '/environments/index.php');
+        $envs = require self::$root . '/environments/index.php';
         $args = ComposerListener::parseArguments($event->getArguments());
         self::$env = ArrayHelper::getValue($args, 'env', static::$env);
         if (empty($envs[self::$env])) {

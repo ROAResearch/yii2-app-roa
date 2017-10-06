@@ -10,9 +10,22 @@ use common\fixtures\UserFixture;
  */
 class LoginCest
 {
-    public function _before(FunctionalTester $I)
+
+    /**
+     * Load fixtures before db transaction begin
+     * Called in _before()
+     * @see \Codeception\Module\Yii2::_before()
+     * @see \Codeception\Module\Yii2::loadFixtures()
+     * @return array
+     */
+    public function _fixtures()
     {
-        $I->haveFixtures(['user' => ['class' => UserFixture::class]]);
+        return [
+            'user' => [
+                'class' => UserFixture::className(),
+                'dataFile' => codecept_data_dir() . 'login_data.php'
+            ]
+        ];
     }
 
     /**
