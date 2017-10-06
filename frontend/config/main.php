@@ -1,6 +1,13 @@
 <?php
 
-use yii\helpers\ArrayHelper;
+use common\models\User;
+use filsh\yii2\oauth2server\Module as OAuth2Module;
+use frontend\api\models\User as ApiUser;
+use frontend\api\VersionContainer;
+use frontend\controllers;
+use OAuth2\GrantType\RefreshToken;
+use OAuth2\GrantType\UserCredentials;
+use yii\log\FileTarget;
 
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
@@ -13,24 +20,24 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'api'],
-    'controllerNamespace' => 'frontend\controllers',
+    'controllerNamespace' => controllers::class,
     'modules' => [
         'api' => [
-            'class' => 'frontend\\api\\VersionContainer',
+            'class' => VersionContainer::class,
         ],
         'oauth2' => [
-            'class' => 'filsh\yii2\oauth2server\Module',
+            'class' => OAuth2Module::class,
             'tokenParamName' => 'accessToken',
             'tokenAccessLifetime' => 3600 * 24,
             'storageMap' => [
-                'user_credentials' => 'frontend\api\models\User',
+                'user_credentials' => ApiUser::class,
             ],
             'grantTypes' => [
                 'user_credentials' => [
-                    'class' => 'OAuth2\GrantType\UserCredentials',
+                    'class' => UserCredentials::class,
                 ],
                 'refresh_token' => [
-                    'class' => 'OAuth2\GrantType\RefreshToken',
+                    'class' => RefreshToken::class,
                     'always_issue_new_refresh_token' => true,
                 ],
             ],
@@ -41,9 +48,12 @@ return [
             'csrfParam' => '_csrf-frontend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => User::class,
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'identityCookie' => [
+                'name' => '_identity-frontend',
+                'httpOnly' => true,
+            ],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
@@ -53,7 +63,7 @@ return [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
             ],

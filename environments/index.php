@@ -40,10 +40,14 @@ return [
         'setExecutable' => [
             'yii',
             'yii_test',
+            'git-hooks/pre-commit',
         ],
         'setCookieValidationKey' => [
             'backend/config/main-local.php',
             'frontend/config/main-local.php',
+        ],
+        'createSymlink' => [
+            '.git/hooks' => 'git-hooks',
         ],
     ],
     'Production' => [

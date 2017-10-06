@@ -19,6 +19,7 @@ class UserResource extends OAuth2Resource
     {
         $verbs = parent::verbs();
         unset($verbs['delete'], $verbs['create']);
+
         return $verbs;
     }
 }

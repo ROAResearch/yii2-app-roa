@@ -33,6 +33,7 @@
         "guzzlehttp/guzzle": ">=4.1.4 <7.0"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "~2.4",
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0",
@@ -67,6 +68,10 @@
         ],
         "pre-update-cmd": [
             "console\\ComposerListener::init"
+        ],
+        "githook-precommit-file": [
+            "@php -l",
+            "@php vendor/bin/php-cs-fixer fix --dry-run --diff"
         ],
         "deploy": [
             "@composer update --prefer-dist --prefer-stable",

@@ -2,8 +2,8 @@
 
 namespace backend\tests\api\v1;
 
-use Codeception\Util\HttpCode;
 use backend\tests\ApiTester;
+use Codeception\Util\HttpCode;
 
 /**
  * @author Angel (Faryshta) Guevara <aguevara@alquimiadigitial.mx>
@@ -37,7 +37,7 @@ class ProfileCest
     public function patch(ApiTester $I)
     {
         $I->amAuthAsUser();
-        $I->sendPATCH("v1/profile", ['email' => 'asdf@qwerty.com']);
+        $I->sendPATCH('v1/profile', ['email' => 'asdf@qwerty.com']);
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->dontSeeResponseContainsJson(['email' => 'asdf@qwerty.com']);
     }

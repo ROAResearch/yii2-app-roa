@@ -2,11 +2,10 @@
 
 namespace backend\api\models;
 
-use OAuth2\Storage\UserCredentialsInterface;
 use filsh\yii2\oauth2server\models\OauthAccessTokens as AccessToken;
+use OAuth2\Storage\UserCredentialsInterface;
 
-class User extends \common\models\User
-    implements UserCredentialsInterface
+class User extends \common\models\User implements UserCredentialsInterface
 {
     /**
      * @inheritdoc
@@ -27,6 +26,7 @@ class User extends \common\models\User
         if (empty($user)) {
             return false;
         }
+
         return $user->validatePassword($password);
     }
 
@@ -38,6 +38,7 @@ class User extends \common\models\User
         $user = $username
             ? static::findByUsername($username)
             : $this;
+
         return ['user_id' => $user->id];
     }
 

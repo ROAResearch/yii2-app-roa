@@ -14,8 +14,15 @@ nbproject
 .project
 .settings
 
+# php-cs-fixer
+/.php_cs
+/.php_cs.cache
+
 # windows thumbnail cache
 Thumbs.db
+
+# git hooks folder
+/git-hooks
 
 # composer vendor dir
 /vendor

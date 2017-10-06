@@ -21,10 +21,14 @@ class FrameworkListener
     protected static $overwrite = null;
 
     /**
-     * @var string folder containing the project
+     * @var string path to the folder containing this project.
      */
     private static $root;
 
+    /**
+     * @var string[] list of possible callbacks which can be defined in file
+     * `@environments/index.php`
+     */
     private static $callbacks = [
         'setCookieValidationKey',
         'setWritable',
@@ -56,18 +60,17 @@ class FrameworkListener
                     . '` not found in /environments/index.php'
             );
             exit(1);
-        } else {
-            Console::output(
-                'Deploying the `'
-                    . Console::ansiFormat(self::$env, [Console::FG_GREEN])
-                    . '` environment.'
-            );
-            $env = $envs[self::$env];
         }
+        Console::output(
+            'Deploying the `'
+                . Console::ansiFormat(self::$env, [Console::FG_GREEN])
+                . '` environment.'
+        );
+        $env = $envs[self::$env];
         if (null !== ($over = ArrayHelper::getValue($args, 'overwrite'))) {
             self::$overwrite = in_array(
                 $over,
-                [1, "1", true, 'y', 'yes'],
+                [1, '1', true, 'y', 'yes'],
                 true
             );
         }
@@ -77,15 +80,9 @@ class FrameworkListener
             self::$root,
             [
                 'except' => ArrayHelper::getValue($env, 'skipFiles', []),
-                'filter' =>  [self::class, 'fileOverwrite'],
-                'afterCopy' => function ($from, $to) {
-                    if (is_file($to)) {
-                        Console::output(
-                            '    generated '
-                                . Console::ansiFormat($to, [Console::FG_CYAN])
-                        );
-                    }
-                }
+                'beforeCopy' => [self::class, 'fileOverwrite'],
+                'afterCopy' => [self::class, 'copyFileConsoleOutput'],
+                'copyEmptyDirectories' => false,
             ]
         );
 
@@ -95,58 +92,106 @@ class FrameworkListener
         }
     }
 
-    public static function fileOverwrite($path)
+    /**
+     * Outputs in console when a file is successfully copied.
+     *
+     * @param string $from
+     * @param string $to
+     */
+    public static function copyFileConsoleOutput($from, $to)
     {
-        if (is_dir($path) || !file_exists($path)) {
+        if (is_file($to)) {
+            Console::output(
+                '    generated '
+                    . Console::ansiFormat($to, [Console::FG_CYAN])
+            );
+        }
+    }
+
+    /**
+     * Determines if a file can be overwritten.
+     *
+     * @param string $from origin file to be copied.
+     * @param string $to path where file will be copied.
+     * @return bool whether to proceed copying the file.
+     */
+    public static function fileOverwrite($from, $to)
+    {
+        if (is_dir($to) || !file_exists($to)) {
             return true;
         }
         if (null !== self::$overwrite) {
             return self::$overwrite;
         }
         $answer = Console::prompt(
-            '  Override ' . Console::ansiFormat($path, [Console::FG_RED])
+            '  Override ' . Console::ansiFormat($to, [Console::FG_RED])
                 . '? [yes, no, all, none]'
         );
         if ($answer === 'all') {
-            self::$overwrite = true;
-            return true;
+            return self::$overwrite = true;
         }
         if ($answer === 'none') {
-            self::$overwrite = false;
-            return false;
+            return self::$overwrite = false;
         }
+
         return in_array($answer, ['y', 'yes'], true);
     }
 
-
+    /**
+     * Assigns read/write permissions to a folder or file path.
+     *
+     * @param string $path file or folder path to assign permissions.
+     */
     public static function setWritable($path)
     {
-        if (is_dir(self::$root . "/$path")) {
-            if (@chmod(self::$root . "/$path", 0777)) {
-                Console::output("      chmod 0777 $path.");
+        static::chmod($path, 0777);
+    }
+
+    /**
+     * Assigns execute permissions to a folder or file path.
+     *
+     * @param string $path file or folder path to assign permissions.
+     */
+    public static function setExecutable($path)
+    {
+        static::chmod($path, 0755);
+    }
+
+    /**
+     * Assigns Permissions to a folder or file path.
+     *
+     * @param string $path file or folder path to assign permissions.
+     * @param int $permission octal permission to be assigned.
+     */
+    protected static function chmod($path, $permission)
+    {
+        $fullPath = self::$root . "/$path";
+        if (file_exists($fullPath)) {
+            if (@chmod($fullPath, $permission)) {
+                Console::output(
+                    '      chmod '
+                        . base_convert($permission, 10, 8) . ' '
+                        . Console::ansiFormat($path, [Console::FG_CYAN])
+                );
             } else {
                 Console::error(
-                    "Operation chmod not permitted for directory $path."
+                    'Operation chmod not permitted for '
+                        . Console::ansiFormat($path, [Console::FG_RED])
                );
             }
         } else {
-            Console::error("Directory $path does not exist.");
+            Console::error(
+                Console::ansiFormat($path, [Console::FG_RED])
+                    . ' does not exist.'
+            );
         }
     }
 
-    public static function setExecutable($path)
-    {
-        if (file_exists(self::$root . "/$path")) {
-            if (@chmod(self::$root . "/$path", 0755)) {
-                Console::output("      chmod 0755 $path.");
-            } else {
-                Console::error("Operation chmod not permitted for $path.");
-            }
-        } else {
-            Console::error("$path does not exist.");
-        }
-    }
-
+    /**
+     * Generates a random cookie validation key and inject it into a file
+     *
+     * @param string $file path to the file.
+     */
     public static function setCookieValidationKey($file)
     {
         Console::output("   generate cookie validation key in $file.");
@@ -154,25 +199,54 @@ class FrameworkListener
         $length = 32;
         $bytes = openssl_random_pseudo_bytes($length);
         $key = strtr(substr(base64_encode($bytes), 0, $length), '+/=', '_-.');
-        $content = preg_replace('/(("|\')cookieValidationKey("|\')\s*=>\s*)(""|\'\')/', "\\1'$key'", file_get_contents($file));
+        $content = preg_replace(
+            '/(("|\')cookieValidationKey("|\')\s*=>\s*)(""|\'\')/',
+            "\\1'$key'",
+            file_get_contents($file)
+        );
         file_put_contents($file, $content);
     }
 
-    public static function createSymlink($link, $target)
+    /**
+     * Creates a symbolic link
+     *
+     * @param string $link the path of the linked file or folder
+     * @param string $target the path of the link
+     */
+    public static function createSymlink($target, $link)
     {
         $link = self::$root . "/$link";
         $target = self::$root . "/$target";
 
-        //first removing folders to avoid errors if the folder already exists
-        @rmdir($link);
         //next removing existing symlink in order to update the target
         if (is_link($link)) {
-            @unlink($link);
+            unlink($link);
         }
-        if (@symlink($target, $link)) {
+        //first removing folders to avoid errors if the folder already exists
+        self::rmdir($link);
+        if (symlink($target, $link)) {
             Console::output("      symlink $target $link.");
         } else {
             Console::error("Cannot create symlink $target $link.");
+        }
+    }
+
+    public static function rmdir($dir)
+    {
+        if (is_dir($dir)) {
+            $objects = scandir($dir);
+            foreach ($objects as $object) {
+                if ($object == '.' || $object == '..') {
+                    continue;
+                }
+                if (is_dir($dir . '/' . $object)) {
+                    self::rmdir($dir . '/' . $object);
+                } else {
+                    unlink($dir . '/' . $object);
+                }
+            }
+            rmdir($dir);
+            reset($objects);
         }
     }
 }

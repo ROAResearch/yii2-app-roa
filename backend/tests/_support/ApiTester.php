@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\tests;
 
 use backend\api\models\User;
@@ -17,7 +18,7 @@ use backend\api\models\User;
  * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = NULL)
  *
  * @SuppressWarnings(PHPMD)
-*/
+ */
 class ApiTester extends \Codeception\Actor
 {
     use _generated\ApiTesterActions;

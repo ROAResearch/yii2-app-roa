@@ -2,11 +2,10 @@
 
 namespace backend\tests\api\v1;
 
+use backend\api\models\User;
+use backend\tests\ApiTester;
 use Codeception\Example;
 use Codeception\Util\HttpCode;
-use backend\tests\ApiTester;
-use backend\tests\api\UserCest as BaseCest;
-use backend\api\models\User;
 
 class UserCest
 {
@@ -48,7 +47,7 @@ class UserCest
     public function failPatch(ApiTester $I)
     {
         $I->amAuthAsUser();
-        $I->sendPATCH("v1/user/1", ['email' => 'asdf@qwerty.com']);
+        $I->sendPATCH('v1/user/1', ['email' => 'asdf@qwerty.com']);
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->dontSeeResponseContainsJson(['email' => 'asdf@qwerty.com']);
     }

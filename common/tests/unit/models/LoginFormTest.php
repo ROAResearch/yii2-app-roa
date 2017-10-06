@@ -2,9 +2,9 @@
 
 namespace common\tests\unit\models;
 
-use Yii;
-use common\models\LoginForm;
 use common\fixtures\UserFixture;
+use common\models\LoginForm;
+use Yii;
 
 /**
  * Login form test
@@ -15,7 +15,6 @@ class LoginFormTest extends \Codeception\Test\Unit
      * @var \common\tests\UnitTester
      */
     protected $tester;
-
     /**
      * @return array
      */
@@ -23,10 +22,9 @@ class LoginFormTest extends \Codeception\Test\Unit
     {
         return [
             'user' => [
-                'class' => UserFixture::className(),
-                'dataFile' => codecept_data_dir() . 'user.php'
-            ]
-        ];
+                'class' => UserFixture::class,
+            ],
+        ]);
     }
 
     public function testLoginNoUser()
@@ -48,7 +46,8 @@ class LoginFormTest extends \Codeception\Test\Unit
         ]);
 
         expect('model should not login user', $model->login())->false();
-        expect('error message should be set', $model->errors)->hasKey('password');
+        expect('error message should be set', $model->errors)
+            ->hasKey('password');
         expect('user should not be logged in', Yii::$app->user->isGuest)->true();
     }
 
@@ -60,7 +59,8 @@ class LoginFormTest extends \Codeception\Test\Unit
         ]);
 
         expect('model should login user', $model->login())->true();
-        expect('error message should not be set', $model->errors)->hasntKey('password');
+        expect('error message should not be set', $model->errors)
+            ->hasntKey('password');
         expect('user should be logged in', Yii::$app->user->isGuest)->false();
     }
 }

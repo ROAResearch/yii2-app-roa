@@ -14,7 +14,6 @@ use frontend\tests\ApiTester;
 class AccessTokenCest
 {
     /**
-     *
      * @param ApiTester $I
      *
      * @depends frontend\tests\api\UserCest:fixtures
@@ -31,8 +30,8 @@ class AccessTokenCest
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
-            'access_token' =>  'string:regex(/[0-9a-f]{40}/)',
-            'refresh_token' =>  'string:regex(/[0-9a-f]{40}/)',
+            'access_token' => 'string:regex(/[0-9a-f]{40}/)',
+            'refresh_token' => 'string:regex(/[0-9a-f]{40}/)',
         ]);
         $I->storeToken(
             'erau',
