@@ -10,7 +10,6 @@ use common\fixtures\UserFixture;
  */
 class LoginCest
 {
-
     /**
      * Load fixtures before db transaction begin
      * Called in _before()
@@ -22,9 +21,8 @@ class LoginCest
     {
         return [
             'user' => [
-                'class' => UserFixture::className(),
-                'dataFile' => codecept_data_dir() . 'login_data.php'
-            ]
+                'class' => UserFixture::class,
+            ],
         ];
     }
 

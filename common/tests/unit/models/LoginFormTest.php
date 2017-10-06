@@ -15,6 +15,7 @@ class LoginFormTest extends \Codeception\Test\Unit
      * @var \common\tests\UnitTester
      */
     protected $tester;
+
     /**
      * @return array
      */
@@ -24,9 +25,12 @@ class LoginFormTest extends \Codeception\Test\Unit
             'user' => [
                 'class' => UserFixture::class,
             ],
-        ]);
+        ];
     }
 
+    /**
+     * Trying to log with an unexistant username.
+     */
     public function testLoginNoUser()
     {
         $model = new LoginForm([
@@ -35,26 +39,34 @@ class LoginFormTest extends \Codeception\Test\Unit
         ]);
 
         expect('model should not login user', $model->login())->false();
-        expect('user should not be logged in', Yii::$app->user->isGuest)->true();
+        expect('user should not be logged in', Yii::$app->user->isGuest)
+            ->true();
     }
 
+    /**
+     * Trying to log with an existant user but using wrong password
+     */
     public function testLoginWrongPassword()
     {
         $model = new LoginForm([
-            'username' => 'bayer.hudson',
+            'username' => 'erau',
             'password' => 'wrong_password',
         ]);
 
         expect('model should not login user', $model->login())->false();
         expect('error message should be set', $model->errors)
             ->hasKey('password');
-        expect('user should not be logged in', Yii::$app->user->isGuest)->true();
+        expect('user should not be logged in', Yii::$app->user->isGuest)
+            ->true();
     }
 
+    /**
+     * Successful login
+     */
     public function testLoginCorrect()
     {
         $model = new LoginForm([
-            'username' => 'bayer.hudson',
+            'username' => 'erau',
             'password' => 'password_0',
         ]);
 
