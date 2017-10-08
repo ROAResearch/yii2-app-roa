@@ -1,18 +1,21 @@
 <?php
 
-use yii\db\Migration;
-
-class m130524_201442_init extends Migration
-{
-    public function up()
+class m130524_201442_user extends \tecnocen\migrate\CreateTableMigration
+{ 
+    /**
+     * @inheritdoc
+     */
+    public function getTableName()
     {
-        $tableOptions = null;
-        if ($this->db->driverName === 'mysql') {
-            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
-        }
+        return 'user';
+    }
 
-        $this->createTable('{{%user}}', [
+    /**
+     * @inheritdoc
+     */
+    public function columns()
+    {
+        return [
             'id' => $this->primaryKey(),
             'username' => $this->string()->notNull()->unique(),
             'auth_key' => $this->string(32)->notNull(),
@@ -23,11 +26,6 @@ class m130524_201442_init extends Migration
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
-        ], $tableOptions);
-    }
-
-    public function down()
-    {
-        $this->dropTable('{{%user}}');
+        ];
     }
 }
