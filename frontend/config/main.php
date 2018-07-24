@@ -1,12 +1,12 @@
 <?php
 
 use common\models\User;
-use filsh\yii2\oauth2server\Module as OAuth2Module;
 use frontend\api\models\User as ApiUser;
 use frontend\api\VersionContainer;
 use frontend\controllers;
 use OAuth2\GrantType\RefreshToken;
 use OAuth2\GrantType\UserCredentials;
+use tecnocen\oauth2server\Module as OAuth2Module;
 use yii\log\FileTarget;
 
 $params = array_merge(

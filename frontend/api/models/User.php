@@ -2,8 +2,8 @@
 
 namespace frontend\api\models;
 
-use filsh\yii2\oauth2server\models\OauthAccessTokens as AccessToken;
 use OAuth2\Storage\UserCredentialsInterface;
+use tecnocen\oauth2server\models\OauthAccessTokens as AccessToken;
 
 class User extends \common\models\User implements UserCredentialsInterface
 {

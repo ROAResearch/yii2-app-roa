@@ -4,9 +4,9 @@ use backend\api\models\User as ApiUser;
 use backend\api\VersionContainer;
 use backend\controllers;
 use common\models\User;
-use filsh\yii2\oauth2server\Module as OAuth2Module;
 use OAuth2\GrantType\RefreshToken;
 use OAuth2\GrantType\UserCredentials;
+use tecnocen\oauth2server\Module as OAuth2Module;
 use yii\log\FileTarget;
 
 $params = array_merge(
