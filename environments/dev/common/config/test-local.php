@@ -11,6 +11,10 @@ return yii\helpers\ArrayHelper::merge(
             'db' => [
                 'dsn' => "mysql:host=127.0.0.1;dbname={$dbname}_test",
             ],
+            'request' => [
+                // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+                'cookieValidationKey' => '',
+            ],
         ],
     ]
 );
