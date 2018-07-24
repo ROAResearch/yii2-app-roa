@@ -24,6 +24,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.0",
+        "ext-gd": "*",
         "lib-openssl": ">=1.0",
         "guzzlehttp/guzzle": ">=4.1.4 <7.0",
         "tecnocen/yii2-roa": "*",
