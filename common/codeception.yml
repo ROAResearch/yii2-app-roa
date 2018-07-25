@@ -12,7 +12,7 @@ settings:
 modules:
     config:
         Yii2:
-            configFile: 'config/test-local.php'
+            configFile: 'config/codeception-local.php'
 coverage:
     enabled: true
     include:
