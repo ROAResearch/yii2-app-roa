@@ -1,6 +1,6 @@
 ---
-name: Yii2 Roa issue
-about: Report an issue for Yii2 ROA
+name: Yii2-ROA issue
+about: Report an issue for Yii2-ROA
 
 ---
 
