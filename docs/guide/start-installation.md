@@ -13,40 +13,38 @@ If you do not have [Composer](http://getcomposer.org/), follow the instructions 
 With Composer installed, you can then install the application using the following commands:
 
     composer self-update
-    git clone <git path to your project> yii-roa
-    cd yii-roa
+    git clone <git path to your project> roa_project
+    cd roa_project
     composer deploy
 
 The first command updates `composer` itself, version `>=1.3` is required. The
 second command installs the roa application in a directory named `yii-roa`.
 You can choose a different directory name if you want.
 
-It uses [asset-packagist](https://asset-packagist.org/) for managing bower and
-npm package dependencies through Composer. Also you can use
-[asset-plugin](https://packagist.org/packages/fxp/composer-asset-plugin), as in
-earlier versions, but it works slowly.
-
-The final command runs a [custom composer script](composer-scripts.md) to deploy
-the framework and database.
+The final command runs a
+[custom composer script](https://getcomposer.org/doc/articles/scripts.md) to
+deploy the framework and database.
 
 The `deploy` command can also admit parameters.
 
-`composer deploy -- overwrite=0 env=Production dbuser=root dbpass=s3cr3t dbname=roa_demo`
+`composer deploy -- overwrite=0 env=Production dbuser=root dbpass=s3cr3t dbname=roa_project`
+
+[Documentation of the scripts in yii2 app roa](composer-scripts.md)
 
 ## Server configuration
 
 ### Set document roots of your web server:
 
-   - for frontend `/path/to/yii-application/frontend/web/` and using the URL `http://frontend.dev/`
-   - for backend `/path/to/yii-application/backend/web/` and using the URL `http://backend.dev/`
+   - for frontend `/path/to/yii-application/frontend/web/` and using the URL `http://frontend.test/`
+   - for backend `/path/to/yii-application/backend/web/` and using the URL `http://backend.test/`
 
    For Apache it could be the following:
 
    ```apache
        <VirtualHost *:80>
-           ServerName frontend.dev
+           ServerName frontend.test
            DocumentRoot "/path/to/yii-application/frontend/web/"
-           
+
            <Directory "/path/to/yii-application/frontend/web/">
                # use mod_rewrite for pretty URL support
                RewriteEngine on
@@ -62,17 +60,17 @@ The `deploy` command can also admit parameters.
                # ...other settings...
                # Apache 2.4
                Require all granted
-               
+
                ## Apache 2.2
                # Order allow,deny
                # Allow from all
            </Directory>
        </VirtualHost>
-       
+
        <VirtualHost *:80>
-           ServerName backend.dev
+           ServerName backend.test
            DocumentRoot "/path/to/yii-application/backend/web/"
-           
+
            <Directory "/path/to/yii-application/backend/web/">
                # use mod_rewrite for pretty URL support
                RewriteEngine on
@@ -88,7 +86,7 @@ The `deploy` command can also admit parameters.
                # ...other settings...
                # Apache 2.4
                Require all granted
-               
+
                ## Apache 2.2
                # Order allow,deny
                # Allow from all
@@ -106,7 +104,7 @@ The `deploy` command can also admit parameters.
            listen 80; ## listen for ipv4
            #listen [::]:80 default_server ipv6only=on; ## listen for ipv6
 
-           server_name frontend.dev;
+           server_name frontend.test;
            root        /path/to/yii-application/frontend/web/;
            index       index.php;
 
@@ -136,31 +134,31 @@ The `deploy` command can also admit parameters.
                #fastcgi_pass unix:/var/run/php5-fpm.sock;
                try_files $uri =404;
            }
-       
+
            location ~* /\. {
                deny all;
            }
        }
-        
+
        server {
            charset utf-8;
            client_max_body_size 128M;
-       
+
            listen 80; ## listen for ipv4
            #listen [::]:80 default_server ipv6only=on; ## listen for ipv6
-       
-           server_name backend.dev;
+
+           server_name backend.test;
            root        /path/to/yii-application/backend/web/;
            index       index.php;
-       
+
            access_log  /path/to/yii-application/log/backend-access.log;
            error_log   /path/to/yii-application/log/backend-error.log;
-       
+
            location / {
                # Redirect everything that isn't a real file to index.php
                try_files $uri $uri/ /index.php$is_args$args;
            }
-       
+
            # uncomment to avoid processing of calls to non-existing static files by Yii
            #location ~ \.(js|css|png|jpg|gif|swf|ico|pdf|mov|fla|zip|rar)$ {
            #    try_files $uri =404;
@@ -179,7 +177,7 @@ The `deploy` command can also admit parameters.
                #fastcgi_pass unix:/var/run/php5-fpm.sock;
                try_files $uri =404;
            }
-       
+
            location ~* /\. {
                deny all;
            }
@@ -194,8 +192,8 @@ The `deploy` command can also admit parameters.
    Add the following lines:
 
    ```
-   127.0.0.1   frontend.dev
-   127.0.0.1   backend.dev
+   127.0.0.1   frontend.test
+   127.0.0.1   backend.test
    ```
 
 To login into the application, you need to first sign up, with any of your email address, username and password.
@@ -217,13 +215,13 @@ This way is the easiest but long (~20 min).
 2. Install [Vagrant](https://www.vagrantup.com/downloads.html)
 3. Create GitHub [personal API token](https://github.com/blog/1509-personal-api-tokens)
 3. Prepare project:
-   
+
    ```bash
    git clone https://github.com/yiisoft/yii2-app-advanced.git
    cd yii2-app-advanced/vagrant/config
    cp vagrant-local.example.yml vagrant-local.yml
    ```
-   
+
 4. Place your GitHub personal API token to `vagrant-local.yml`
 5. Change directory to project root:
 
@@ -231,17 +229,16 @@ This way is the easiest but long (~20 min).
    cd yii2-app-advanced
    ```
 
-5. Run commands:
+5. Run command:
 
    ```bash
-   vagrant plugin install vagrant-hostmanager
    vagrant up
    ```
-   
+
 That's all. You just need to wait for completion! After that you can access project locally by URLs:
-* frontend: http://y2aa-frontend.dev
-* backend: http://y2aa-backend.dev
-   
+* frontend: http://y2aa-frontend.test
+* backend: http://y2aa-backend.test
+
 #### Manual for Windows users
 
 1. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
@@ -255,23 +252,15 @@ That's all. You just need to wait for completion! After that you can access proj
    * copy `vagrant-local.example.yml` to `vagrant-local.yml`
 
 6. Place your GitHub personal API token to `vagrant-local.yml`
-7. Add the following lines to [hosts file](https://en.wikipedia.org/wiki/Hosts_(file)):
-   
-   ```
-   192.168.83.137 y2aa-frontend.dev
-   192.168.83.137 y2aa-backend.dev
-   ```
 
-8. Open terminal (`cmd.exe`), **change directory to project root** and run commands:
+7. Open terminal (`cmd.exe`), **change directory to project root** and run command:
 
    ```bash
-   vagrant plugin install vagrant-hostmanager
    vagrant up
    ```
-   
-   (You can read [here](http://www.wikihow.com/Change-Directories-in-Command-Prompt) how to change directories in command prompt) 
+
+   (You can read [here](http://www.wikihow.com/Change-Directories-in-Command-Prompt) how to change directories in command prompt)
 
 That's all. You just need to wait for completion! After that you can access project locally by URLs:
-* frontend: http://y2aa-frontend.dev
-* backend: http://y2aa-backend.dev
-
+* frontend: http://y2aa-frontend.test
+* backend: http://y2aa-backend.test

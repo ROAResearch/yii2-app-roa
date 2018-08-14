@@ -4,6 +4,7 @@ namespace frontend\tests\unit\models;
 
 use common\fixtures\UserFixture;
 use frontend\models\ResetPasswordForm;
+use yii\base\InvalidArgumentException;
 
 class ResetPasswordFormTest extends \Codeception\Test\Unit
 {
@@ -16,7 +17,7 @@ class ResetPasswordFormTest extends \Codeception\Test\Unit
     {
         $this->tester->haveFixtures([
             'user' => [
-                'class' => UserFixture::className(),
+                'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php',
             ],
         ]);
@@ -24,13 +25,19 @@ class ResetPasswordFormTest extends \Codeception\Test\Unit
 
     public function testResetWrongToken()
     {
-        $this->tester->expectException('yii\base\InvalidParamException', function () {
-            new ResetPasswordForm('');
-        });
+        $this->tester->expectException(
+            InvalidArgumentException::class,
+            function () {
+                new ResetPasswordForm('');
+            }
+        );
 
-        $this->tester->expectException('yii\base\InvalidParamException', function () {
-            new ResetPasswordForm('notexistingtoken_1391882543');
-        });
+        $this->tester->expectException(
+            InvalidArgumentException::class,
+            function () {
+                new ResetPasswordForm('notexistingtoken_1391882543');
+            }
+        );
     }
 
     public function testResetCorrectToken()

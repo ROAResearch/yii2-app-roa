@@ -2,7 +2,6 @@
 
 namespace backend\tests\api\v1;
 
-use backend\api\models\User;
 use backend\tests\ApiTester;
 use Codeception\Example;
 use Codeception\Util\HttpCode;

@@ -1,4 +1,5 @@
 db.php
+codeception-local.php
 main-local.php
 params-local.php
 test-local.php

@@ -1,7 +1,7 @@
 <?php
 
 class m130524_201442_user extends \tecnocen\migrate\CreateTableMigration
-{ 
+{
     /**
      * @inheritdoc
      */
