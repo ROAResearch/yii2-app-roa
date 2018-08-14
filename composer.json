@@ -64,13 +64,9 @@
         ]
     },
     "scripts": {
-        "pre-install-cmd": [
-            "console\\ComposerListener::init"
-        ],
-        "pre-update-cmd": [
-            "console\\ComposerListener::init"
-        ],
-        "githook-precommit-file": [
+        "pre-install-cmd": "console\\ComposerListener::init",
+        "pre-update-cmd": "console\\ComposerListener::init",
+        "validate-php-file": [
             "@php -l",
             "@php vendor/bin/php-cs-fixer fix --dry-run --diff"
         ],
@@ -81,9 +77,7 @@
             "@deploy-database",
             "@run-tests"
         ],
-        "deploy-framework": [
-            "console\\FrameworkListener::deploy"
-        ],
+        "deploy-framework": "console\\FrameworkListener::deploy",
         "deploy-database": [
             "@config-database",
             "@run-migrations",
@@ -96,28 +90,32 @@
             "@run-fixtures",
             "@clear-framework-cache"
         ],
-        "config-database": [
-            "console\\DatabaseListener::config"
+        "config-database": "console\\DatabaseListener::config",
+        "migrate-up": [
+            "@php yii migrate/up 0 --interactive=0",
+            "@php yii_test migrate/up 0 --interactive=0"
+        ],
+        "migrate-down": [
+            "@php yii migrate/down 0 --interactive=0",
+            "@php yii_test migrate/down 0 --interactive=0"
         ],
         "run-migrations": [
-            "@php yii migrate/up 0 -p=@console/migrations/tables --interactive=0",
-            "@php yii migrate/up 0 -p=@tecnocen/oauth2server/migrations/tables --interactive=0",
-            "@php yii migrate/up 0 -p=@console/migrations/views --interactive=0",
-            "@php yii_test migrate/up 0 -p=@console/migrations/tables --interactive=0",
-            "@php yii_test migrate/up 0 -p=@tecnocen/oauth2server/migrations/tables --interactive=0",
-            "@php yii_test migrate/up 0 -p=@console/migrations/views --interactive=0"
+            "@composer migrate-up -- -p=@console/migrations/tables",
+            "@composer migrate-up -- -p=@tecnocen/oauth2server/migrations/tables",
+            "@composer migrate-up -- -p=@console/migrations/views"
+        ],
+        "fixture-load": [
+            "@php yii fixture/load '*' --interactive=0",
+            "@php yii_test fixture/load '*' --interactive=0"
         ],
         "run-fixtures": [
-            "@php yii fixture/load '*' --interactive=0",
-            "@php yii fixture/load '*' --interactive=0 -n=tecnocen\\\\oauth2server\\\\fixtures",
-            "@php yii_test fixture/load '*' --interactive=0",
-            "@php yii_test fixture/load '*' --interactive=0 -n=tecnocen\\\\oauth2server\\\\fixtures"
+            "@composer fixture-load",
+            "@composer fixture-load -- -n=tecnocen\\\\oauth2server\\\\fixtures"
         ],
         "truncate-migrations": [
-            "@php yii migrate/down 0 -p=@tecnocen/oauth2server/migrations/tables --interactive=0",
-            "@php yii migrate/down 0 --interactive=0",
-            "@php yii_test migrate/down 0 -p=@tecnocen/oauth2server/migrations/tables --interactive=0",
-            "@php yii_test migrate/down 0 --interactive=0",
+            "@composer migrate-down -- -p=@console/migrations/views",
+            "@composer migrate-down -- -p=@tecnocen/oauth2server/migrations/tables",
+            "@composer migrate-down -- -p=@console/migrations/tables",
             "@run-migrations",
             "@clear-framework-cache"
         ],
@@ -126,14 +124,26 @@
             "rm -rf console/runtime/cache/*",
             "rm -rf frontend/runtime/cache/*"
         ],
-        "run-tests": [
-            "@composer exec -vv -- codecept run"
-        ],
-        "run-tests-debug": [
-            "@php vendor/bin/codecept run -vv -f --no-rebuild"
-        ],
-        "run-coverage": [
-            "@composer exec -vv -- codecept run --coverage --coverage-xml"
-        ]
+        "run-tests": "@php vendor/bin/codecept run --steps",
+        "run-tests-debug": "@composer run-tests -- -vv -f --no-rebuild",
+        "run-coverage": "@composer run-tests -- --coverage --coverage-xml"
+    },
+    "scripts-descriptions": {
+        "validate-php-file": "Checks a php file has correct php syntax and CS",
+        "deploy": "runs composer then deploys both framework and database",
+        "deploy-framework": "Initializes the required framework files.",
+        "deploy-database": "Creates the database, run migrations and fixtures",
+        "truncate-database": "Drops the database and deploy it again",
+        "config-database": "Prompts the credentials for common/config/db.php",
+        "migrate-up": "shortcut for `yii migrate/up 0 --interactive=0`",
+        "migrate-down": "shortcut for `yii migrate/down 0 --interactive=0`",
+        "run-migrations": "Runs the migrations needed on the project",
+        "fixture-load": "shortcut for `yii fixture/load '*' --interactive=0`",
+        "run-fixtures": "Runs all the fixtures needed on the project",
+        "truncate-migrations": "Downs all migrations and runs them again",
+        "clear-framework-cache": "Deletes the autogenerated framework cache",
+        "run-tests": "Run all composer tests",
+        "run-tests-debug": "Run all composer tests for debugging",
+        "run-coverage": "Run all composer tests and generate coverage report"
     }
 }
