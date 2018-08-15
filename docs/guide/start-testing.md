@@ -1,30 +1,24 @@
 Testing
 ===============================
 
-Yii2 Advanced Application uses Codeception as its primary test framework. 
+Yii2 ROA Project Template uses Codeception as its primary test framework. 
 There are already some sample tests prepared in `tests` directory of `frontend`, `backend`, and `common`.
-In order for the following procedure to work, it is assumed that the application has been initialized using
-the `dev` environment. In the case where tests need to be executed in a `Production` environment, `yii_test` and
-`yii_test.bat` must be manually copied from the `environments/dev` folder into the project root directory.
 
-Tests require an **additional database**, which will be cleaned up between tests.
-Create database `yii2advanced_test` in mysql (according to config in `common/config/test-local.php`) and execute: 
-
+The command `composer deploy` initialize testing when its used with the `dev`
+environment. This will create a `_test` database run the migrations on it, and
+load the required fixtures.
 
 ```
-./yii_test migrate
+composer deploy -- environment=dev
 ```
 
-Build the test suite:
+To run the tests you can use the following commands
 
 ```
-vendor/bin/codecept build
-```
+composer run-tests -- # codeception options here
+composer run-tests-debug -- # codeception options here
+composer run-coverage -- # codeception options here
 
-Then all sample tests can be started by running:
-
-```
-vendor/bin/codecept run
 ```
 
 You will see output similar to this:
@@ -42,7 +36,7 @@ Tests for common classes are located in `common/tests`. In this template there a
 Execute them by running:
 
 ```
-vendor/bin/codecept run -- -c common
+composer run-tests -- -c common
 ```
 
 `-c` option allows to set path to `codeception.yml` config.
@@ -57,7 +51,7 @@ Frontend tests contain unit tests, functional tests, and acceptance tests.
 Execute them by running:
 
 ```
-vendor/bin/codecept run -- -c frontend
+composer run-tests -- -c frontend
 ```
 
 Description of test suites:
@@ -103,13 +97,13 @@ To execute acceptance tests do the following:
 1. Start web server:
 
     ```
-    php -S 127.0.0.1:8080 -t frontend/web
+    yii serve -t=@frontend/web
     ```
 
 1. Now you can run all available tests
 
    ```
-   vendor/bin/codecept run acceptance -- -c frontend
+   composer run-tests -- acceptance -c frontend
    ```
 
 ## Backend
@@ -117,5 +111,5 @@ To execute acceptance tests do the following:
 Backend application contain unit and functional test suites. Execute them by running:
 
 ```
-vendor/bin/codecept run -- -c backend
+composer run-tests -- -c backend
 ```
