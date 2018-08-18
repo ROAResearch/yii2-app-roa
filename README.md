@@ -1,4 +1,4 @@
-Yii 2 ROA Project Template
+Yii2 ROA Project Template
 ==========================
 
 Yii 2 ROA Project Template is a skeleton [Yii 2](http://www.yiiframework.com/)
