@@ -77,7 +77,7 @@
             "console\\ComposerListener::autoload" ,
             "@deploy-framework",
             "@deploy-database",
-            "@run-tests"
+            "@composer run-tests ##"
         ],
         "deploy-framework": "console\\FrameworkListener::deploy",
         "deploy-database": [
