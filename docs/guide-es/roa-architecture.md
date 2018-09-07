@@ -78,7 +78,7 @@ mantenimiento.
 #### Desarrollo
 
 Los recursos e interfaces no se consideran publicados por lo que pueden ser
-alterados y añadir nuevos recursos 
+alterados y añadir nuevos recursos
 
 ##### Politicas
 
@@ -289,7 +289,7 @@ distintas acciones de un mismo recurso.
 #### Clase PHP
 
 Los recursos se definen creando controladores que extienden la clase
-`tecnocen\roa\controllers\OAuth2Resource` la cual a su vez extiende
+`tecnocen\roa\controllers\Resource` la cual a su vez extiende
 `yii\rest\ActiveController`.
 
 Esta clase ya tiene soporte para las funcionalidades básicas de un recurso.
@@ -318,38 +318,3 @@ cuerpo de la respuesta si no que se usan las cabeceras `X-Pagination`.
 
 Estas cabeceras son serializadas automaticamente por yii2 al devolver un objeto
 que implemente `yii\data\DataProviderInterface`.
-
-#### Cross Origin
-
-Las peticiones de dominios cruzados se restringen y aprueban usando el metodo
-`OAuth2Resource::cors()` que es consumido por `yii\filters\Cors` para definir
-las cabeceras usadas por Cross-Origin Resource Sharing.
-
-Esto permite definir dinamicamente las cabeceras para cada recurso y petición.
-
-```php
-protected function cors()
-{
-    return [
-         // ...
-    ];
-}
-```
-
-#### Cache
-
-La propiedad `Oauth2Resource::$enableCache` habilita cache de HTTP y la cache
-de respuesta y crea archivos en el servidor que guardan la respuesta.
-
-```php
-protected $enableCache = true;
-```
-
-La cache se puede configurar usando metodos.
-
-[estado HTTP]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
-[AttributeTypeCastBehavior]: http://www.yiiframework.com/doc-2.0/yii-behaviors-attributetypecastbehavior.html
-[JSON Hypermedia]: http://json-schema.org/latest/json-schema-hypermedia.html
-[OpenApi]: http://www.swagger.io/specification/
-[Swagger]: http://www.swagger.io/
-[UrlManager::$rules]: http://www.yiiframework.com/doc-2.0/yii-web-urlmanager.html#$rules-detail
