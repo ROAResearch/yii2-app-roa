@@ -3,9 +3,9 @@
 namespace frontend\api\v1\resources;
 
 use frontend\api\models\User;
-use tecnocen\roa\controllers\OAuth2Resource;
+use tecnocen\roa\controllers\Resource;
 
-class UserResource extends OAuth2Resource
+class UserResource extends Resource
 {
     /**
      * @inheritdoc
