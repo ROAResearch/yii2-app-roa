@@ -1,12 +1,8 @@
 <?php
 
 use common\models\User;
-use frontend\api\models\User as ApiUser;
 use frontend\api\VersionContainer;
 use frontend\controllers;
-use OAuth2\GrantType\RefreshToken;
-use OAuth2\GrantType\UserCredentials;
-use tecnocen\oauth2server\Module as OAuth2Module;
 use yii\log\FileTarget;
 
 $params = array_merge(
@@ -24,23 +20,6 @@ return [
     'modules' => [
         'api' => [
             'class' => VersionContainer::class,
-        ],
-        'oauth2' => [
-            'class' => OAuth2Module::class,
-            'tokenParamName' => 'accessToken',
-            'tokenAccessLifetime' => 3600 * 24,
-            'storageMap' => [
-                'user_credentials' => ApiUser::class,
-            ],
-            'grantTypes' => [
-                'user_credentials' => [
-                    'class' => UserCredentials::class,
-                ],
-                'refresh_token' => [
-                    'class' => RefreshToken::class,
-                    'always_issue_new_refresh_token' => true,
-                ],
-            ],
         ],
     ],
     'components' => [
@@ -75,7 +54,6 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'POST api/oauth2/<action:\w+>' => 'oauth2/rest/<action>',
             ],
         ],
     ],
