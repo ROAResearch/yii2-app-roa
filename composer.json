@@ -36,10 +36,11 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "~2.4",
-        "codeception/base": "^2.2.11",
+        "codeception/base": "^2.4.0",
         "codeception/verify": "~1.0.0",
         "flow/jsonpath": ">0.2",
+        "friendsofphp/php-cs-fixer": "~2.4",
+        "phpunit/phpunit": "~6.5.5",
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0"
