@@ -28,7 +28,7 @@
         "ext-gd": "*",
         "lib-openssl": ">=1.0",
         "guzzlehttp/guzzle": ">=4.1.4 <7.0",
-        "tecnocen/yii2-roa": "~0.4.0",
+        "tecnocen/yii2-roa": "dev-typecast as 0.5.x-dev",
         "tecnocen/yii2-migrate": "*",
         "tecnocen/yii2-oauth2-server": "~4.0.0",
         "yiisoft/yii2": "~2.0.14",
@@ -55,6 +55,10 @@
         {
             "type": "composer",
             "url": "https://asset-packagist.org"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:tecnocen-com/yii2-roa.git"
         }
     ],
     "autoload": {

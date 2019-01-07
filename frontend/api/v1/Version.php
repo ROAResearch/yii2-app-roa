@@ -21,5 +21,5 @@ class Version extends \tecnocen\roa\modules\ApiVersion
     /**
      * @inheritdoc
      */
-    public $controllerNamespace = 'frontend\\api\\v1\\resources';
+    public $controllerNamespace = resources::class;
 }
