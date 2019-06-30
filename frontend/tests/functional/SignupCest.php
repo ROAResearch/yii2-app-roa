@@ -2,6 +2,7 @@
 
 namespace frontend\tests\functional;
 
+use common\models\User;
 use frontend\tests\FunctionalTester;
 
 class SignupCest
@@ -46,8 +47,12 @@ class SignupCest
         $I->seeRecord('common\models\User', [
             'username' => 'tester',
             'email' => 'tester.email@example.com',
+            'status' => User::STATUS_INACTIVE,
         ]);
 
-        $I->see('Logout (tester)', 'form button[type=submit]');
+        $I->seeEmailIsSent();
+        $I->see(
+            'Thank you for registration. Please check your inbox for verification email.'
+        );
     }
 }
