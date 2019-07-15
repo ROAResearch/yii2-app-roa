@@ -4,9 +4,23 @@ namespace frontend\api\models;
 
 use OAuth2\Storage\UserCredentialsInterface;
 use tecnocen\oauth2server\models\OauthAccessTokens as AccessToken;
+use tecnocen\roa\hal\Contract;
+use tecnocen\roa\hal\ContractTrait;
 
-class User extends \common\models\User implements UserCredentialsInterface
+class User extends \common\models\User implements
+    UserCredentialsInterface,
+    Contract
 {
+    use ContractTrait;
+
+    /**
+     * @inheritdoc
+     */
+    protected function slugBehaviorConfig(): array
+    {
+        return ['resourceName' => 'user'];
+    }
+
     /**
      * @inheritdoc
      */
