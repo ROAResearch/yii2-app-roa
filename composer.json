@@ -108,7 +108,6 @@
             "@php yii_test migrate/down 0 --interactive=0"
         ],
         "run-migrations": [
-            "@composer migrate-up -- -p=@console/migrations",
             "@composer migrate-up -- -p=@console/migrations/tables",
             "@composer migrate-up -- -p=@tecnocen/oauth2server/migrations/tables",
             "@composer migrate-up -- -p=@console/migrations/views"
