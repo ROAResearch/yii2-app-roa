@@ -2,7 +2,7 @@
 
 namespace backend\api;
 
-class VersionContainer extends \tecnocen\roa\modules\ApiContainer
+class VersionContainer extends \roaresearch\yii2\roa\modules\ApiContainer
 {
     /**
      * @inheritdoc

@@ -1,7 +1,6 @@
 <?php
 
-use backend\api\VersionContainer;
-use backend\controllers;
+use backend\{api\VersionContainer, controllers};
 use common\models\User;
 use yii\log\FileTarget;
 

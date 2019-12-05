@@ -3,7 +3,7 @@
 namespace backend\api\v1\resources;
 
 use backend\api\models\User;
-use tecnocen\roa\controllers\Resource;
+use roaresearch\yii2\roa\controllers\Resource;
 
 class UserResource extends Resource
 {
