@@ -3,9 +3,9 @@
 namespace frontend\api\models;
 
 use OAuth2\Storage\UserCredentialsInterface;
-use tecnocen\oauth2server\models\OauthAccessTokens as AccessToken;
-use tecnocen\roa\hal\Contract;
-use tecnocen\roa\hal\ContractTrait;
+use roaresearch\yii2\oauth2server\models\OauthAccessTokens as AccessToken;
+use roaresearch\yii2\roa\hal\{Contract, ContractTrait};
+use yii\db\ActiveQuery;
 
 class User extends \common\models\User implements
     UserCredentialsInterface,
@@ -57,9 +57,9 @@ class User extends \common\models\User implements
     }
 
     /**
-     * @return yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getAccessTokens()
+    public function getAccessTokens(): ActiveQuery
     {
         return $this->hasMany(AccessToken::class, ['user_id' => 'id'])
             ->andOnCondition(['client_id' => 'testclient']);

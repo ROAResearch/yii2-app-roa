@@ -15,18 +15,22 @@ use yii\{
 AppAsset::register($this);
 
 $this->beginPage()
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <meta charset="<?= Yii::$app->charset ?>">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <?php $this->registerCsrfMetaTags() ?>
-<title><?= Html::encode($this->title) ?></title><?php
+<title><?= Html::encode($this->title) ?></title>
+<?php
 
 $this->head();
 $this->beginBody();
 
-?><div class="wrap"><?php
+?>
+<div class="wrap">
+    <?php
     NavBar::begin([
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
@@ -34,9 +38,11 @@ $this->beginBody();
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
     ];
+
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
@@ -49,19 +55,22 @@ $this->beginBody();
             . Html::endForm()
             . '</li>';
     }
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => $menuItems,
     ]);
+
     NavBar::end();
 
-    ?><div class="container"><?=
-        Breadcrumbs::widget([
+    ?>
+    <div class="container">
+    <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]),
         Alert::widget(),
-        $content
-    ?></div>
+        $content ?>
+    </div>
 </div>
 
 <footer class="footer">
@@ -70,7 +79,8 @@ $this->beginBody();
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
-</footer><?php
+</footer>
+<?php
 
 $this->endBody();
 $this->endPage();

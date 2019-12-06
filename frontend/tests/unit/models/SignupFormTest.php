@@ -2,8 +2,7 @@
 
 namespace frontend\tests\unit\models;
 
-use common\fixtures\UserFixture;
-use common\models\User;
+use common\{fixtures\UserFixture, models\User};
 use frontend\models\SignupForm;
 use Yii;
 use yii\mail\MessageInterface;

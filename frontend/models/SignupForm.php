@@ -52,7 +52,7 @@ class SignupForm extends Model
      *
      * @return bool whether the creating new account was successful and email was sent
      */
-    public function signup()
+    public function signup(): bool
     {
         if (!$this->validate()) {
             return null;
@@ -73,7 +73,7 @@ class SignupForm extends Model
      * @param User $user user model to with email should be send
      * @return bool whether the email was sent
      */
-    protected function sendEmail($user)
+    protected function sendEmail($user): bool
     {
         return Yii::$app
             ->mailer

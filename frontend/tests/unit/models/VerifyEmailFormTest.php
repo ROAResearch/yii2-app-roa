@@ -2,8 +2,7 @@
 
 namespace frontend\tests\unit\models;
 
-use common\fixtures\UserFixture;
-use common\models\User;
+use common\{fixtures\UserFixture, models\User};
 use frontend\models\VerifyEmailForm;
 use yii\base\InvalidArgumentException;
 
@@ -18,7 +17,7 @@ class VerifyEmailFormTest extends \Codeception\Test\Unit
     {
         $this->tester->haveFixtures([
             'user' => [
-                'class' => UserFixture::className(),
+                'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php',
             ],
         ]);
@@ -53,7 +52,9 @@ class VerifyEmailFormTest extends \Codeception\Test\Unit
 
     public function testVerifyCorrectToken()
     {
-        $model = new VerifyEmailForm('4ch0qbfhvWwkcuWqjN8SWRq72SOw1KYT_1548675330');
+        $model = new VerifyEmailForm(
+            '4ch0qbfhvWwkcuWqjN8SWRq72SOw1KYT_1548675330'
+        );
         $user = $model->verifyEmail();
 
         expect($user)->isInstanceOf(User::class);

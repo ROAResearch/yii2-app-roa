@@ -9,7 +9,7 @@ use frontend\tests\ApiTester;
 /**
  * Prueba funcional del api para la ruta `/oauth2/token`
  *
- * @author Angel (Faryshta) Guevara <aguevara@tecnocen.com>
+ * @author Angel (Faryshta) Guevara <aguevara@invernaderolabs.com>
  */
 class AccessTokenCest
 {
