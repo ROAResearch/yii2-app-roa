@@ -71,11 +71,11 @@
         "pre-update-cmd": "console\\ComposerListener::init",
         "sniff-php-file": [
             "@php -l",
-            "@php vendor/bin/phpcs --standard=PSR12 -p"
+            "@php vendor/bin/phpcs"
         ],
         "beautify-php-file": [
             "@php -l",
-            "@php vendor/bin/phpcbf --standard=PSR12 --report=diff -vv"
+            "@php vendor/bin/phpcbf --report=diff"
         ],
         "deploy": [
             "@composer update --prefer-dist --prefer-stable",
