@@ -28,7 +28,7 @@ install:
   - travis_retry composer update --dev --prefer-dist --no-interaction
   # install php extensions
   - pear config-set preferred_state beta
-  - pecl install imagick
+  - printf "\n" | pecl install imagick
 # setup application:
 
 before_script:
