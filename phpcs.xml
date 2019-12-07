@@ -4,6 +4,7 @@
     <rule ref="PSR12"/>
 
     <arg name="report" value="full"/>
+    <arg phpcbf-only="true" name="report" value="diff"/>
     <arg name="colors"/>
     <arg value="sp"/>
 
@@ -18,6 +19,15 @@
 
     <rule ref="PSR2.Classes.PropertyDeclaration.Underscore">
         <exclude-pattern>*/tests/*(Test|Cest).php</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+        <exclude-pattern>*/console/migrations/tables/m*.php</exclude-pattern>
+        <exclude-pattern>*/console/migrations/views/m*.php</exclude-pattern>
+    </rule>
+    <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps">
+        <exclude-pattern>*/console/migrations/tables/m*.php</exclude-pattern>
+        <exclude-pattern>*/console/migrations/views/m*.php</exclude-pattern>
     </rule>
 </ruleset>
 
