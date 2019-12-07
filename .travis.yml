@@ -1,17 +1,22 @@
-language: php
-
-php:
-  - 5.6
-  - 7.0
-  - 7.1
-  - 7.2
-#  - hhvm
-
 # faster builds on new travis setup not using sudo
 sudo: false
 
+language: php
+
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+  - 7.4
+  - nightly
+
 services:
   - mysql
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: nightly
 
 # cache vendor dirs
 cache:
@@ -19,29 +24,17 @@ cache:
     - $HOME/.composer/cache
 
 install:
-  - travis_retry composer self-update && composer --version
+  - composer --version
   - travis_retry composer update --dev --prefer-dist --no-interaction
   # install php extensions
-  - |
-    if (php --version | grep -i HipHop > /dev/null); then
-      echo "Skipping imagick and gmagick tests on HHVM"
-    else
-      pear config-set preferred_state beta
-      printf "\n" | pecl install imagick
-      # gmagick is not installed on travis currently
-      #printf "\n" | pecl install gmagick
-    fi
+  - pear config-set preferred_state beta
+  - pecl install imagick
 # setup application:
-  - |
-    ./init --env=Development
-    sed -i s/root/travis/ common/config/main-local.php
-    sed -i "s/'cookieValidationKey' => ''/'cookieValidationKey' => 'testkey'/" frontend/config/main.php
-    sed -i "s/'cookieValidationKey' => ''/'cookieValidationKey' => 'testkey'/" backend/config/main.php
 
 before_script:
-  - mysql -e 'CREATE DATABASE yii2advanced_test;'
-  - php yii_test migrate --interactive=0
+  - mysql -e 'CREATE DATABASE yii2_app_ro;'
+  - mysql -e 'CREATE DATABASE yii2_app_roa_test;'
+  - composer deploy --  dbname=yii2_app_roa dbuser=root interactive=0 dbpass= 
 
 script:
-  - composer validate --strict
-  - vendor/bin/codecept run
+  - composer run-tests
