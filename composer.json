@@ -1,5 +1,5 @@
 {
-    "name": "roaresearchyii2-app-roa",
+    "name": "roaresearch/yii2-app-roa",
     "description": "Yii 2 ROA Project Template",
     "keywords": [
         "yii2",
@@ -124,7 +124,7 @@
         ],
         "run-fixtures": [
             "@composer fixture-load",
-            "@composer fixture-load -- -n=roareserarch\\\\yii2\\\\oauth2server\\\\fixtures"
+            "@composer fixture-load -- -n=roaresearch\\\\yii2\\\\oauth2server\\\\fixtures"
         ],
         "clear-framework-cache": [
             "rm -rf backend/runtime/cache/*",
