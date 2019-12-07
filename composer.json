@@ -1,5 +1,5 @@
 {
-    "name": "tecnocen/yii2-app-roa",
+    "name": "roaresearchyii2-app-roa",
     "description": "Yii 2 ROA Project Template",
     "keywords": [
         "yii2",
@@ -108,12 +108,12 @@
         ],
         "run-migrations": [
             "@composer migrate-up -- -p=@console/migrations/tables",
-            "@composer migrate-up -- -p=@tecnocen/oauth2server/migrations/tables",
+            "@composer migrate-up -- -p=@roaresearch/yii2/oauth2server/migrations/tables",
             "@composer migrate-up -- -p=@console/migrations/views"
         ],
         "truncate-migrations": [
             "@composer migrate-down -- -p=@console/migrations/views",
-            "@composer migrate-down -- -p=@tecnocen/oauth2server/migrations/tables",
+            "@composer migrate-down -- -p=@roaresearch/oauth2server/migrations/tables",
             "@composer migrate-down -- -p=@console/migrations/tables",
             "@run-migrations",
             "@clear-framework-cache"
@@ -124,7 +124,7 @@
         ],
         "run-fixtures": [
             "@composer fixture-load",
-            "@composer fixture-load -- -n=tecnocen\\\\oauth2server\\\\fixtures"
+            "@composer fixture-load -- -n=roareserarch\\\\yii2\\\\oauth2server\\\\fixtures"
         ],
         "clear-framework-cache": [
             "rm -rf backend/runtime/cache/*",
