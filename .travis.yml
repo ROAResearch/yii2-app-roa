@@ -34,7 +34,7 @@ install:
 before_script:
   - mysql -e 'CREATE DATABASE yii2_app_ro;'
   - mysql -e 'CREATE DATABASE yii2_app_roa_test;'
-  - composer deploy --  dbname=yii2_app_roa dbuser=root interactive=0 dbpass= 
+  - composer deploy --  dbname=yii2_app_roa dbuser=root overwrite=1 dbpass= 
 
 script:
   - composer run-tests
