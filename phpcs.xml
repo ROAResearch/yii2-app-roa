@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<ruleset name="Yii2 ROA APP Standard">
+    <description>Standard for ROA Applications</description>
+    <rule ref="PSR12"/>
+
+    <arg name="report" value="full"/>
+    <arg name="colors"/>
+    <arg value="sp"/>
+
+    <exclude-pattern>*/web/assets/*</exclude-pattern>
+    <exclude-pattern>*/runtime/*</exclude-pattern>
+    <exclude-pattern>./vendor/*</exclude-pattern>
+    <exclude-pattern>./git-hooks/*</exclude-pattern>
+
+    <rule ref="PSR2.Methods.MethodDeclaration.Underscore">
+        <exclude-pattern>*/tests/*(Test|Cest).php</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR2.Classes.PropertyDeclaration.Underscore">
+        <exclude-pattern>*/tests/*(Test|Cest).php</exclude-pattern>
+    </rule>
+</ruleset>
+
