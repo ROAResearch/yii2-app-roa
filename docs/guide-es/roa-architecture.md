@@ -289,7 +289,7 @@ distintas acciones de un mismo recurso.
 #### Clase PHP
 
 Los recursos se definen creando controladores que extienden la clase
-`tecnocen\roa\controllers\Resource` la cual a su vez extiende
+`roaresearch\yii2\roa\controllers\Resource` la cual a su vez extiende
 `yii\rest\ActiveController`.
 
 Esta clase ya tiene soporte para las funcionalidades básicas de un recurso.
