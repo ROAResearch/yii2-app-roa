@@ -5,27 +5,30 @@
 
 use backend\assets\AppAsset;
 use common\widgets\Alert;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\helpers\Html;
-use yii\widgets\Breadcrumbs;
+use yii\{
+    bootstrap\Nav,
+    bootstrap\NavBar,
+    helpers\Html,
+    widgets\Breadcrumbs
+};
 
 AppAsset::register($this);
+
+$this->beginPage()
 ?>
-<?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php $this->registerCsrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
-</head>
-<body>
-<?php $this->beginBody() ?>
+<meta charset="<?= Yii::$app->charset ?>">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<?php $this->registerCsrfMetaTags() ?>
+<title><?= Html::encode($this->title) ?></title>
+<?php
 
+$this->head();
+$this->beginBody();
+
+?>
 <div class="wrap">
     <?php
     NavBar::begin([
@@ -35,9 +38,11 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
     ];
+
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
@@ -50,19 +55,21 @@ AppAsset::register($this);
             . Html::endForm()
             . '</li>';
     }
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => $menuItems,
     ]);
-    NavBar::end();
-    ?>
 
+    NavBar::end();
+
+    ?>
     <div class="container">
-        <?= Breadcrumbs::widget([
+    <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+        ]),
+        Alert::widget(),
+        $content ?>
     </div>
 </div>
 
@@ -73,8 +80,7 @@ AppAsset::register($this);
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
 </footer>
+<?php
 
-<?php $this->endBody() ?>
-</body>
-</html>
-<?php $this->endPage() ?>
+$this->endBody();
+$this->endPage();

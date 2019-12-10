@@ -1,5 +1,5 @@
 {
-    "name": "tecnocen/yii2-app-roa",
+    "name": "roaresearch/yii2-app-roa",
     "description": "Yii 2 ROA Project Template",
     "keywords": [
         "yii2",
@@ -28,19 +28,18 @@
         "ext-gd": "*",
         "lib-openssl": ">=1.0",
         "guzzlehttp/guzzle": ">=4.1.4 <7.0",
-        "tecnocen/yii2-roa": "~0.5.0",
-        "tecnocen/yii2-migrate": "*",
-        "tecnocen/yii2-oauth2-server": "~4.1.1",
-        "yiisoft/yii2": "~2.0.21",
+        "roaresearch/yii2-roa": "~2.0.0",
+        "roaresearch/yii2-migrate": "~2.0.0",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0"
+        "yiisoft/yii2-swiftmailer": "~2.1.0"
     },
     "require-dev": {
-        "codeception/base": "^2.4.0",
-        "codeception/verify": "~1.0.0",
-        "flow/jsonpath": ">0.2",
-        "friendsofphp/php-cs-fixer": "~2.4",
+        "ext-curl": "*",
+        "codeception/base": "~3.1.0",
+        "codeception/verify": "~1.2.0",
+        "flow/jsonpath": "~0.3",
         "phpunit/phpunit": "~6.5.5",
+        "squizlabs/php_codesniffer": "~3.5.0",
         "symfony/browser-kit": ">=2.7 <=4.2.4",
         "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-faker": "~2.0.0",
@@ -56,10 +55,6 @@
         {
             "type": "composer",
             "url": "https://asset-packagist.org"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:tecnocen-com/yii2-roa.git"
         }
     ],
     "autoload": {
@@ -74,9 +69,13 @@
         "browse-help-scripts": "browse https://git.io/fAepY#",
         "pre-install-cmd": "console\\ComposerListener::init",
         "pre-update-cmd": "console\\ComposerListener::init",
-        "validate-php-file": [
+        "sniff-php-file": [
             "@php -l",
-            "@php vendor/bin/php-cs-fixer fix --dry-run --diff"
+            "@php vendor/bin/phpcs"
+        ],
+        "beautify-php-file": [
+            "@php -l",
+            "@php vendor/bin/phpcbf --report=diff"
         ],
         "deploy": [
             "@composer update --prefer-dist --prefer-stable",
@@ -109,12 +108,12 @@
         ],
         "run-migrations": [
             "@composer migrate-up -- -p=@console/migrations/tables",
-            "@composer migrate-up -- -p=@tecnocen/oauth2server/migrations/tables",
+            "@composer migrate-up -- -p=@roaresearch/yii2/oauth2server/migrations/tables",
             "@composer migrate-up -- -p=@console/migrations/views"
         ],
         "truncate-migrations": [
             "@composer migrate-down -- -p=@console/migrations/views",
-            "@composer migrate-down -- -p=@tecnocen/oauth2server/migrations/tables",
+            "@composer migrate-down -- -p=@roaresearch/oauth2server/migrations/tables",
             "@composer migrate-down -- -p=@console/migrations/tables",
             "@run-migrations",
             "@clear-framework-cache"
@@ -125,7 +124,7 @@
         ],
         "run-fixtures": [
             "@composer fixture-load",
-            "@composer fixture-load -- -n=tecnocen\\\\oauth2server\\\\fixtures"
+            "@composer fixture-load -- -n=roaresearch\\\\yii2\\\\oauth2server\\\\fixtures"
         ],
         "clear-framework-cache": [
             "rm -rf backend/runtime/cache/*",
@@ -139,7 +138,8 @@
     "scripts-descriptions": {
         "help-scripts": "Show detailed documentation in console",
         "browse-help-scripts": "Show detailed documentation in web browser",
-        "validate-php-file": "Checks a php file has correct php syntax and CS",
+        "sniff-php-file": "Checks a php file has correct php syntax and CS",
+        "beautify-php-file": "Beautify and fix a php file",
         "deploy": "runs composer then deploys both framework and database",
         "deploy-framework": "Initializes the required framework files.",
         "deploy-database": "Creates the database, run migrations and fixtures",

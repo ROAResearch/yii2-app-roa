@@ -2,8 +2,7 @@
 
 namespace frontend\tests\unit\models;
 
-use common\fixtures\UserFixture;
-use common\models\User;
+use common\{fixtures\UserFixture, models\User};
 use frontend\models\PasswordResetRequestForm;
 use Yii;
 
@@ -18,7 +17,7 @@ class PasswordResetRequestFormTest extends \Codeception\Test\Unit
     {
         $this->tester->haveFixtures([
             'user' => [
-                'class' => UserFixture::className(),
+                'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php',
             ],
         ]);

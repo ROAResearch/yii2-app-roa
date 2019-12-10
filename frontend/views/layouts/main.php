@@ -5,27 +5,26 @@
 
 use common\widgets\Alert;
 use frontend\assets\AppAsset;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\helpers\Html;
-use yii\widgets\Breadcrumbs;
+use yii\{
+    bootstrap\Nav,
+    bootstrap\NavBar,
+    helpers\Html,
+    widgets\Breadcrumbs
+};
 
 AppAsset::register($this);
-?>
-<?php $this->beginPage() ?>
+$this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php $this->registerCsrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
-</head>
-<body>
-<?php $this->beginBody() ?>
-
+<meta charset="<?= Yii::$app->charset ?>">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<?php $this->registerCsrfMetaTags() ?>
+<title><?= Html::encode($this->title) ?></title>
+<?php
+$this->head();
+$this->beginBody()
+?>
 <div class="wrap">
     <?php
     NavBar::begin([
@@ -59,25 +58,25 @@ AppAsset::register($this);
     ]);
     NavBar::end();
     ?>
-
     <div class="container">
         <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+            'links' => isset($this->params['breadcrumbs'])
+                ? $this->params['breadcrumbs']
+                : [],
+        ]),
+        Alert::widget(),
+        $content ?>
     </div>
 </div>
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-
+        <p class="pull-left">&copy;
+            <?= Html::encode(Yii::$app->name), date('Y') ?>
+        </p>
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
 </footer>
-
-<?php $this->endBody() ?>
-</body>
-</html>
-<?php $this->endPage() ?>
+<?php
+$this->endBody();
+$this->endPage();

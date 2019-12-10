@@ -3,20 +3,24 @@
 namespace frontend\controllers;
 
 use common\models\LoginForm;
-use frontend\models\ContactForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResendVerificationEmailForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\VerifyEmailForm;
+use frontend\models\{
+    ContactForm,
+    PasswordResetRequestForm,
+    ResendVerificationEmailForm,
+    ResetPasswordForm,
+    SignupForm,
+    VerifyEmailForm
+};
 use Yii;
-use yii\base\InvalidArgumentException;
-use yii\captcha\CaptchaAction;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
-use yii\web\ErrorAction;
+use yii\{
+    base\InvalidArgumentException,
+    captcha\CaptchaAction,
+    filters\AccessControl,
+    filters\VerbFilter,
+    web\BadRequestHttpException,
+    web\Controller,
+    web\ErrorAction
+};
 
 /**
  * Site controller

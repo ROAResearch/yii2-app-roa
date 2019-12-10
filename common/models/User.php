@@ -3,10 +3,12 @@
 namespace common\models;
 
 use Yii;
-use yii\base\NotSupportedException;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
-use yii\web\IdentityInterface;
+use yii\{
+    base\NotSupportedException,
+    behaviors\TimestampBehavior,
+    db\ActiveRecord,
+    web\IdentityInterface
+};
 
 /**
  * User model
@@ -25,9 +27,9 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_INACTIVE = 9;
-    const STATUS_ACTIVE = 10;
+    public const STATUS_DELETED = 0;
+    public const STATUS_INACTIVE = 9;
+    public const STATUS_ACTIVE = 10;
 
     /**
      * {@inheritdoc}
@@ -54,7 +56,11 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['status', 'in', 'range' => [
+                self::STATUS_ACTIVE,
+                self::STATUS_INACTIVE,
+                self::STATUS_DELETED,
+            ]],
         ];
     }
 
@@ -71,7 +77,9 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        throw new NotSupportedException(
+            '"findIdentityByAccessToken" is not implemented.'
+        );
     }
 
     /**
@@ -82,7 +90,9 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(
+            ['username' => $username, 'status' => self::STATUS_ACTIVE]
+        );
     }
 
     /**
@@ -107,9 +117,9 @@ class User extends ActiveRecord implements IdentityInterface
      * Finds user by verification email token
      *
      * @param string $token verify email token
-     * @return static|null
+     * @return ?static
      */
-    public static function findByVerificationToken($token)
+    public static function findByVerificationToken(string $token): ?self
     {
         return static::findOne([
             'verification_token' => $token,
@@ -123,7 +133,7 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $token password reset token
      * @return bool
      */
-    public static function isPasswordResetTokenValid($token)
+    public static function isPasswordResetTokenValid(string $token): bool
     {
         if (empty($token)) {
             return false;
@@ -165,9 +175,10 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $password password to validate
      * @return bool if password provided is valid for current user
      */
-    public function validatePassword($password)
+    public function validatePassword(string $password): bool
     {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
+        return Yii::$app->security
+            ->validatePassword($password, $this->password_hash);
     }
 
     /**
@@ -175,9 +186,10 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @param string $password
      */
-    public function setPassword($password)
+    public function setPassword(string $password)
     {
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+        $this->password_hash = Yii::$app->security
+            ->generatePasswordHash($password);
     }
 
     /**
@@ -193,12 +205,17 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function generatePasswordResetToken()
     {
-        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+        $this->password_reset_token = Yii::$app->security
+            ->generateRandomString() . '_' . time();
     }
 
+    /**
+     * Generates new token for email verification
+     */
     public function generateEmailVerificationToken()
     {
-        $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
+        $this->verification_token = Yii::$app->security
+            ->generateRandomString() . '_' . time();
     }
 
     /**

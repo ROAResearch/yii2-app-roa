@@ -1,11 +1,13 @@
 <?php
 
-class m130524_201442_user extends \tecnocen\migrate\CreateTableMigration
+use roaresearch\yii2\migrate\CreateTableMigration;
+
+class m130524_201442_user extends CreateTableMigration
 {
     /**
      * @inheritdoc
      */
-    public function getTableName()
+    public function getTableName(): string
     {
         return 'user';
     }
@@ -13,7 +15,7 @@ class m130524_201442_user extends \tecnocen\migrate\CreateTableMigration
     /**
      * @inheritdoc
      */
-    public function columns()
+    public function columns(): array
     {
         return [
             'id' => $this->primaryKey(),

@@ -3,9 +3,7 @@
 namespace console;
 
 use Composer\Script\Event;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Console;
-use yii\helpers\FileHelper;
+use yii\helpers\{ArrayHelper, Console, FileHelper};
 
 class FrameworkListener
 {
@@ -98,7 +96,7 @@ class FrameworkListener
      * @param string $from
      * @param string $to
      */
-    public static function copyFileConsoleOutput($from, $to)
+    public static function copyFileConsoleOutput(string $from, string $to)
     {
         if (is_file($to)) {
             Console::output(
@@ -115,7 +113,7 @@ class FrameworkListener
      * @param string $to path where file will be copied.
      * @return bool whether to proceed copying the file.
      */
-    public static function fileOverwrite($from, $to)
+    public static function fileOverwrite(string $from, string $to)
     {
         if (is_dir($to) || !file_exists($to)) {
             return true;
@@ -142,7 +140,7 @@ class FrameworkListener
      *
      * @param string $path file or folder path to assign permissions.
      */
-    public static function setWritable($path)
+    public static function setWritable(string $path)
     {
         static::chmod($path, 0777);
     }
@@ -152,7 +150,7 @@ class FrameworkListener
      *
      * @param string $path file or folder path to assign permissions.
      */
-    public static function setExecutable($path)
+    public static function setExecutable(string $path)
     {
         static::chmod($path, 0755);
     }
@@ -163,7 +161,7 @@ class FrameworkListener
      * @param string $path file or folder path to assign permissions.
      * @param int $permission octal permission to be assigned.
      */
-    protected static function chmod($path, $permission)
+    protected static function chmod(string $path, $permission)
     {
         $fullPath = self::$root . "/$path";
         if (file_exists($fullPath)) {
@@ -177,7 +175,7 @@ class FrameworkListener
                 Console::error(
                     'Operation chmod not permitted for '
                         . Console::ansiFormat($path, [Console::FG_RED])
-               );
+                );
             }
         } else {
             Console::error(
@@ -192,7 +190,7 @@ class FrameworkListener
      *
      * @param string $file path to the file.
      */
-    public static function setCookieValidationKey($file)
+    public static function setCookieValidationKey(string $file)
     {
         Console::output("   generate cookie validation key in $file.");
         $file = self::$root . '/' . $file;
@@ -213,7 +211,7 @@ class FrameworkListener
      * @param string $link the path of the linked file or folder
      * @param string $target the path of the link
      */
-    public static function createSymlink($target, $link)
+    public static function createSymlink(string $target, string $link)
     {
         $link = self::$root . "/$link";
         $target = self::$root . "/$target";
@@ -231,7 +229,10 @@ class FrameworkListener
         }
     }
 
-    public static function rmdir($dir)
+    /**
+     * @param string route of directory to delete
+     */
+    public static function rmdir(string $dir)
     {
         if (is_dir($dir)) {
             $objects = scandir($dir);

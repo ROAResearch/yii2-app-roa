@@ -2,10 +2,12 @@
 
 namespace frontend\api\v1;
 
-use tecnocen\roa\controllers\ProfileResource;
-use tecnocen\roa\urlRules\SingleRecord as SingleRecordUrlRule;
+use roaresearch\yii2\roa\{
+    controllers\ProfileResource,
+    urlRules\SingleRecord as SingleRecordUrlRule
+};
 
-class Version extends \tecnocen\roa\modules\ApiVersion
+class Version extends \roaresearch\yii2\roa\modules\ApiVersion
 {
     /**
      * @inheritdoc

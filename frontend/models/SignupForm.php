@@ -50,12 +50,13 @@ class SignupForm extends Model
     /**
      * Signs user up.
      *
-     * @return bool whether the creating new account was successful and email was sent
+     * @return bool whether the creating new account was successful and email
+     * was sent
      */
-    public function signup()
+    public function signup(): bool
     {
         if (!$this->validate()) {
-            return null;
+            return false;
         }
 
         $user = new User();
@@ -73,7 +74,7 @@ class SignupForm extends Model
      * @param User $user user model to with email should be send
      * @return bool whether the email was sent
      */
-    protected function sendEmail($user)
+    protected function sendEmail(User $user): bool
     {
         return Yii::$app
             ->mailer
@@ -81,7 +82,9 @@ class SignupForm extends Model
                 ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
                 ['user' => $user]
             )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setFrom([
+                Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot',
+            ])
             ->setTo($this->email)
             ->setSubject('Account registration at ' . Yii::$app->name)
             ->send();

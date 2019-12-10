@@ -3,8 +3,7 @@
 namespace backend\tests\api\v1;
 
 use backend\tests\ApiTester;
-use Codeception\Example;
-use Codeception\Util\HttpCode;
+use Codeception\{Example, Util\HttpCode};
 
 class UserCest
 {

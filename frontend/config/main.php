@@ -1,8 +1,7 @@
 <?php
 
 use common\models\User;
-use frontend\api\VersionContainer;
-use frontend\controllers;
+use frontend\{api\VersionContainer, controllers};
 use yii\log\FileTarget;
 
 $params = array_merge(

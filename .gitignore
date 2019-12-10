@@ -14,10 +14,6 @@ nbproject
 .project
 .settings
 
-# php-cs-fixer
-/.php_cs
-/.php_cs.cache
-
 # windows thumbnail cache
 Thumbs.db
 
@@ -42,9 +38,11 @@ phpunit.phar
 /.vagrant
 
 # ignore generated files
+composer.lock
 /frontend/web/index.php
 /frontend/web/index-test.php
 /frontend/web/robots.txt
 /backend/web/index.php
 /backend/web/index-test.php
 /backend/web/robots.txt
+/common/config/constants.php

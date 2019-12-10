@@ -5,8 +5,7 @@ namespace console;
 use Composer\Script\Event;
 use PDO;
 use PDOException;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Console;
+use yii\helpers\{ArrayHelper, Console};
 
 class DatabaseListener
 {
@@ -47,6 +46,7 @@ class DatabaseListener
 \$dbuser = '$user';
 \$dbpass = '$pass';
 \$dbname = '$name';
+
 PHP;
         file_put_contents(self::dbFile(), $fileContent);
     }
