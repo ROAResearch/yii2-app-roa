@@ -16,5 +16,5 @@ modules:
 coverage:
     enabled: true
     include:
-        - common/models/*
-        - common/widgets/*
+        - models/*
+        - widgets/*

@@ -13,3 +13,11 @@ modules:
     config:
         Yii2:
             configFile: 'config/codeception-local.php'
+coverage:
+    enabled: true
+    include:
+        - api/*
+        - assets/*
+        - controllers/*
+        - models/*
+        - views/*

@@ -15,10 +15,9 @@ modules:
             configFile: 'config/codeception-local.php'
 coverage:
     enabled: true
-    remote: false
     include:
-        - models/*
-        - controllers/*
-        - views/*
-        - assets/*
         - api/*
+        - assets/*
+        - controllers/*
+        - models/*
+        - views/*
