@@ -172,6 +172,6 @@ build:
             tests:
                 override:
                     - command: composer run-coveragge
-                        coverage:
-                            file: console/runtime/logs/coverage.xml
-                            format: clover
+                      coverage:
+                          file: console/runtime/logs/coverage.xml
+                          format: clover
