@@ -156,13 +156,17 @@ build:
         mysql: 5.6
         php:
             version: 7.2
-    tests:
+    project_setup:
         before:
             # crear la base de datos, el nombre tiene que coincidir con la base
             - mysql -e "create database yii2_app_roa"
             - mysql -e "create database yii2_app_roa_test"
             # inicializar yii2
-            - composer deploy -- overwrite=1 dbuser=root dbpass= dbname=yii2_app_roa
+            - composer update --prefer-dist --prefer-stable
+    tests:
+        before:
+            - composer deploy-framework -- overwrite=1
+            - composer deploy-database -- dbuser=root dbpass= dbname=yii2_app_roa
         override:
             # test coverage
             -
