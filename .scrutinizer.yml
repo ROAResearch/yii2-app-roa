@@ -167,12 +167,11 @@ build:
         before:
             - composer deploy-framework -- overwrite=1
             - composer deploy-database -- dbuser=root dbpass= dbname=yii2_app_roa
-        override:
-            # test coverage
-            -
-                # comando de coverage
-                command: command run-coveragge -- coverage.xml
-                coverage:
-                   file: 'console/runtime/logs/coverage.xml'
-                   format: 'clover'
-                idle_timeout: 18000
+    nodes:
+        coverage:
+            tests:
+                override:
+                    - command: command run-coveragge
+                        coverage:
+                            file: 'console/runtime/logs/coverage.xml'
+                            format: 'clover'
