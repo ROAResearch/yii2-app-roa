@@ -111,7 +111,7 @@ checks:
         fix_line_ending: true
         fix_identation_4spaces: true
         fix_doc_comments: true
- 
+
 coding_style:
     php:
         spaces:
@@ -166,7 +166,7 @@ build:
     tests:
         before:
             - composer deploy-framework -- overwrite=1
-            - composer deploy-database -- dbuser=root dbpass= dbname=yii2_app_roa
+            - composer deploy-database -- dbhost=127.0.0.1 dbuser=root dbpass= dbname=yii2_app_roa
     nodes:
         coverage:
             tests:

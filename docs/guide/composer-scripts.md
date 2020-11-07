@@ -71,9 +71,10 @@ Parameter |	Type   | Description                  | Default
 --------- | ------ | ---------------------------- | -------
 env       | string | Application work environment | dev
 overwrite | bool   | Overwrite local files        |	Prompt question
-dbuser    | string | Database username            | Prompt question
+dbhost    | string | Database host                | Prompt question[127.0.0.1]
+dbuser    | string | Database username            | Prompt question[root]
 dbpass    | string | Database password            | Prompt question
-dbname    | string | Database name                | Prompt question
+dbname    | string | Database name                | Prompt question[yii2_app_roa]
 
 ### deploy-framework
 
@@ -108,6 +109,13 @@ Ensures the database and loads the structure using migrations and fixtures.
 > * [run-fixtures](#run-fixtures)
 > * [clear-cache](#clear-cache)
 
+Parameter |	Type   | Description       | Default
+--------- | ------ | ----------------- | ---------------
+dbhost    | string | Database host     | Prompt question[127.0.0.1]
+dbuser    | string | Database username | Prompt question[root]
+dbpass    | string | Database password | Prompt question
+dbname    | string | Database name     | Prompt question[yii2_app_roa]
+
 ### truncate-database
 
 `composer truncate-database`
@@ -140,13 +148,14 @@ Can be customized by editing the `console\DatabaseListener` class.
 
 Parameter |	Type   | Description       | Default
 --------- | ------ | ----------------- | ---------------
-dbuser    | string | Database username | Prompt question
+dbhost    | string | Database host     | Prompt question[127.0.0.1]
+dbuser    | string | Database username | Prompt question[root]
 dbpass    | string | Database password | Prompt question
-dbname    | string | Database name     | Prompt question
+dbname    | string | Database name     | Prompt question[yii2_app_roa]
 
 ### migrate-up
 
-`composer migrate-up -- [arguments]` 
+`composer migrate-up -- [arguments]`
 
 shortcut for `yii migrate/up 0 --interactive=0`
 
@@ -154,7 +163,7 @@ See https://www.yiiframework.com/doc/api/2.0/yii-console-controllers-basemigrate
 
 ### migrate-down
 
-`composer migrate-down -- [arguments]` 
+`composer migrate-down -- [arguments]`
 
 shortcut for `yii migrate/down 0 --interactive=0`
 
@@ -197,7 +206,7 @@ Can be customized by editing the `composer.json` file.
 
 ### fixture-load
 
-`composer fixture-load -- [arguments]` 
+`composer fixture-load -- [arguments]`
 
 shortcut for `yii fixture/load '*' 0 --interactive=0`
 

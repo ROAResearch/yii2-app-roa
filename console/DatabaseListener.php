@@ -10,11 +10,6 @@ use yii\helpers\{ArrayHelper, Console};
 
 class DatabaseListener
 {
-    private const PROMPTOPTIONS = [
-        'required' => true,
-        'error' => 'required data.'
-    ];
-
     /**
      * It is used to write the user credentials in a PHP file.
      * @see self::dbFile()
@@ -28,7 +23,7 @@ class DatabaseListener
         $pass = ArrayHelper::getValue($args, 'dbpass');
         $name = ArrayHelper::getValue($args, 'dbname');
         if (!isset($host, $user, $pass)) {
-            list ($host, $user, $pass) = self::requestCredentials();
+            list ($host, $user, $pass) = self::requestCredentials($host, $user, $pass);
         }
         while (null === ($pdo = self::createPDO($host, $user, $pass))) {
             self::errorMsg('Username/password incorrect.');
@@ -70,10 +65,13 @@ PHP;
 
     /**
      * @return string[] MySQL user credentials.
+     * @param null|string $host MySQL host (prompt|argument from composer).
+     * @param null|string $user MySQL user (prompt|argument from composer).
+     * @param null|string $pass MySQL password (prompt|argument from composer).
      */
-    protected static function requestCredentials()
+    protected static function requestCredentials($host = null, $user = null, $pass = null)
     {
-        $host = Console::prompt('Database host', [
+        $host = (null === $host) ? Console::prompt('Database host', [
             'default' => '127.0.0.1',
             'validator' => function ($input, &$error) {
                 $valid = false;
@@ -88,9 +86,11 @@ PHP;
 
                 return $valid;
             }
-        ]);
-        $user = Console::prompt('Database username', self::PROMPTOPTIONS);
-        $pass = Console::prompt('Database password');
+        ]) : $host;
+        $user = (null === $user) ? Console::prompt('Database username', [
+            'default' => 'root'
+        ]) : $user;
+        $pass = (null === $pass) ? Console::prompt('Database password') : $pass;
 
         return [$host, $user, $pass];
     }
@@ -100,12 +100,14 @@ PHP;
      */
     protected static function requestName()
     {
-        return Console::prompt('Database name', self::PROMPTOPTIONS);
+        return Console::prompt('Database name', [
+            'default' => 'yii2_app_roa'
+        ]);
     }
 
     /**
-     * @param  string $user MySQL user.
-     * @param  string $pass MySQL password.
+     * @param string $user MySQL user.
+     * @param string $pass MySQL password.
      * @param string $host MySQL host.
      * @return PDO|null    If the connection fails, it returns null.
      */

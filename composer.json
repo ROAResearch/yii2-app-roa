@@ -69,7 +69,7 @@
     },
     "scripts": {
         "help-scripts": "cat docs/guide/composer-scripts.md",
-        "browse-help-scripts": "browse https://git.io/fAepY#",
+        "browse-help-scripts": "browse https://git.io/JkenB",
         "pre-install-cmd": "console\\ComposerListener::init",
         "pre-update-cmd": "console\\ComposerListener::init",
         "sniff-php-file": [
