@@ -62,7 +62,9 @@
         "classmap": [
             "console/ComposerListener.php",
             "console/DatabaseListener.php",
-            "console/FrameworkListener.php"
+            "console/FrameworkListener.php",
+            "console/models/Host.php",
+            "vendor/yiisoft/yii2/Yii.php"
         ]
     },
     "scripts": {

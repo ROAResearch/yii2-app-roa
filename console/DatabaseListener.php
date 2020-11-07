@@ -3,12 +3,18 @@
 namespace console;
 
 use Composer\Script\Event;
+use console\models\Host;
 use PDO;
 use PDOException;
 use yii\helpers\{ArrayHelper, Console};
 
 class DatabaseListener
 {
+    private const PROMPTOPTIONS = [
+        'required' => true,
+        'error' => 'required data.'
+    ];
+
     /**
      * It is used to write the user credentials in a PHP file.
      * @see self::dbFile()
@@ -17,32 +23,30 @@ class DatabaseListener
     public static function config(Event $event)
     {
         $args = ComposerListener::parseArguments($event->getArguments());
+        $host = ArrayHelper::getValue($args, 'dbhost');
         $user = ArrayHelper::getValue($args, 'dbuser');
         $pass = ArrayHelper::getValue($args, 'dbpass');
         $name = ArrayHelper::getValue($args, 'dbname');
-        if (!isset($user, $pass)) {
-            list ($user, $pass) = self::requestCredentials();
+        if (!isset($host, $user, $pass)) {
+            list ($host, $user, $pass) = self::requestCredentials();
         }
-
-        while (null === ($pdo = self::createPDO($user, $pass))) {
-            Console::output(Console::ansiFormat(
-                'Username/password incorrect.',
-                [Console::FG_RED]
-            ));
-            list ($user, $pass) = self::requestCredentials();
+        while (null === ($pdo = self::createPDO($host, $user, $pass))) {
+            self::errorMsg('Username/password incorrect.');
+            list ($host, $user, $pass) = self::requestCredentials();
         }
 
         if (empty($name)) {
             $name = self::requestName();
         }
         while (!self::useDB($pdo, $name)) {
-            echo "You don't have permissions to access `$name` database.\n";
+            self::errorMsg("You don't have permissions to access `$name` database.");
             $name = self::requestName();
         }
 
         $fileContent = <<<PHP
 <?php
 
+\$dbhost = '$host';
 \$dbuser = '$user';
 \$dbpass = '$pass';
 \$dbname = '$name';
@@ -52,14 +56,43 @@ PHP;
     }
 
     /**
+     * Drops and create database.
+     */
+    public static function truncate()
+    {
+        include self::dbFile();
+        $pdo = self::createPDO($host, $dbuser, $dbpass);
+        $pdo->query("DROP DATABASE IF EXISTS $dbname");
+        $pdo->query("DROP DATABASE IF EXISTS {$dbname}_test");
+        $pdo->query("CREATE DATABASE $dbname");
+        $pdo->query("CREATE DATABASE {$dbname}_test");
+    }
+
+    /**
      * @return string[] MySQL user credentials.
      */
     protected static function requestCredentials()
     {
-        $user = Console::prompt('Database username');
+        $host = Console::prompt('Database host', [
+            'default' => '127.0.0.1',
+            'validator' => function ($input, &$error) {
+                $valid = false;
+                $model = new Host();
+                $model->ipHost = $input;
+
+                if ($model->validate()) {
+                    $valid = true;
+                } else {
+                    $error = self::errorMsg('Invalid IP address.');
+                }
+
+                return $valid;
+            }
+        ]);
+        $user = Console::prompt('Database username', self::PROMPTOPTIONS);
         $pass = Console::prompt('Database password');
 
-        return [$user, $pass];
+        return [$host, $user, $pass];
     }
 
     /**
@@ -67,18 +100,19 @@ PHP;
      */
     protected static function requestName()
     {
-        return Console::prompt('Database name');
+        return Console::prompt('Database name', self::PROMPTOPTIONS);
     }
 
     /**
      * @param  string $user MySQL user.
      * @param  string $pass MySQL password.
-     * @return \PDO|null    If the connection fails, it returns null.
+     * @param string $host MySQL host.
+     * @return PDO|null    If the connection fails, it returns null.
      */
-    protected static function createPDO($user, $pass)
+    protected static function createPDO($host, $user, $pass)
     {
         try {
-            $pdo = new PDO('mysql:host=127.0.0.1', $user, $pass);
+            $pdo = new PDO('mysql:host=' . $host, $user, $pass);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             return $pdo;
@@ -101,7 +135,7 @@ PHP;
 
             return true;
         } catch (PDOException $e) {
-            echo "You can't access `$dbname` error {$e->getMessage()}.\n";
+            self::errorMsg("You can't access `$dbname` error {$e->getMessage()}.");
 
             return false;
         }
@@ -115,16 +149,11 @@ PHP;
         return dirname(__DIR__) . '/common/config/db.php';
     }
 
-    /**
-     * Drops and create database.
-     */
-    public static function truncate()
+    protected static function errorMsg($message)
     {
-        include self::dbFile();
-        $pdo = self::createPDO($dbuser, $dbpass);
-        $pdo->query("DROP DATABASE IF EXISTS $dbname");
-        $pdo->query("DROP DATABASE IF EXISTS {$dbname}_test");
-        $pdo->query("CREATE DATABASE $dbname");
-        $pdo->query("CREATE DATABASE {$dbname}_test");
+        return Console::output(Console::ansiFormat(
+            $message,
+            [Console::ITALIC, Console::FG_RED]
+        ));
     }
 }
