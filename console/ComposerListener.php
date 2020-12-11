@@ -3,6 +3,7 @@
 namespace console;
 
 use Composer\Script\Event;
+use yii\helpers\Console;
 
 class ComposerListener
 {
@@ -25,7 +26,11 @@ class ComposerListener
      */
     public static function autoload(Event $event)
     {
-        require dirname(__DIR__) . '/vendor/autoload.php';
+        $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
+        require dirname(__DIR__) . '/common/config/constants.php';
+        require $vendorDir . '/autoload.php';
+        require $vendorDir . '/yiisoft/yii2/Yii.php';
+        require dirname(__DIR__) . '/console/models/Host.php';
     }
 
     /**
@@ -64,5 +69,94 @@ class ComposerListener
         }
 
         return $parsed;
+    }
+
+    public static function config(Event $event)
+    {
+        $args = self::parseArguments($event->getArguments());
+
+        if (array_key_exists('env', $args) && $args['env'] === 'Production') {
+            return shell_exec('composer install --no-dev --optimize-autoloader');
+        }
+
+        return shell_exec('composer update --prefer-dist --prefer-stable');
+    }
+
+    public static function migrateUp(Event $event)
+    {
+        self::autoload($event);
+        $migrate = $event->getArguments()[0];
+
+        if (YII_ENV_PROD) {
+            $command = 'php yii migrate/up 0 --interactive=0 ' . $migrate;
+        } else {
+            $command = 'php yii migrate/up 0 --interactive=0 ' . $migrate;
+            $command = $command . ';php yii_test migrate/up 0 --interactive=0 ' . $migrate;
+        }
+
+        return self::executeCommand($command);
+    }
+
+    public static function migrateDown(Event $event)
+    {
+        self::autoload($event);
+
+        if (YII_ENV_PROD) {
+            $command = 'php yii migrate/down all --interactive=0';
+        } else {
+            $command = 'php yii migrate/down all --interactive=0';
+            $command = $command . ';php yii_test migrate/down all --interactive=0';
+        }
+
+        return self::executeCommand($command);
+    }
+
+    public static function fixtureLoad(Event $event)
+    {
+        self::autoload($event);
+        $fixture = (empty($event->getArguments())) ? '' : ' "' . $event->getArguments()[0] . '"';
+
+        if (YII_ENV_PROD) {
+            $command = 'php yii fixture/load "*" --interactive=0' . $fixture;
+        } else {
+            $command = 'php yii fixture/load "*" --interactive=0' . $fixture;
+            $command = $command . ';php yii fixture/load "*" --interactive=0' . $fixture;
+        }
+
+        return self::executeCommand($command);
+    }
+
+    public static function runTest(Event $event)
+    {
+        self::autoload($event);
+
+        if (YII_ENV_PROD) {
+            return self::msgCyan('Test is not possible on production systems');
+        }
+
+        if (empty($event->getArguments())) {
+            $arg = '##';
+        } else {
+            $arg = implode(' ', $event->getArguments());
+        }
+
+        $command = 'php vendor/bin/codecept run --steps ' . $arg;
+
+        return self::executeCommand($command);
+    }
+
+    protected static function executeCommand($command)
+    {
+        return self::msgCyan($command) . self::msg(shell_exec($command));
+    }
+
+    protected static function msg($message)
+    {
+        return Console::output(Console::ansiFormat($message));
+    }
+
+    protected static function msgCyan($message)
+    {
+        return Console::output(Console::ansiFormat($message, [Console::FG_CYAN]));
     }
 }

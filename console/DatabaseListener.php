@@ -56,11 +56,19 @@ PHP;
     public static function truncate()
     {
         include self::dbFile();
-        $pdo = self::createPDO($host, $dbuser, $dbpass);
-        $pdo->query("DROP DATABASE IF EXISTS $dbname");
-        $pdo->query("DROP DATABASE IF EXISTS {$dbname}_test");
-        $pdo->query("CREATE DATABASE $dbname");
-        $pdo->query("CREATE DATABASE {$dbname}_test");
+        $pdo = self::createPDO($dbhost, $dbuser, $dbpass);
+
+        if (YII_ENV_PROD) {
+            $prod = Console::confirm(self::errorMsg('¿Delete database in production?'));
+            if ($prod) {
+                self::errorMsg('Truncate is not possible on production systems.');
+            }
+        } else {
+            $pdo->query("DROP DATABASE IF EXISTS $dbname");
+            $pdo->query("DROP DATABASE IF EXISTS {$dbname}_test");
+            $pdo->query("CREATE DATABASE $dbname");
+            $pdo->query("CREATE DATABASE {$dbname}_test");
+        }
     }
 
     /**
@@ -131,8 +139,12 @@ PHP;
     protected static function useDb(PDO $pdo, $dbname)
     {
         try {
-            $pdo->query("CREATE DATABASE IF NOT EXISTS $dbname");
-            $pdo->query("CREATE DATABASE IF NOT EXISTS {$dbname}_test");
+            if (YII_ENV_PROD) {
+                $pdo->query("CREATE DATABASE IF NOT EXISTS $dbname");
+            } else {
+                $pdo->query("CREATE DATABASE IF NOT EXISTS $dbname");
+                $pdo->query("CREATE DATABASE IF NOT EXISTS {$dbname}_test");
+            }
             $pdo->query("USE $dbname");
 
             return true;

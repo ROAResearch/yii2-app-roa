@@ -62,9 +62,7 @@
         "classmap": [
             "console/ComposerListener.php",
             "console/DatabaseListener.php",
-            "console/FrameworkListener.php",
-            "console/models/Host.php",
-            "vendor/yiisoft/yii2/Yii.php"
+            "console/FrameworkListener.php"
         ]
     },
     "scripts": {
@@ -81,50 +79,40 @@
             "@php vendor/bin/phpcbf --report=diff"
         ],
         "deploy": [
-            "@composer update --prefer-dist --prefer-stable",
-            "console\\ComposerListener::autoload" ,
+            "console\\ComposerListener::config",
             "@deploy-framework",
             "@deploy-database",
-            "@composer run-tests ##"
+            "@composer run-tests"
         ],
         "deploy-framework": "console\\FrameworkListener::deploy",
         "deploy-database": [
+            "console\\ComposerListener::autoload",
             "@config-database",
             "@run-migrations",
             "@run-fixtures",
             "@clear-framework-cache"
         ],
         "truncate-database": [
+            "console\\ComposerListener::autoload",
             "console\\DatabaseListener::truncate",
             "@run-migrations",
             "@run-fixtures",
             "@clear-framework-cache"
         ],
         "config-database": "console\\DatabaseListener::config",
-        "migrate-up": [
-            "@php yii migrate/up 0 --interactive=0",
-            "@php yii_test migrate/up 0 --interactive=0"
-        ],
-        "migrate-down": [
-            "@php yii migrate/down 0 --interactive=0",
-            "@php yii_test migrate/down 0 --interactive=0"
-        ],
+        "migrate-up": "console\\ComposerListener::migrateUp",
+        "migrate-down": "console\\ComposerListener::migrateDown",
         "run-migrations": [
             "@composer migrate-up -- -p=@console/migrations/tables",
             "@composer migrate-up -- -p=@roaresearch/yii2/oauth2server/migrations/tables",
             "@composer migrate-up -- -p=@console/migrations/views"
         ],
         "truncate-migrations": [
-            "@composer migrate-down -- -p=@console/migrations/views",
-            "@composer migrate-down -- -p=@roaresearch/oauth2server/migrations/tables",
-            "@composer migrate-down -- -p=@console/migrations/tables",
+            "@composer migrate-down",
             "@run-migrations",
             "@clear-framework-cache"
         ],
-        "fixture-load": [
-            "@php yii fixture/load '*' --interactive=0",
-            "@php yii_test fixture/load '*' --interactive=0"
-        ],
+        "fixture-load": "console\\ComposerListener::fixtureLoad",
         "run-fixtures": [
             "@composer fixture-load",
             "@composer fixture-load -- -n=roaresearch\\\\yii2\\\\oauth2server\\\\fixtures"
@@ -134,7 +122,7 @@
             "rm -rf console/runtime/cache/*",
             "rm -rf frontend/runtime/cache/*"
         ],
-        "run-tests": "@php vendor/bin/codecept run --steps",
+        "run-tests": "console\\ComposerListener::runTest",
         "run-tests-debug": "@composer run-tests -- -vv -f --no-rebuild",
         "run-coverage": "@composer run-tests -- --coverage --coverage-xml"
     },
