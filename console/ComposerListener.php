@@ -76,10 +76,21 @@ class ComposerListener
         $args = self::parseArguments($event->getArguments());
 
         if (array_key_exists('env', $args) && $args['env'] === 'Production') {
-            return shell_exec('composer install --no-dev --optimize-autoloader');
+            $command = 'install --no-dev --optimize-autoloader';
+        } else {
+            $command = 'update --prefer-dist --prefer-stable';
         }
 
-        return shell_exec('composer update --prefer-dist --prefer-stable');
+        $BannerComposer = '
+       ______
+      / ____/___  ____ ___  ____  ____  ________  _____
+     / /   / __ \/ __ `__ \/ __ \/ __ \/ ___/ _ \/ ___/
+    / /___/ /_/ / / / / / / /_/ / /_/ (__  )  __/ /
+    \____/\____/_/ /_/ /_/ .___/\____/____/\___/_/  ' . $command . '
+                        /_/';
+        self::msgCyan($BannerComposer);
+
+        return system('composer ' . $command);
     }
 
     public static function migrateUp(Event $event)
@@ -120,7 +131,7 @@ class ComposerListener
             $command = 'php yii fixture/load "*" --interactive=0' . $fixture;
         } else {
             $command = 'php yii fixture/load "*" --interactive=0' . $fixture;
-            $command = $command . ';php yii fixture/load "*" --interactive=0' . $fixture;
+            $command = $command . ';php yii_test fixture/load "*" --interactive=0' . $fixture;
         }
 
         return self::executeCommand($command);
@@ -147,7 +158,7 @@ class ComposerListener
 
     protected static function executeCommand($command)
     {
-        return self::msgCyan($command) . self::msg(shell_exec($command));
+        return self::msgCyan($command) . self::msg(system($command));
     }
 
     protected static function msg($message)
