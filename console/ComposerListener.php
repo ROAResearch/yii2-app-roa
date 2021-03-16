@@ -88,9 +88,10 @@ class ComposerListener
     / /___/ /_/ / / / / / / /_/ / /_/ (__  )  __/ /
     \____/\____/_/ /_/ /_/ .___/\____/____/\___/_/  ' . $command . '
                         /_/';
-        self::msgCyan($BannerComposer);
+        echo "\033[0;34m \033[1m" . $BannerComposer;
+        passthru('printf "\n\n"');
 
-        return system('composer ' . $command);
+        return passthru('composer ' . $command);
     }
 
     public static function migrateUp(Event $event)
@@ -158,7 +159,7 @@ class ComposerListener
 
     protected static function executeCommand($command)
     {
-        return self::msgCyan($command) . self::msg(system($command));
+        return self::msgCyan($command) . self::msg(passthru($command));
     }
 
     protected static function msg($message)
