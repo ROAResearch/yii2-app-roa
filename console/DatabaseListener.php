@@ -19,15 +19,16 @@ class DatabaseListener
     {
         $args = ComposerListener::parseArguments($event->getArguments());
         $host = ArrayHelper::getValue($args, 'dbhost');
+        $port = ArrayHelper::getValue($args, 'dbport');
         $user = ArrayHelper::getValue($args, 'dbuser');
         $pass = ArrayHelper::getValue($args, 'dbpass');
         $name = ArrayHelper::getValue($args, 'dbname');
-        if (!isset($host, $user, $pass)) {
-            list ($host, $user, $pass) = self::requestCredentials($host, $user, $pass);
+        if (!isset($host, $port, $user, $pass)) {
+            list ($host, $port, $user, $pass) = self::requestCredentials($host, $port, $user, $pass);
         }
-        while (null === ($pdo = self::createPDO($host, $user, $pass))) {
+        while (null === ($pdo = self::createPDO($host, $port, $user, $pass))) {
             self::errorMsg('Username/password incorrect.');
-            list ($host, $user, $pass) = self::requestCredentials();
+            list ($host, $port, $user, $pass) = self::requestCredentials();
         }
 
         if (empty($name)) {
@@ -42,6 +43,7 @@ class DatabaseListener
 <?php
 
 \$dbhost = '$host';
+\$dbport = '$port';
 \$dbuser = '$user';
 \$dbpass = '$pass';
 \$dbname = '$name';
@@ -74,33 +76,37 @@ PHP;
     /**
      * @return string[] MySQL user credentials.
      * @param null|string $host MySQL host (prompt|argument from composer).
+     * @param null|string $host MySQL port (prompt|argument from composer).
      * @param null|string $user MySQL user (prompt|argument from composer).
      * @param null|string $pass MySQL password (prompt|argument from composer).
      */
-    protected static function requestCredentials($host = null, $user = null, $pass = null)
+    protected static function requestCredentials($host = null, $port = null, $user = null, $pass = null)
     {
         $host = (null === $host) ? Console::prompt('Database host', [
-            'default' => '127.0.0.1',
+            'default' => 'localhost'
+        ]) : $host;
+        $port = (null === $port) ? Console::prompt('Database port', [
+            'default' => '3306',
             'validator' => function ($input, &$error) {
                 $valid = false;
                 $model = new Host();
-                $model->ipHost = $input;
+                $model->port = $input;
 
                 if ($model->validate()) {
                     $valid = true;
                 } else {
-                    $error = self::errorMsg('Invalid IP address.');
+                    $error = self::errorMsg('Invalid Port.');
                 }
 
                 return $valid;
             }
-        ]) : $host;
+        ]) : $port;
         $user = (null === $user) ? Console::prompt('Database username', [
             'default' => 'root'
         ]) : $user;
         $pass = (null === $pass) ? Console::prompt('Database password') : $pass;
 
-        return [$host, $user, $pass];
+        return [$host, $port, $user, $pass];
     }
 
     /**
@@ -117,12 +123,13 @@ PHP;
      * @param string $user MySQL user.
      * @param string $pass MySQL password.
      * @param string $host MySQL host.
+     * @param string $port MySQL port.
      * @return PDO|null    If the connection fails, it returns null.
      */
-    protected static function createPDO($host, $user, $pass)
+    protected static function createPDO($host, $port, $user, $pass)
     {
         try {
-            $pdo = new PDO('mysql:host=' . $host, $user, $pass);
+            $pdo = new PDO('mysql:host=' . $host . ';port=' . $port, $user, $pass);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             return $pdo;

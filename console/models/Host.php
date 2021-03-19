@@ -6,12 +6,12 @@ use yii\base\Model;
 
 class Host extends Model
 {
-    public $ipHost;
+    public $port;
 
     public function rules()
     {
         return [
-            ['ipHost', 'ip']
+            ['port', 'integer']
         ];
     }
 }
