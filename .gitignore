@@ -46,3 +46,11 @@ composer.lock
 /backend/web/index-test.php
 /backend/web/robots.txt
 /common/config/constants.php
+
+# sublime text 3 project
+*.sublime-workspace
+/*.sublime-project
+
+# php-cs-fixer
+/.php_cs.dist
+.php_cs.cache

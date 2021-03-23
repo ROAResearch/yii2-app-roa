@@ -44,6 +44,8 @@ return [
             'yii',
             'yii_test',
             'git-hooks/pre-commit',
+            '.php_cs.dist',
+            'yii2-app-roa.sublime-project',
         ],
         'setCookieValidationKey' => [
             'backend/config/main-local.php',

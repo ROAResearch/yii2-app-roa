@@ -1,0 +1,116 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+			"folder_exclude_patterns": [
+				".git",
+				".phpintel",
+				"backend/web/assets",
+				"backend/runtime",
+				"frontend/web/assets",
+				"frontend/runtime"
+			],
+			"binary_file_patterns": [
+				"*.jpg",
+				"*.jpeg",
+				"*.png",
+				"*.gif",
+				"*.ttf",
+				"*.tga",
+				"*.dds",
+				"*.ico",
+				"*.eot",
+				"*.pdf",
+				"*.swf",
+				"*.jar",
+				"*.zip",
+				"*.lock"
+			],
+			"file_exclude_patterns":
+			[
+				"*.pyc",
+				"*.pyo",
+				"*.exe",
+				"*.dll",
+				"*.obj",
+				"*.o",
+				"*.a",
+				"*.lib",
+				"*.so",
+				"*.dylib",
+				"*.ncb",
+				"*.sdf",
+				"*.suo",
+				"*.pdb",
+				"*.idb",
+				".DS_Store",
+				"*.class",
+				"*.psd",
+				"*.db",
+				"*.sublime-workspace",
+				"*.sql",
+				"*.data",
+				"*.log",
+				"*.eml",
+				"*.mp4"
+			]
+		}
+	],
+	"settings":
+    {
+    	"phpcs":
+        {
+			"show_debug": true,
+			"phpcs_php_path": "/opt/lampp/bin/php",
+			"phpcs_executable_path": "/opt/lampp/htdocs/yii2-app-roa/vendor/bin/phpcs",
+			"phpcbf_executable_path": "/opt/lampp/htdocs/yii2-app-roa/vendor/bin/phpcbf",
+			"php_cs_fixer_on_save": true,
+		    "php_cs_fixer_executable_path": "/opt/lampp/htdocs/yii2-app-roa/vendor/bin/php-cs-fixer",
+		    "php_cs_fixer_additional_args": {
+		    	"--config": "/opt/lampp/htdocs/yii2-app-roa/.php_cs.dist",
+		    },
+	        "extensions_to_blacklist": [
+	        	"./backend/config/*",
+		    	"./backend/runtime/*",
+		    	"./backend/test/*",
+		    	"./backend/web/*",
+		        "./frontend/config/*",
+		        "./frontend/runtime/*",
+		        "./frontend/test/*",
+		        "./frontend/web/*",
+		        "./common/config/*",
+		        "./common/fixtures/*",
+		        "./common/runtime/*",
+		        "./common/test/*",
+		        "./console/config/*",
+		        "./console/models/*",
+		        "./console/runtime/*",
+		        "./environments/*",
+		        "./vendor/*",
+		    ],
+        },
+        "rulers":
+		[
+			80,
+			120
+		],
+		"always_show_minimap_viewport": false,
+		"auto_close_tags": true,
+		"auto_complete": true,
+		"auto_complete_size_limit": 4194304,
+		"auto_indent": true,
+		"copy_with_empty_selection": false,
+		"drag_text": false,
+		"draw_white_space": "all",
+		"enable_telemetry": "auto",
+		"line_padding_bottom": 2,
+		"line_padding_top": 2,
+		"match_brackets_content": true,
+		"match_tags": true,
+		"save_on_focus_lost": true,
+		"tab_size": 4,
+		"trim_trailing_white_space_on_save": true,
+		"word_wrap": true,
+    }
+}
