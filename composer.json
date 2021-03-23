@@ -72,7 +72,7 @@
         "pre-update-cmd": "console\\ComposerListener::init",
         "sniff-php-file": [
             "@php -l",
-            "@php vendor/bin/phpcs"
+            "@php vendor/bin/phpcs  --standard=phpcs.xml"
         ],
         "beautify-php-file": [
             "@php -l",

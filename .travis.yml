@@ -32,9 +32,9 @@ install:
 # setup application:
 
 before_script:
-  - mysql -e 'CREATE DATABASE yii2_app_ro;'
+  - mysql -e 'CREATE DATABASE yii2_app_roa;'
   - mysql -e 'CREATE DATABASE yii2_app_roa_test;'
-  - composer deploy --  dbname=yii2_app_roa dbuser=root overwrite=1 dbpass= 
+  - composer deploy --  dbname=yii2_app_roa dbuser=root overwrite=1 dbpass=
 
 script:
   - composer run-tests
