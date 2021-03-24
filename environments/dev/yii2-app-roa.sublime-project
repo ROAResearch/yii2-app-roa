@@ -1,3 +1,4 @@
+// Crear enlace simbolico PHP/LAMPP para que Sublime ejecute correctamente Phpcs: sudo ln -s /opt/lampp/bin/php /usr/local/bin/php
 {
 	"folders":
 	[
