@@ -37,18 +37,19 @@ Ejecuta todas las operaciones necesarias para tener una aplicación funcional.
 
 > Usa los comandos
 >
-> * `create-project --prefer-dist`
-> * `deploy-framework`
-> * `deploy-database`
-> * `run-tests`
+> * `update --prefer-stable --prefer-dist`
+> * [deploy-framework](#deploy-framework)
+> * [deploy-database](#deploy-database)
+> * [run-tests](#run-tests)
 
 Parametro |	Tipo   | Descripción                    | Valor por Defecto
 --------- | ------ | ------------------------------ | -------
 env       | string | Ambiente de trabajo            | dev
-overwrite | bool   | Sobreescribir archivos locales |	Preguntar
-dbuser    | string | Usuario de la Base de Datos    | Preguntar
+overwrite | bool   | Sobreescribir archivos locales | Preguntar
+dbhost    | string | Host de la Base de Datos       | Preguntar[127.0.0.1]
+dbuser    | string | Usuario de la Base de Datos    | Preguntar[root]
 dbpass    | string | contraseña de la Base de Datos | Preguntar
-dbname    | string | Nombre de la Base de Datos     | Preguntar
+dbname    | string | Nombre de la Base de Datos     | Preguntar[yii2_app_roa]
 
 ### deploy-framework
 
@@ -62,16 +63,16 @@ Puede ser personalizado editando la clase `console\FrameworkListener`.
 
 * Nota: Requiere tener instalado el framework de Yii2.
 
-Parametro |	Tipo   | Descripción                    | Valor por Defecto
+Parámetro |	Tipo   | Descripción                    | Valor por Defecto
 --------- | ------ | ------------------------------ | -------
 env       | string | Ambiente de trabajo            | dev
-overwrite | bool   | Sobreescribir archivos locales |	Preguntar
- 
+overwrite | bool   | Sobreescribir archivos locales | Preguntar
+
 ### deploy-database
 
 `composer deploy-database -- [arguments]`
 
-Aasegura la existencia de la base de datos y carga la estructura usando migraciones y fixtures.
+Asegura la existencia de la base de datos y carga la estructura usando migraciones y fixtures.
 
 > Nota: De momento sólo `mysql` esta soportado.
 
@@ -79,16 +80,17 @@ Aasegura la existencia de la base de datos y carga la estructura usando migracio
 
 > Usa los commandos
 >
-> * `config-database`
-> * `run-migrations`
-> * `run-fixtures`
-> * `clear-cache`
+> * [config-database](#config-database)
+> * [run-migrations](#run-migrations)
+> * [run-fixtures](#run-fixtures)
+> * [clear-cache](#clear-cache)
 
-Parameter |	Type   | Description      | Default
+Parámetro |	Tipo   | Descripción      | Valor por defecto
 --------- | ------ | ---------------- | ---------
-dbuser    | string | Usuario de BD    | Preguntar
+dbhost    | string | Host de BD       | Preguntar[127.0.0.1]
+dbuser    | string | Usuario de BD    | Preguntar[root]
 dbpass    | string | Contraseña de BD | Preguntar
-dbname    | string | Nombre de BD     | Preguntar
+dbname    | string | Nombre de BD     | Preguntar[yii2_app_roa]
 
 ### truncate-database
 
@@ -103,9 +105,9 @@ fixtures.
 
 > Usa los commandos
 >
-> * `run-migrations`
-> * `run-fixtures`
-> * `clear-cache`
+> * [run-migrations](#run-migrations)
+> * [run-fixtures](#run-fixtures)
+> * [clear-cache](#clear-cache)
 
 ### config-database
 
@@ -115,15 +117,16 @@ Asegura los permisos de la base de datos y los guarda para uso del framework.
 
 Puede personalizarse editando la clase `console\DatabaseListener`.
 
-* Note: Currently only mysql driver is supported.
+* Nota: De momento sólo `mysql` esta soportado.
 
 * Nota: Requiere tener instalado el framework de Yii2.
 
-Parameter |	Type   | Description      | Default
+Parámetro |	Tipo   | Descripción      | Valor por defecto
 --------- | ------ | ---------------- | ---------
-dbuser    | string | Usuario de BD    | Preguntar
+dbhost    | string | Host de BD       | Preguntar[127.0.0.1]
+dbuser    | string | Usuario de BD    | Preguntar[root]
 dbpass    | string | Contraseña de BD | Preguntar
-dbname    | string | Nombre de BD     | Preguntar
+dbname    | string | Nombre de BD     | Preguntar[yii2_app_roa]
 
 ### run-migrations
 
