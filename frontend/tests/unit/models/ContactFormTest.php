@@ -2,8 +2,11 @@
 
 namespace frontend\tests\unit\models;
 
+use Codeception\Verify\Expect;
 use frontend\models\ContactForm;
 use yii\mail\MessageInterface;
+
+use function expect;
 
 class ContactFormTest extends \Codeception\Test\Unit
 {
@@ -25,14 +28,15 @@ class ContactFormTest extends \Codeception\Test\Unit
 
         /** @var MessageInterface  $emailMessage */
         $emailMessage = $this->tester->grabLastSentEmail();
-        expect('valid email is sent', $emailMessage)
-            ->isInstanceOf('yii\mail\MessageInterface');
-        expect($emailMessage->getTo())->hasKey('admin@example.com');
-        expect($emailMessage->getFrom())->hasKey('noreply@example.com');
-        expect($emailMessage->getReplyTo())->hasKey('tester@example.com');
+        expect($emailMessage)->toBeInstanceOf(MessageInterface::class);
+        Expect::Array($emailMessage->getTo())->toHaveKey('admin@example.com');
+        Expect::Array($emailMessage->getFrom())
+            ->toHaveKey('noreply@example.com');
+        Expect::Array($emailMessage->getReplyTo())
+            ->toHaveKey('tester@example.com');
         expect($emailMessage->getSubject())
-            ->equals('very important letter subject');
-        expect($emailMessage->toString())
-            ->stringContainsString('body of current message');
+            ->toEqual('very important letter subject');
+        Expect::String($emailMessage->toString())
+            ->toContainString('body of current message');
     }
 }

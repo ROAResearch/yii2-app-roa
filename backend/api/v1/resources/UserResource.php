@@ -15,7 +15,7 @@ class UserResource extends Resource
     /**
      * @inheritdoc
      */
-    public function verbs()
+    public function verbs(): array
     {
         $verbs = parent::verbs();
         unset($verbs['delete'], $verbs['create']);
