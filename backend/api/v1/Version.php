@@ -12,7 +12,7 @@ class Version extends \roaresearch\yii2\roa\modules\ApiVersion
     /**
      * @inheritdoc
      */
-    public $resources = [
+    public array $resources = [
         'profile' => [
             'class' => ProfileResource::class,
             'urlRule' => ['class' => SingleRecordUrlRule::class],

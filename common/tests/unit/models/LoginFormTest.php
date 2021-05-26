@@ -2,8 +2,11 @@
 
 namespace common\tests\unit\models;
 
-use common\{fixtures\UserFixture, models\LoginForm};
+use Codeception\Verify\Expect;
+use common\{fixtures\UserFixture, models\LoginForm, tests\UnitTester};
 use Yii;
+
+use function expect;
 
 /**
  * Login form test
@@ -11,14 +14,14 @@ use Yii;
 class LoginFormTest extends \Codeception\Test\Unit
 {
     /**
-     * @var \common\tests\UnitTester
+     * @var UnitTester
      */
-    protected $tester;
+    protected UnitTester $tester;
 
     /**
      * @return array
      */
-    public function _fixtures()
+    public function _fixtures(): array
     {
         return [
             'user' => [
@@ -30,33 +33,30 @@ class LoginFormTest extends \Codeception\Test\Unit
     /**
      * Trying to log with an unexistant username.
      */
-    public function testLoginNoUser()
+    public function testLoginNoUser(): void
     {
         $model = new LoginForm([
             'username' => 'not_existing_username',
             'password' => 'not_existing_password',
         ]);
 
-        expect('model should not login user', $model->login())->false();
-        expect('user should not be logged in', Yii::$app->user->isGuest)
-            ->true();
+        expect($model->login())->toBeFalse();
+        expect(Yii::$app->user->isGuest)->toBeTrue();
     }
 
     /**
      * Trying to log with an existant user but using wrong password
      */
-    public function testLoginWrongPassword()
+    public function testLoginWrongPassword(): void
     {
         $model = new LoginForm([
             'username' => 'erau',
             'password' => 'wrong_password',
         ]);
 
-        expect('model should not login user', $model->login())->false();
-        expect('error message should be set', $model->errors)
-            ->hasKey('password');
-        expect('user should not be logged in', Yii::$app->user->isGuest)
-            ->true();
+        expect($model->login())->toBeFalse();
+        Expect::Array($model->errors)->toHaveKey('password');
+        expect(Yii::$app->user->isGuest)->toBeTrue();
     }
 
     /**
@@ -69,9 +69,8 @@ class LoginFormTest extends \Codeception\Test\Unit
             'password' => 'password_0',
         ]);
 
-        expect('model should login user', $model->login())->true();
-        expect('error message should not be set', $model->errors)
-            ->hasntKey('password');
-        expect('user should be logged in', Yii::$app->user->isGuest)->false();
+        expect($model->login())->toBeTrue();
+        Expect::Array($model->errors)->notToHaveKey('password');
+        expect(Yii::$app->user->isGuest)->toBeFalse();
     }
 }

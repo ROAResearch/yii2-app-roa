@@ -18,7 +18,6 @@ To run the tests you can use the following commands
 composer run-tests -- # codeception options here
 composer run-tests-debug -- # codeception options here
 composer run-coverage -- # codeception options here
-
 ```
 
 You will see output similar to this:

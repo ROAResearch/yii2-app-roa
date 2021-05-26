@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use Yii;
 use common\models\User;
 use yii\base\{InvalidArgumentException, Model};
 
@@ -33,10 +34,11 @@ class ResetPasswordForm extends Model
             );
         }
 
-        $this->user = User::findByPasswordResetToken($token);
-        if (!$this->user) {
-            throw new InvalidArgumentException('Wrong password reset token.');
-        }
+        $this->user = User::findByPasswordResetToken($token)
+            ?: throw new InvalidArgumentException(
+                'Wrong password reset token.'
+            );
+
         parent::__construct($config);
     }
 
@@ -47,7 +49,7 @@ class ResetPasswordForm extends Model
     {
         return [
             ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
         ];
     }
 
@@ -65,6 +67,7 @@ class ResetPasswordForm extends Model
         $user = $this->user;
         $user->setPassword($this->password);
         $user->removePasswordResetToken();
+        $user->generateAuthKey();
 
         return $user->save(false);
     }

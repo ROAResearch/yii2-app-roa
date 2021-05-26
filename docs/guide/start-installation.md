@@ -3,7 +3,7 @@ Installation
 
 ## Requirements
 
-The minimum requirement by this project template is that your Web server supports PHP 5.5.0.
+The minimum requirement by this project template is that your Web server supports PHP 8.0.0.
 
 ## Installing using Composer
 
@@ -32,6 +32,25 @@ The `deploy` command can also admit parameters.
 [Documentation of the scripts in yii2 app roa](composer-scripts.md)
 
 ## Server configuration
+
+## Preparing application
+
+After you install the application, you have to conduct the following steps to initialize
+the installed application. You only need to do these once for all.
+
+1. Open a console terminal, execute the `init` command and select `dev` as environment.
+
+   ```
+   /path/to/php-bin/php composer deploy
+   ```
+
+   The script will prompt for the required installation parameters. If you
+   automate it with a script you can pass the parameters for install.
+
+   ```
+   /path/to/php-bin/php composer deploy --
+     env=Development overwrite=1 dbuser=root dbpass=root dbname=roa_project
+   ```
 
 ### Set document roots of your web server:
 
@@ -273,9 +292,9 @@ Install the application dependencies
 
 Initialize the application by running the `init` command within a container
 
-    docker-compose run --rm backend /app/init
+    docker-compose run --rm backend php /app/init
 
-Add a database service like and adjust the components['db'] configuration in `common/config/main-local.php` accordingly.
+Adjust the components['db'] configuration in `common/config/main-local.php` accordingly.
     
         'dsn' => 'mysql:host=mysql;dbname=yii2advanced',
         'username' => 'yii2advanced',
@@ -289,14 +308,14 @@ Add a database service like and adjust the components['db'] configuration in `co
 
 For more information about Docker setup please visit the [guide](http://www.yiiframework.com/doc-2.0/guide-index.html).
 
-Run the migrations
-
-    docker-compose run --rm backend yii migrate
-           
 Start the application
 
     docker-compose up -d
-    
+
+Run the migrations
+
+    docker-compose run --rm backend yii migrate          
+
 Access it in your browser by opening
 
 - frontend: http://127.0.0.1:20080
