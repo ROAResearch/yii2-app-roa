@@ -6,6 +6,7 @@ use Codeception\Verify\Expect;
 use common\{fixtures\UserFixture, models\User};
 use frontend\models\PasswordResetRequestForm;
 use Yii;
+use yii\mail\MessageInterface;
 
 use function expect;
 
@@ -52,7 +53,7 @@ class PasswordResetRequestFormTest extends \Codeception\Test\Unit
         );
 
         expect($model->sendEmail())->toBeTrue();
-        expect($user->password_reset_token)->toBeTrue();
+        expect($user->password_reset_token)->toBeString()->notToBeEmpty();
 
         $emailMessage = $this->tester->grabLastSentEmail();
         expect($emailMessage)->toBeInstanceOf(MessageInterface::class);

@@ -8,11 +8,6 @@ use yii\base\{InvalidArgumentException, Model};
 class VerifyEmailForm extends Model
 {
     /**
-     * @var string
-     */
-    public string $token;
-
-    /**
      * @var User
      */
     private User $user;

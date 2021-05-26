@@ -6,7 +6,6 @@ paths:
     output: tests/_output
     data: tests/_data
     support: tests/_support
-bootstrap: _bootstrap.php
 settings:
     colors: true
     memory_limit: 1024M

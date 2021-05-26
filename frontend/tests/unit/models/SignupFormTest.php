@@ -38,7 +38,7 @@ class SignupFormTest extends \Codeception\Test\Unit
         expect($model->signup())->toBeTrue();
 
         /** @var User $user */
-        $user = $this->tester->grabRecord(User::class(), [
+        $user = $this->tester->grabRecord(User::class, [
             'username' => 'some_username',
             'email' => 'some_email@example.com',
             'status' => User::STATUS_INACTIVE,
@@ -53,7 +53,7 @@ class SignupFormTest extends \Codeception\Test\Unit
         Expect::Array($mail->getFrom())
             ->toHaveKey(Yii::$app->params['supportEmail']);
         Expect::String($mail->getSubject())
-            ->toEqual('Account registration at ' . Yii::$app->name);
+            ->toStartWith('Account registration at ' . Yii::$app->name);
         Expect::String($mail->toString())
             ->toContainString($user->verification_token);
     }
@@ -67,12 +67,12 @@ class SignupFormTest extends \Codeception\Test\Unit
         ]);
 
         expect($model->signup())->toBeFalse();
-        expect($model->getErrors('username'))->toBeTrue();
-        expect($model->getErrors('email'))->toBeTrue();
+        Expect::Array($model->getErrors('username'))->toHaveCount(1);
+        Expect::Array($model->getErrors('email'))->toHaveCount(1);
 
-        expect($model->getFirstError('username'))
-            ->toEqual('This username has already been taken.');
-        expect($model->getFirstError('email'))
-            ->toEqual('This email address has already been taken.');
+        Expect::String($model->getFirstError('username'))
+            ->toStartWith('This username has already been taken.');
+        Expect::String($model->getFirstError('email'))
+            ->toStartWith('This email address has already been taken.');
     }
 }

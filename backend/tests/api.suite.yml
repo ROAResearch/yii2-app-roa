@@ -6,7 +6,9 @@ modules:
             depends: Yii2
         - Yii2:
             cleanup: false
+            transaction: false
     config:
         - Yii2:
             configFile: 'config/codeception-local.php'
             cleanup: false
+            transaction: false

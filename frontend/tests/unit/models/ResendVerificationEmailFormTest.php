@@ -35,7 +35,7 @@ class ResendVerificationEmailFormTest extends Unit
         expect($model->validate())->toBeFalse();
         expect($model->hasErrors())->toBeTrue();
         Expect::String($model->getFirstError('email'))
-            ->toEqual('There is no user with this email address.');
+            ->toStartWith('There is no user with this email address.');
     }
 
     public function testEmptyEmailAddress()
@@ -46,7 +46,7 @@ class ResendVerificationEmailFormTest extends Unit
         expect($model->validate())->toBeFalse();
         expect($model->hasErrors())->toBeTrue();
         Expect::String($model->getFirstError('email'))
-            ->toEqual('Email cannot be blank.');
+            ->toStartWith('Email cannot be blank.');
     }
 
     public function testResendToActiveUser()
@@ -57,7 +57,7 @@ class ResendVerificationEmailFormTest extends Unit
         expect($model->validate())->toBeFalse();
         expect($model->hasErrors())->toBeTrue();
         Expect::String($model->getFirstError('email'))
-            ->toEqual('There is no user with this email address.');
+            ->toStartWith('There is no user with this email address.');
     }
 
     public function testSuccessfullyResend()
@@ -78,7 +78,7 @@ class ResendVerificationEmailFormTest extends Unit
         Expect::Array($mail->getFrom())
             ->toHaveKey(Yii::$app->params['supportEmail']);
         Expect::String($mail->getSubject())
-            ->toEqual('Account registration at ' . Yii::$app->name);
+            ->toStartWith('Account registration at ' . Yii::$app->name);
         Expect::String($mail->toString())->toContainString(
             '4ch0qbfhvWwkcuWqjN8SWRq72SOw1KYT_1548675330'
         );

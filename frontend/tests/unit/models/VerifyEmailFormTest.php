@@ -58,8 +58,8 @@ class VerifyEmailFormTest extends \Codeception\Test\Unit
         $user = $model->verifyEmail();
 
         expect($user)->toBeInstanceOf(User::class);
-        Expect::String($user->username)->toEqual('test.test');
-        Expect::String($user->email)->toEqual('test@mail.com');
+        Expect::String($user->username)->toStartWith('test.test');
+        Expect::String($user->email)->toStartWith('test@mail.com');
         expect($user->status)->toEqual(User::STATUS_ACTIVE);
         expect($user->validatePassword('Test1234'))->toBeTrue();
     }
