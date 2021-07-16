@@ -20,11 +20,13 @@ class DatabaseListener
         $user = ArrayHelper::getValue($args, 'dbuser');
         $pass = ArrayHelper::getValue($args, 'dbpass');
         $name = ArrayHelper::getValue($args, 'dbname');
+        $host = ArrayHelper::getValue($args, 'dbhost', '127.0.0.1');
+
         if (!isset($user, $pass)) {
             list ($user, $pass) = self::requestCredentials();
         }
 
-        while (null === ($pdo = self::createPDO($user, $pass))) {
+        while (null === ($pdo = self::createPDO($user, $pass, $host))) {
             Console::output(Console::ansiFormat(
                 'Username/password incorrect.',
                 [Console::FG_RED]
@@ -46,6 +48,7 @@ class DatabaseListener
 \$dbuser = '$user';
 \$dbpass = '$pass';
 \$dbname = '$name';
+\$dbhost = '$host';
 
 PHP;
         file_put_contents(self::dbFile(), $fileContent);
@@ -73,12 +76,13 @@ PHP;
     /**
      * @param  string $user MySQL user.
      * @param  string $pass MySQL password.
+     * @param  string $pass MySQL host.
      * @return \PDO|null    If the connection fails, it returns null.
      */
-    protected static function createPDO($user, $pass)
+    protected static function createPDO($user, $pass, $host)
     {
         try {
-            $pdo = new PDO('mysql:host=127.0.0.1', $user, $pass);
+            $pdo = new PDO('mysql:host=' . $host, $user, $pass);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             return $pdo;
@@ -121,7 +125,7 @@ PHP;
     public static function truncate()
     {
         include self::dbFile();
-        $pdo = self::createPDO($dbuser, $dbpass);
+        $pdo = self::createPDO($dbuser, $dbpass, $dbhost);
         $pdo->query("DROP DATABASE IF EXISTS $dbname");
         $pdo->query("DROP DATABASE IF EXISTS {$dbname}_test");
         $pdo->query("CREATE DATABASE $dbname");
