@@ -74,6 +74,7 @@ overwrite | bool   | Overwrite local files        |	Prompt question
 dbuser    | string | Database username            | Prompt question
 dbpass    | string | Database password            | Prompt question
 dbname    | string | Database name                | Prompt question
+dbhost    | string | Database host                | 127.0.0.1
 
 ### deploy-framework
 
@@ -143,6 +144,7 @@ Parameter |	Type   | Description       | Default
 dbuser    | string | Database username | Prompt question
 dbpass    | string | Database password | Prompt question
 dbname    | string | Database name     | Prompt question
+dbhost    | string | Database host     | 127.0.0.1
 
 ### migrate-up
 
