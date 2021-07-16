@@ -49,6 +49,7 @@ overwrite | bool   | Sobreescribir archivos locales |	Preguntar
 dbuser    | string | Usuario de la Base de Datos    | Preguntar
 dbpass    | string | contraseña de la Base de Datos | Preguntar
 dbname    | string | Nombre de la Base de Datos     | Preguntar
+dbhost    | string | Host de la Base de Datos       | 127.0.0.1
 
 ### deploy-framework
 
@@ -124,6 +125,7 @@ Parameter |	Type   | Description      | Default
 dbuser    | string | Usuario de BD    | Preguntar
 dbpass    | string | Contraseña de BD | Preguntar
 dbname    | string | Nombre de BD     | Preguntar
+dbhost    | string | Host de BD       | 127.0.0.1
 
 ### run-migrations
 
