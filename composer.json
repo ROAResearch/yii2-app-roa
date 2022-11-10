@@ -21,36 +21,50 @@
         "irc": "irc://irc.freenode.net/yii",
         "source": "https://github.com/yiisoft/yii2"
     },
+    "extra": {
+        "utilConfig": {
+            "dbname": "yii2_app_roa",
+            "dbtestsuffix": "_test",
+            "dbtpls": {
+                "common/config/db.local.php": "roaresearch\\composer\\utils\\Yii2DBTPL"
+            },
+            "dbtesttpls": {
+                "common/config/db.test.php": "roaresearch\\composer\\utils\\Yii2DBTPL"
+            }
+        }
+    },
     "minimum-stability": "dev",
-    "prefer-stable": true,
     "require": {
-        "php": "~8.0",
+        "php": "~8.1",
         "ext-gd": "*",
         "lib-openssl": ">=1.0",
         "guzzlehttp/guzzle": "~7.0",
-        "roaresearch/yii2-roa": "dev-php8 as 3.0.x-dev",
-        "roaresearch/yii2-migrate": "~2.0.0",
+        "roaresearch/yii2-roa": "~4.0",
+        "roaresearch/yii2-migrate": "~3.0",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.1.0"
     },
     "require-dev": {
         "ext-curl": "*",
-        "codeception/codeception": "~4.1",
-        "codeception/module-asserts": "~1.2",
-        "codeception/module-filesystem": "~1.0",
-        "codeception/module-rest": "~1.2",
-        "codeception/module-yii2": "~1.1",
-        "codeception/verify": "~2.1",
-        "phpunit/php-code-coverage": "~9.2",
-        "squizlabs/php_codesniffer": "~3.5.0",
-        "softcreatr/jsonpath": "~0.3",
-        "symfony/browser-kit": ">=2.7 <=4.2.4",
+        "codeception/codeception": "~5.0",
+        "codeception/module-asserts": "*",
+        "codeception/module-filesystem": "*",
+        "codeception/module-rest": "*",
+        "codeception/module-yii2": "*",
+        "codeception/verify": "~2.2",
+        "phpunit/php-code-coverage": "*",
+        "softcreatr/jsonpath": "~0.7",
+        "squizlabs/php_codesniffer": "3.*",
+        "roaresearch/composer-utils": "*",
         "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-faker": "~2.0.0",
         "yiisoft/yii2-gii": "~2.1.0"
     },
     "config": {
-        "process-timeout": 1800
+        "process-timeout": 1800,
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
     },
     "repositories": [
         {
@@ -68,8 +82,7 @@
     "scripts": {
         "help-scripts": "cat docs/guide/composer-scripts.md",
         "browse-help-scripts": "browse https://git.io/fAepY#",
-        "pre-install-cmd": "console\\ComposerListener::init",
-        "pre-update-cmd": "console\\ComposerListener::init",
+        "verify-dev": "console\\ComposerListener::verifyDev",
         "sniff-php-file": [
             "@php -l",
             "@php vendor/bin/phpcs"
@@ -78,33 +91,46 @@
             "@php -l",
             "@php vendor/bin/phpcbf --report=diff"
         ],
+        "deploy-prod": [
+            "@putenv environment=prod",
+            "@composer install",
+            "@deploy"
+        ],
+        "deploy-dev": [
+            "@putenv environment=dev",
+            "@composer update --prefer-dist --prefer-stable",
+            "@deploy"
+        ],
         "deploy": [
-            "@composer update --prefer-dist --prefer-stable ##",
-            "console\\ComposerListener::autoload" ,
+            "console\\ComposerListener::autoload",
             "@deploy-framework",
             "@deploy-database",
-            "@composer run-tests ##"
+            "@composer run-tests"
         ],
         "deploy-framework": "console\\FrameworkListener::deploy",
         "deploy-database": [
-            "@config-database",
+            "@config-db",
             "@run-migrations",
             "@run-fixtures",
             "@clear-framework-cache"
         ],
         "truncate-database": [
+            "@verify-dev -- delete",
             "console\\DatabaseListener::truncate",
             "@run-migrations",
             "@run-fixtures",
             "@clear-framework-cache"
         ],
-        "config-database": "console\\DatabaseListener::config",
+        "config-db": "roaresearch\\composer\\utils\\DBListener::config",
+        "blank-db": "roaresearch\\composer\\utils\\DBListener::blankConfig",
         "migrate-up": [
             "@php yii migrate/up 0 --interactive=0",
+            "@verify-dev -- edit",
             "@php yii_test migrate/up 0 --interactive=0"
         ],
         "migrate-down": [
             "@php yii migrate/down 0 --interactive=0",
+            "@verify-dev -- edit",
             "@php yii_test migrate/down 0 --interactive=0"
         ],
         "run-migrations": [
@@ -113,6 +139,7 @@
             "@composer migrate-up -- -p=@console/migrations/views"
         ],
         "truncate-migrations": [
+            "@verify-dev -- delete",
             "@composer migrate-down -- -p=@console/migrations/views",
             "@composer migrate-down -- -p=@roaresearch/oauth2server/migrations/tables",
             "@composer migrate-down -- -p=@console/migrations/tables",
@@ -121,6 +148,7 @@
         ],
         "fixture-load": [
             "@php yii fixture/load '*' --interactive=0",
+            "@verify-dev -- edit",
             "@php yii_test fixture/load '*' --interactive=0"
         ],
         "run-fixtures": [
@@ -145,7 +173,7 @@
         "deploy-framework": "Initializes the required framework files.",
         "deploy-database": "Creates the database, run migrations and fixtures",
         "truncate-database": "Drops the database and deploy it again",
-        "config-database": "Prompts the credentials for common/config/db.php",
+        "config-db": "Prompts the credentials for common/config/db.php",
         "migrate-up": "shortcut for `yii migrate/up 0 --interactive=0`",
         "migrate-down": "shortcut for `yii migrate/down 0 --interactive=0`",
         "run-migrations": "Runs the migrations needed on the project",

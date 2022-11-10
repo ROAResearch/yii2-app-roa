@@ -31,7 +31,7 @@
  */
 
 return [
-    'Development' => [
+    'dev' => [
         'path' => 'dev',
         'setWritable' => [
             'backend/runtime',
@@ -54,7 +54,7 @@ return [
             '.git/hooks' => 'git-hooks',
         ],
     ],
-    'Production' => [
+    'prod' => [
         'path' => 'prod',
         'setWritable' => [
             'backend/runtime',

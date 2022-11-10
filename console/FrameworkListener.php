@@ -10,7 +10,7 @@ class FrameworkListener
     /**
      * @var string environment to be deployed
      */
-    protected static $env = 'Development';
+    protected static $env = 'dev';
 
     /**
      * @var bool|null if the files should be overwritten by default. `null` will
@@ -50,7 +50,7 @@ class FrameworkListener
         self::$root = dirname(__DIR__);
         $envs = require self::$root . '/environments/index.php';
         $args = ComposerListener::parseArguments($event->getArguments());
-        self::$env = ArrayHelper::getValue($args, 'env', static::$env);
+        self::$env = getenv('environment');
         if (empty($envs[self::$env])) {
             Console::error(
                 'Environment `'
