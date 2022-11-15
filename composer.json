@@ -115,7 +115,7 @@
             "@clear-framework-cache"
         ],
         "truncate-database": [
-            "@verify-dev -- delete",
+            "@verify-dev delete",
             "console\\DatabaseListener::truncate",
             "@run-migrations",
             "@run-fixtures",
@@ -125,7 +125,7 @@
         "blank-db": "roaresearch\\composer\\utils\\DBListener::blankConfig",
         "migrate-up": [
             "@php yii migrate/up 0 --interactive=0",
-            "@verify-dev -- edit",
+            "@verify-dev edit",
             "@php yii_test migrate/up 0 --interactive=0"
         ],
         "migrate-down": [
@@ -139,7 +139,7 @@
             "@composer migrate-up -- -p=@console/migrations/views"
         ],
         "truncate-migrations": [
-            "@verify-dev -- delete",
+            "@verify-dev delete",
             "@composer migrate-down -- -p=@console/migrations/views",
             "@composer migrate-down -- -p=@roaresearch/oauth2server/migrations/tables",
             "@composer migrate-down -- -p=@console/migrations/tables",
@@ -148,7 +148,7 @@
         ],
         "fixture-load": [
             "@php yii fixture/load '*' --interactive=0",
-            "@verify-dev -- edit",
+            "@verify-dev edit",
             "@php yii_test fixture/load '*' --interactive=0"
         ],
         "run-fixtures": [
