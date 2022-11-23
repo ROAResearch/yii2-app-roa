@@ -1,13 +1,13 @@
 <?php
 
-/* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\ContactForm */
+/** @var yii\web\View $this */
+/** @var yii\bootstrap5\ActiveForm $form */
+/** @var \frontend\models\ContactForm $model */
 
 use yii\{
-    bootstrap\ActiveForm,
+    bootstrap5\ActiveForm,
+    bootstrap5\Html,
     captcha\Captcha,
-    helpers\Html
 };
 
 $this->title = 'Contact';

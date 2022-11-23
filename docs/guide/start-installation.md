@@ -8,14 +8,15 @@ The minimum requirement by this project template is that your Web server support
 ## Installing using Composer
 
 If you do not have [Composer](http://getcomposer.org/), follow the instructions in the
-[Installing Yii](https://github.com/yiisoft/yii2/blob/master/docs/guide/start-installation.md#installing-via-composer) section of the definitive guide to install it.
+[Installing Yii](https://github.com/yiisoft/yii2/blob/master/docs/guide/start-installation.md#installing-via-composer)
+section of the definitive guide to install it.
 
 With Composer installed, you can then install the application using the following commands:
 
     composer self-update
     git clone <git path to your project> roa_project
     cd roa_project
-    composer deploy
+    composer deploy-dev
 
 The first command updates `composer` itself, version `>=1.3` is required. The
 second command installs the roa application in a directory named `yii-roa`.
@@ -23,7 +24,7 @@ You can choose a different directory name if you want.
 
 The final command runs a
 [custom composer script](https://getcomposer.org/doc/articles/scripts.md) to
-deploy the framework and database.
+deploy-dev the framework and database.
 
 The `deploy` command can also admit parameters.
 
@@ -215,8 +216,30 @@ the installed application. You only need to do these once for all.
    127.0.0.1   backend.test
    ```
 
-To login into the application, you need to first sign up, with any of your email address, username and password.
-Then, you can login into the application with same email address and password at any time.
+6. Open your browser and go to http://frontend.test/
+
+7. Create a user by selecting the Sign Up menu option at the top of the frontend home page.
+
+8. Provide the requested credentials, and complete the data entry with the Signup button. You will be presented with a message:
+   ```
+   Thank you for registration. Please check your inbox for verification email.
+   ```
+9. Despite stating that a confirmation email has been sent, the default settings for the mailer prevents the sending of a real email.
+   Instead, an eml format file is created in the directory `@frontend/runtime/mail`.
+   Either open this file with a mail client such as Outlook or Thunderbird, or use a text editor to retrieve the URL which is used to confirm the User creation.
+   The URL will need to be modified to remove the [quoted printable encoding](https://en.wikipedia.org/wiki/Quoted-printable) before pasting it in your browser.
+
+    This can be accomplished manually as follows:
+    - delete soft line breaks ‘=’ and newlines to create a single line with the line below
+    - change ‘=3D’ to ‘=’
+    - On Mac / Linux, convert \r\n to \n - MIME CRLF line breaks are "real" and should be preserved.
+
+    Paste this URL into a browser tab to complete the User creation. You will be presented with the message:
+    ```
+    Your email has been confirmed!
+    ```
+10. You are now automatically logged in to the frontend application.
+    The same credentials can then be used to login to the backend application.
 
 
 > Note: if you want to run advanced template on a single domain so `/` is frontend and `/admin` is backend, refer
@@ -253,6 +276,8 @@ This way is the easiest but long (~20 min).
    ```bash
    vagrant up
    ```
+
+6. SSH into vagrant box via `vagrant ssh` and execute `php init`.
 
 That's all. You just need to wait for completion! After that you can access project locally by URLs:
 * frontend: http://y2aa-frontend.test
@@ -295,7 +320,7 @@ Initialize the application by running the `init` command within a container
     docker-compose run --rm backend php /app/init
 
 Adjust the components['db'] configuration in `common/config/main-local.php` accordingly.
-    
+
         'dsn' => 'mysql:host=mysql;dbname=yii2advanced',
         'username' => 'yii2advanced',
         'password' => 'secret',

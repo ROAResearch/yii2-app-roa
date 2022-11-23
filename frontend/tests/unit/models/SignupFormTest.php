@@ -17,14 +17,14 @@ class SignupFormTest extends \Codeception\Test\Unit
      */
     protected UnitTester $tester;
 
-    public function _before()
+    public function _fixtures()
     {
-        $this->tester->haveFixtures([
+        return [
             'user' => [
                 'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php',
             ],
-        ]);
+        ];
     }
 
     public function testCorrectSignup()

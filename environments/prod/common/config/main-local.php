@@ -1,18 +1,11 @@
 <?php
 
-include __DIR__ . '/db.php';
-
 return [
     'components' => [
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => "mysql:host=127.0.0.1;dbname=$dbname",
-            'username' => $dbuser,
-            'password' => $dbpass,
-            'charset' => 'utf8',
-        ],
+        'db' => ['class' => 'yii\db\Connection', 'charset' => 'utf8']
+            + include __DIR__ . '/db.local.php',
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
+            'class' => \yii\symfonymailer\Mailer::class,
             'viewPath' => '@common/mail',
         ],
     ],

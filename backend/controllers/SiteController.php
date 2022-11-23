@@ -7,7 +7,8 @@ use Yii;
 use yii\{
     filters\AccessControl,
     filters\VerbFilter,
-    web\Controller
+    web\Controller,
+    web\Response,
 };
 
 /**
@@ -22,7 +23,7 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
@@ -36,7 +37,7 @@ class SiteController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -51,7 +52,7 @@ class SiteController extends Controller
     {
         return [
             'error' => [
-                'class' => 'yii\web\ErrorAction',
+                'class' => \yii\web\ErrorAction::class,
             ],
         ];
     }
@@ -69,7 +70,7 @@ class SiteController extends Controller
     /**
      * Login action.
      *
-     * @return string
+     * @return string|Response
      */
     public function actionLogin()
     {
@@ -84,6 +85,8 @@ class SiteController extends Controller
             return $this->goBack();
         }
 
+        $model->password = '';
+
         return $this->render('login', [
             'model' => $model,
         ]);
@@ -92,9 +95,9 @@ class SiteController extends Controller
     /**
      * Logout action.
      *
-     * @return string
+     * @return Response
      */
-    public function actionLogout()
+    public function actionLogout(): Response
     {
         Yii::$app->user->logout();
 

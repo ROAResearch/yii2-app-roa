@@ -26,6 +26,7 @@ class LoginFormTest extends \Codeception\Test\Unit
         return [
             'user' => [
                 'class' => UserFixture::class,
+                'dataFile' => codecept_data_dir() . 'user.php',
             ],
         ];
     }
@@ -65,7 +66,7 @@ class LoginFormTest extends \Codeception\Test\Unit
     public function testLoginCorrect()
     {
         $model = new LoginForm([
-            'username' => 'erau',
+            'username' => 'bayer.hudson',
             'password' => 'password_0',
         ]);
 

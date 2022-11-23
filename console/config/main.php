@@ -1,7 +1,5 @@
 <?php
 
-use yii\log\FileTarget;
-
 return [
     'id' => 'app-console',
     'basePath' => dirname(__DIR__),
@@ -13,7 +11,7 @@ return [
     ],
     'controllerMap' => [
         'fixture' => [
-            'class' => 'yii\console\controllers\FixtureController',
+            'class' => \yii\console\controllers\FixtureController::class,
             'namespace' => 'common\fixtures',
         ],
     ],
