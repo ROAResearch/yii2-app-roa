@@ -26,6 +26,19 @@ class UserCest
         $I->seeResponseCodeIs(HttpCode::OK);
     }
 
+
+    /**
+     * @depends backend\tests\api\AccessTokenCest:generateToken
+     */
+    public function noLinks(ApiTester $I)
+    {
+        $I->amAuthAsUser();
+        $I->sendGET('v1/user/1?fields=!_links');
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseContainsJson(['username' => 'erau']);
+        $I->dontSeeResponseContainsJson(['_links' => []]);
+    }
+
     /**
      * @depends backend\tests\api\AccessTokenCest:generateToken
      * @example {"id": 1, "status": 0}
