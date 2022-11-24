@@ -79,15 +79,7 @@ jobs:
 
       - name: Setup app advanced
         run: |
-          ./init --env=Development
-          sed -i "s/'dsn' => 'mysql:host=localhost;dbname=yii2advanced_test'/'dsn' => 'mysql:host=127.0.0.1;dbname=yii2advanced_test'/" common/config/test-local.php
-          sed -i "/'db'/a 'username' => 'root'," common/config/test-local.php
-          sed -i "/'db'/a 'password' => 'root'," common/config/test-local.php
-          sed -i "s/'cookieValidationKey' => ''/'cookieValidationKey' => 'testkey'/" frontend/config/main.php
-          sed -i "s/'cookieValidationKey' => ''/'cookieValidationKey' => 'testkey'/" backend/config/main.php
-
-      - name: Apply migration
-        run: php yii_test migrate --interactive=0
-
-      - name: Run tests with codeception 
-        run: vendor/bin/codecept run
+          export dbname="yii2advanced_test" && export dbuser="root" && export dbpass="root" && export dbdsn="mysql:host=127.0.0.1"
+          
+      - name: Apply deploy-dev with tests
+        run:  composer deploy-dev
