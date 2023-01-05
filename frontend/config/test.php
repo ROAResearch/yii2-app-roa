@@ -12,5 +12,8 @@ return [
         'request' => [
             'cookieValidationKey' => 'test',
         ],
+        'mailer' => [
+            'messageClass' => \yii\symfonymailer\Message::class
+        ]
     ],
 ];

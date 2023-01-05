@@ -2,42 +2,43 @@
 
 namespace frontend\tests\unit\models;
 
+use Codeception\Verify\Expect;
 use common\fixtures\UserFixture;
-use frontend\models\ResetPasswordForm;
+use frontend\{models\ResetPasswordForm, tests\UnitTester};
 use yii\base\InvalidArgumentException;
+
+use function expect;
 
 class ResetPasswordFormTest extends \Codeception\Test\Unit
 {
     /**
-     * @var \frontend\tests\UnitTester
+     * @var UnitTester
      */
-    protected $tester;
+    protected UnitTester $tester;
 
-    public function _before()
+    public function _fixtures()
     {
-        $this->tester->haveFixtures([
+        return [
             'user' => [
                 'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php',
             ],
-        ]);
+        ];
     }
 
     public function testResetWrongToken()
     {
-        $this->tester->expectException(
-            InvalidArgumentException::class,
+        Expect::Callable(
             function () {
                 new ResetPasswordForm('');
             }
-        );
+        )->toThrow(InvalidArgumentException::class);
 
-        $this->tester->expectException(
-            InvalidArgumentException::class,
+        Expect::Callable(
             function () {
                 new ResetPasswordForm('notexistingtoken_1391882543');
             }
-        );
+        )->toThrow(InvalidArgumentException::class);
     }
 
     public function testResetCorrectToken()
@@ -45,6 +46,6 @@ class ResetPasswordFormTest extends \Codeception\Test\Unit
         $user = $this->tester->grabFixture('user', 0);
         $form = new ResetPasswordForm($user['password_reset_token']);
         $form->password = 'password_0';
-        expect_that($form->resetPassword());
+        expect($form->resetPassword())->toBeTrue();
     }
 }

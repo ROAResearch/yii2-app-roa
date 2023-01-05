@@ -11,7 +11,7 @@
  *     'environment name' => [
  *         'path' => 'directory storing the local files',
  *         'skipFiles'  => [
- *             // list of files that should only copied once and skipped if they already exist
+ *             // list of files that should only be copied once and skipped if they already exist
  *         ],
  *         'setWritable' => [
  *             // list of directories that should be set writable
@@ -31,7 +31,7 @@
  */
 
 return [
-    'Development' => [
+    'dev' => [
         'path' => 'dev',
         'setWritable' => [
             'backend/runtime',
@@ -54,7 +54,7 @@ return [
             '.git/hooks' => 'git-hooks',
         ],
     ],
-    'Production' => [
+    'prod' => [
         'path' => 'prod',
         'setWritable' => [
             'backend/runtime',

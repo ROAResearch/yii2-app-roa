@@ -46,3 +46,5 @@ composer.lock
 /backend/web/index-test.php
 /backend/web/robots.txt
 /common/config/constants.php
+/common/config/db.local.php
+/common/config/db.test.php

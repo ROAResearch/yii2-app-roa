@@ -4,12 +4,12 @@ namespace frontend\api\models;
 
 use OAuth2\Storage\UserCredentialsInterface;
 use roaresearch\yii2\oauth2server\models\OauthAccessTokens as AccessToken;
-use roaresearch\yii2\roa\hal\{Contract, ContractTrait};
+use roaresearch\yii2\roa\hal\{ARContract, ContractTrait};
 use yii\db\ActiveQuery;
 
 class User extends \common\models\User implements
     UserCredentialsInterface,
-    Contract
+    ARContract
 {
     use ContractTrait;
 

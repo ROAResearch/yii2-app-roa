@@ -100,6 +100,8 @@ class SiteController extends Controller
             return $this->goBack();
         }
 
+        $model->password = '';
+
         return $this->render('login', [
             'model' => $model,
         ]);
@@ -246,15 +248,13 @@ class SiteController extends Controller
         } catch (InvalidArgumentException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
-        if ($user = $model->verifyEmail()) {
-            if (Yii::$app->user->login($user)) {
-                Yii::$app->session->setFlash(
-                    'success',
-                    'Your email has been confirmed!'
-                );
+        if (($user = $model->verifyEmail()) && Yii::$app->user->login($user)) {
+            Yii::$app->session->setFlash(
+                'success',
+                'Your email has been confirmed!'
+            );
 
-                return $this->goHome();
-            }
+            return $this->goHome();
         }
 
         Yii::$app->session->setFlash(

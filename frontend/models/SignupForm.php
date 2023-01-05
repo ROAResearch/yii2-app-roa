@@ -43,7 +43,7 @@ class SignupForm extends Model
             ],
 
             ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
         ];
     }
 

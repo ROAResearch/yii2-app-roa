@@ -2,52 +2,52 @@
 
 namespace frontend\tests\unit\models;
 
+use Codeception\Verify\Expect;
 use common\{fixtures\UserFixture, models\User};
-use frontend\models\VerifyEmailForm;
+use frontend\{models\VerifyEmailForm, tests\UnitTester};
 use yii\base\InvalidArgumentException;
+
+use function expect;
 
 class VerifyEmailFormTest extends \Codeception\Test\Unit
 {
     /**
-     * @var \frontend\tests\UnitTester
+     * @var UnitTester
      */
-    protected $tester;
+    protected UnitTester $tester;
 
-    public function _before()
+    public function _fixtures()
     {
-        $this->tester->haveFixtures([
+        return [
             'user' => [
                 'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php',
             ],
-        ]);
+        ];
     }
 
     public function testVerifyWrongToken()
     {
-        $this->tester->expectException(
-            InvalidArgumentException::class,
+        Expect::Callable(
             function () {
                 new VerifyEmailForm('');
             }
-        );
+        )->toThrow(InvalidArgumentException::class);
 
-        $this->tester->expectException(
-            InvalidArgumentException::class,
+        Expect::Callable(
             function () {
                 new VerifyEmailForm('notexistingtoken_1391882543');
             }
-        );
+        )->toThrow(InvalidArgumentException::class);
     }
 
     public function testAlreadyActivatedToken()
     {
-        $this->tester->expectException(
-            InvalidArgumentException::class,
+        Expect::Callable(
             function () {
                 new VerifyEmailForm('already_used_token_1548675330');
             }
-        );
+        )->toThrow(InvalidArgumentException::class);
     }
 
     public function testVerifyCorrectToken()
@@ -57,10 +57,10 @@ class VerifyEmailFormTest extends \Codeception\Test\Unit
         );
         $user = $model->verifyEmail();
 
-        expect($user)->isInstanceOf(User::class);
-        expect($user->username)->equals('test.test');
-        expect($user->email)->equals('test@mail.com');
-        expect($user->status)->equals(User::STATUS_ACTIVE);
-        expect($user->validatePassword('Test1234'))->true();
+        expect($user)->toBeInstanceOf(User::class);
+        Expect::String($user->username)->toStartWith('test.test');
+        Expect::String($user->email)->toStartWith('test@mail.com');
+        expect($user->status)->toEqual(User::STATUS_ACTIVE);
+        expect($user->validatePassword('Test1234'))->toBeTrue();
     }
 }

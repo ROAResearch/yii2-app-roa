@@ -28,6 +28,23 @@ class ComposerListener
         require dirname(__DIR__) . '/vendor/autoload.php';
     }
 
+    public static function verifyDev(Event $event)
+    {
+        if ('dev' == getenv('environment')) {
+            return;
+        }
+
+        $event->stopPropagation();
+        echo "Script ", $event->getOriginatingEvent()->getName(),
+            " cant be used in production as is: ";
+        echo match ($event->getArguments()[0]) {
+            'edit' => 'Edit the script to remove non-production processes',
+            default => 'Delete script completely, never use in production',
+        },
+        "\n";
+        exit(1);
+    }
+
     /**
      * Arguments in string are parsed to key-pair values.
      *

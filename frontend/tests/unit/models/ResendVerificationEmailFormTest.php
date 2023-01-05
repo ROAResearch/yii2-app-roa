@@ -2,27 +2,29 @@
 
 namespace frontend\tests\unit\models;
 
-use Codeception\Test\Unit;
+use Codeception\{Test\Unit, Verify\Expect};
 use common\fixtures\UserFixture;
-use frontend\models\ResendVerificationEmailForm;
+use frontend\{models\ResendVerificationEmailForm, tests\UnitTester};
 use Yii;
 use yii\mail\MessageInterface;
+
+use function expect;
 
 class ResendVerificationEmailFormTest extends Unit
 {
     /**
-     * @var \frontend\tests\UnitTester
+     * @var UnitTester
      */
-    protected $tester;
+    protected UnitTester $tester;
 
-    public function _before()
+    public function _fixtures()
     {
-        $this->tester->haveFixtures([
+        return [
             'user' => [
                 'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php',
             ],
-        ]);
+        ];
     }
 
     public function testWrongEmailAddress()
@@ -30,10 +32,10 @@ class ResendVerificationEmailFormTest extends Unit
         $model = new ResendVerificationEmailForm();
         $model->attributes = ['email' => 'aaa@bbb.cc'];
 
-        expect($model->validate())->false();
-        expect($model->hasErrors())->true();
-        expect($model->getFirstError('email'))
-            ->equals('There is no user with this email address.');
+        expect($model->validate())->toBeFalse();
+        expect($model->hasErrors())->toBeTrue();
+        Expect::String($model->getFirstError('email'))
+            ->toStartWith('There is no user with this email address.');
     }
 
     public function testEmptyEmailAddress()
@@ -41,10 +43,10 @@ class ResendVerificationEmailFormTest extends Unit
         $model = new ResendVerificationEmailForm();
         $model->attributes = ['email' => ''];
 
-        expect($model->validate())->false();
-        expect($model->hasErrors())->true();
-        expect($model->getFirstError('email'))
-            ->equals('Email cannot be blank.');
+        expect($model->validate())->toBeFalse();
+        expect($model->hasErrors())->toBeTrue();
+        Expect::String($model->getFirstError('email'))
+            ->toStartWith('Email cannot be blank.');
     }
 
     public function testResendToActiveUser()
@@ -52,10 +54,10 @@ class ResendVerificationEmailFormTest extends Unit
         $model = new ResendVerificationEmailForm();
         $model->attributes = ['email' => 'test2@mail.com'];
 
-        expect($model->validate())->false();
-        expect($model->hasErrors())->true();
-        expect($model->getFirstError('email'))
-            ->equals('There is no user with this email address.');
+        expect($model->validate())->toBeFalse();
+        expect($model->hasErrors())->toBeTrue();
+        Expect::String($model->getFirstError('email'))
+            ->toStartWith('There is no user with this email address.');
     }
 
     public function testSuccessfullyResend()
@@ -63,21 +65,21 @@ class ResendVerificationEmailFormTest extends Unit
         $model = new ResendVerificationEmailForm();
         $model->attributes = ['email' => 'test@mail.com'];
 
-        expect($model->validate())->true();
-        expect($model->hasErrors())->false();
+        expect($model->validate())->toBeTrue();
+        expect($model->hasErrors())->toBeFalse();
 
-        expect($model->sendEmail())->true();
+        expect($model->sendEmail())->toBeTrue();
         $this->tester->seeEmailIsSent();
 
         $mail = $this->tester->grabLastSentEmail();
 
-        expect('valid email is sent', $mail)
-            ->isInstanceOf(MessageInterface::class);
-        expect($mail->getTo())->hasKey('test@mail.com');
-        expect($mail->getFrom())->hasKey(Yii::$app->params['supportEmail']);
-        expect($mail->getSubject())
-            ->equals('Account registration at ' . Yii::$app->name);
-        expect($mail->toString())->contains(
+        expect($mail)->toBeInstanceOf(MessageInterface::class);
+        Expect::Array($mail->getTo())->toHaveKey('test@mail.com');
+        Expect::Array($mail->getFrom())
+            ->toHaveKey(Yii::$app->params['supportEmail']);
+        Expect::String($mail->getSubject())
+            ->toStartWith('Account registration at ' . Yii::$app->name);
+        Expect::String($mail->toString())->toContainString(
             '4ch0qbfhvWwkcuWqjN8SWRq72SOw1KYT_1548675330'
         );
     }

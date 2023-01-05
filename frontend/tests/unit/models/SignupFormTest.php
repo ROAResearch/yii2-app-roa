@@ -2,26 +2,29 @@
 
 namespace frontend\tests\unit\models;
 
+use Codeception\Verify\Expect;
 use common\{fixtures\UserFixture, models\User};
-use frontend\models\SignupForm;
+use frontend\{models\SignupForm, tests\UnitTester};
 use Yii;
 use yii\mail\MessageInterface;
+
+use function expect;
 
 class SignupFormTest extends \Codeception\Test\Unit
 {
     /**
-     * @var \frontend\tests\UnitTester
+     * @var UnitTester
      */
-    protected $tester;
+    protected UnitTester $tester;
 
-    public function _before()
+    public function _fixtures()
     {
-        $this->tester->haveFixtures([
+        return [
             'user' => [
                 'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php',
             ],
-        ]);
+        ];
     }
 
     public function testCorrectSignup()
@@ -32,8 +35,7 @@ class SignupFormTest extends \Codeception\Test\Unit
             'password' => 'some_password',
         ]);
 
-        $user = $model->signup();
-        expect($user)->true();
+        expect($model->signup())->toBeTrue();
 
         /** @var User $user */
         $user = $this->tester->grabRecord(User::class, [
@@ -46,12 +48,14 @@ class SignupFormTest extends \Codeception\Test\Unit
 
         $mail = $this->tester->grabLastSentEmail();
 
-        expect($mail)->isInstanceOf(MessageInterface::class);
-        expect($mail->getTo())->hasKey('some_email@example.com');
-        expect($mail->getFrom())->hasKey(Yii::$app->params['supportEmail']);
-        expect($mail->getSubject())
-            ->equals('Account registration at ' . Yii::$app->name);
-        expect($mail->toString())->contains($user->verification_token);
+        expect($mail)->toBeInstanceOf(MessageInterface::class);
+        Expect::Array($mail->getTo())->toHaveKey('some_email@example.com');
+        Expect::Array($mail->getFrom())
+            ->toHaveKey(Yii::$app->params['supportEmail']);
+        Expect::String($mail->getSubject())
+            ->toStartWith('Account registration at ' . Yii::$app->name);
+        Expect::String($mail->toString())
+            ->toContainString($user->verification_token);
     }
 
     public function testNotCorrectSignup()
@@ -62,13 +66,13 @@ class SignupFormTest extends \Codeception\Test\Unit
             'password' => 'some_password',
         ]);
 
-        expect_not($model->signup());
-        expect_that($model->getErrors('username'));
-        expect_that($model->getErrors('email'));
+        expect($model->signup())->toBeFalse();
+        Expect::Array($model->getErrors('username'))->toHaveCount(1);
+        Expect::Array($model->getErrors('email'))->toHaveCount(1);
 
-        expect($model->getFirstError('username'))
-            ->equals('This username has already been taken.');
-        expect($model->getFirstError('email'))
-            ->equals('This email address has already been taken.');
+        Expect::String($model->getFirstError('username'))
+            ->toStartWith('This username has already been taken.');
+        Expect::String($model->getFirstError('email'))
+            ->toStartWith('This email address has already been taken.');
     }
 }
