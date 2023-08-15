@@ -10,6 +10,7 @@ return [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
+        '@roaresearch/yii2/rmdb' => '@vendor/roaresearch/yii2/rmdb/src'
     ],
     'controllerMap' => [
         'fixture' => [
