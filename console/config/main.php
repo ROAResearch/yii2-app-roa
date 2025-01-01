@@ -1,5 +1,7 @@
 <?php
 
+use yii\log\FileTarget;
+
 return [
     'id' => 'app-console',
     'basePath' => dirname(__DIR__),
